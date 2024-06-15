@@ -5,9 +5,6 @@
     -fx-background-size: 900 506;
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
-
-    /* Overlay with semi-transparent gray */
-    -fx-background-color: rgba(32, 33, 62, 0.5); /* 50% opacity */
 }
 .stack-pane {
     -fx-background-color: #101b2c;
