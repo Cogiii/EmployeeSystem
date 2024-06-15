@@ -1,0 +1,60 @@
+.root {
+    /* Background image and other styles */
+    -fx-background-image: url("../images/loginPageBg.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 900 506;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+
+    /* Overlay with semi-transparent gray */
+    -fx-background-color: rgba(32, 33, 62, 0.5); /* 50% opacity */
+}
+.stack-pane {
+    -fx-background-color: #101b2c;
+    -fx-min-width: 350px;
+    -fx-max-width: 350px;
+    -fx-padding: 20px;
+    -fx-background-radius: 10px;
+
+}
+
+.logo{
+    -fx-min-width: 20px;
+    -fx-max-width: 20px;
+    -fx-min-height: 20px;
+    -fx-max-height: 20px;
+}
+.label {
+    -fx-text-fill:#FFFFFF;
+    -fx-font-family: Inter;
+    -fx-font-size:27px;
+    -fx-font-style: normal;
+    -fx-font-weight: 700;
+}
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-min-width: 300px;
+    -fx-max-width: 300px;
+    -fx-min-height: 35px;
+    -fx-max-height: 35px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #CCCCCC;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+.login-button {
+    -fx-background-color: #071f43;
+    -fx-border-radius: 10px;
+    -fx-min-width: 300px;
+    -fx-max-width: 300px;
+    -fx-min-height: 35px;
+    -fx-max-height: 35px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+.login-button:hover {
+    -fx-background-color: #05142c; /* Background color on hover */
+    -fx-cursor: hand;
+}

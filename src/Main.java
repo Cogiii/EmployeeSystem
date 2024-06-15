@@ -3,6 +3,7 @@ import javafx.event.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -13,7 +14,11 @@ public class Main extends Application{
     }
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
+        Image icon = new Image("images/logo-icon.png");
+        window.getIcons().add(icon);
 
         LoginPage.showLogin(window);
+
+        window.show();
     }
 }
