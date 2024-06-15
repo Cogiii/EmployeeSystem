@@ -23,9 +23,9 @@ The Employee Management System is a comprehensive solution designed to streamlin
    - **Gross Pay Calculation**: Computes gross pay with deductions and overtime included.
    - **Deductions**: Automatically calculates and applies deductions.
    - **Total Salary Calculation**: Provides comprehensive salary details for each employee.
-
+ 
 3. **Employee Details Management**
-   - Add, update, and manage employee information such as name, designation, department, and pay details.
+   - Create, Add, update, and manage employee information such as name, designation, department, and pay details.
    - View daily time entries and complete timesheets for accurate tracking.
 
 ### Employee Features
@@ -38,5 +38,9 @@ The Employee Management System is a comprehensive solution designed to streamlin
 
 3. **Attendance Records**
    - Check daily time-in and time-out logs conveniently.
+
+3. **Leave Management**
+   - **Apply for Leave**: Employees can apply for leave through the system, specifying the leave type (e.g., sick leave, vacation), duration, and reason.
+   - **Leave Status**: View the status of leave applications and receive notifications on approval or rejection.
 
 This Employee Management System aims to enhance efficiency and accuracy in managing employee tasks, offering a secure and intuitive platform for day-to-day operations.
