@@ -2,34 +2,35 @@ import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.*;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+public class LoginPage {
 
-public class LoginPage{
+    private TextField usernameInput;
+    private PasswordField passwordInput;
 
-    public static void showLogin(Stage window) throws Exception {
+    public void showLogin(Stage window) throws Exception {
         // Header setup
         HBox header = new HBox(30);
 
         ImageView imageView = new ImageView("images/logo.png");
-        imageView.getStyleClass().add("logo");;
+        imageView.getStyleClass().add("logo");
         
         Label titleLabel = new Label("Employee\n  System");
-        header.getChildren().addAll(imageView,titleLabel);
+        header.getChildren().addAll(imageView, titleLabel);
 
         // Input fields and login button setup
         VBox elements = new VBox(10);
-        TextField usernameInput = new TextField();
+        usernameInput = new TextField();
         usernameInput.setPromptText("Username");
         
-        PasswordField passwordInput = new PasswordField();
+        passwordInput = new PasswordField();
         passwordInput.setPromptText("Password");
 
         Button loginButton = new Button("Login");
         loginButton.getStyleClass().add("login-button");
+        loginButton.setOnAction(e -> validateAndLogin(window));
 
         // Add all fields, button, header into elements
         elements.getChildren().addAll(header, usernameInput, passwordInput, loginButton);
@@ -48,7 +49,35 @@ public class LoginPage{
         window.setResizable(false);
         window.setTitle("Login Page");
         window.setScene(loginPage);
-
     }
-    
+
+    private void validateAndLogin(Stage window) {
+        if (authenticate(usernameInput, passwordInput)) 
+            proceedToDashboard(window);
+        else 
+            showAlert("Invalid credentials", "Invalid credentials. Please try again.");
+    }
+
+    private boolean authenticate(TextField usernameInput, PasswordField passwordInput) {
+        String inputUsername = usernameInput.getText();
+        String inputPassword = passwordInput.getText();
+
+        // This line is for testing only
+        String usernameTest = "admin";
+        String passwordTest = "123";
+
+        return inputUsername.equals(usernameTest) && inputPassword.equals(passwordTest);
+    }
+
+    private void proceedToDashboard(Stage window) {
+        DashboardPage dashboardPage = new DashboardPage();
+        dashboardPage.showDashboard(window);
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
