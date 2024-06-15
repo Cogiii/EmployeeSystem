@@ -15,9 +15,7 @@ public class LoginPage{
         HBox header = new HBox(30);
 
         ImageView imageView = new ImageView("images/logo.png");
-        imageView.getStyleClass().add("logo");
-        imageView.setFitHeight(80);
-        imageView.setFitWidth(110);
+        imageView.getStyleClass().add("logo");;
         
         Label titleLabel = new Label("Employee\n  System");
         header.getChildren().addAll(imageView,titleLabel);
@@ -27,23 +25,20 @@ public class LoginPage{
         TextField usernameInput = new TextField();
         usernameInput.setPromptText("Username");
         
-        PasswordField passwordInput = new PasswordField(); // Use PasswordField for password input
+        PasswordField passwordInput = new PasswordField();
         passwordInput.setPromptText("Password");
 
         Button loginButton = new Button("Login");
         loginButton.getStyleClass().add("login-button");
 
+        // Add all fields, button, header into elements
         elements.getChildren().addAll(header, usernameInput, passwordInput, loginButton);
         elements.setAlignment(Pos.CENTER);
 
-        // StackPane to center elements and set background color
+        // StackPane to center elements
         StackPane centerPane = new StackPane();
-        centerPane.getStyleClass().add("stack-pane"); // Add CSS class for styling
+        centerPane.getStyleClass().add("stack-pane");
         centerPane.getChildren().add(elements);
-
-        // Set preferred width for the centerPane
-        centerPane.setMaxWidth(200);
-        centerPane.setMaxHeight(200);
 
         BorderPane layout = new BorderPane();
         layout.setCenter(centerPane);

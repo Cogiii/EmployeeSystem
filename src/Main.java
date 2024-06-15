@@ -17,7 +17,7 @@ public class Main extends Application{
         Image icon = new Image("images/logo-icon.png");
         window.getIcons().add(icon);
 
-        LoginPage.showLogin(window);
+        LoginPage.showLogin(window); // show login page first
 
         window.show();
     }
