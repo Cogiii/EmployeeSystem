@@ -1,0 +1,41 @@
+.sidebar {
+    -fx-background-color: #0A1F37;
+    -fx-padding: 10px;
+    -fx-background-radius: 10px;
+}
+
+.logo{
+    -fx-fit-height: 100;
+    -fx-fit-width: 150;
+}
+.label {
+    -fx-text-fill:#FFFFFF;
+    -fx-font-family: Inter;
+    -fx-font-size:20px;
+    -fx-font-style: normal;
+    -fx-font-weight: 900;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-pref-width: 180px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-alignment: CENTER_LEFT;
+    -fx-graphic-text-gap: 10px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+}
+.active-Button{
+    -fx-background-color: #112D4E;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #1A3555;
+}
+
+.sidebar-button:pressed {
+    -fx-background-color: #0A1F37;
+}

@@ -13,9 +13,12 @@ public class Main extends Application{
         window.getIcons().add(icon);
 
         LoginPage login = new LoginPage();
+        DashboardPage dashboard = new DashboardPage();
 
-        login.showLogin(window); // show login page first
-
+        dashboard.showDashboard(window); // show dashboard
+        
+        // login.showLogin(window); // show login page first
+        
         window.show();
     }
 }
