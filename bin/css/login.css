@@ -51,6 +51,6 @@
     -fx-font-size: 13px;
 }
 .login-button:hover {
-    -fx-background-color: #05142c; /* Background color on hover */
+    -fx-background-color: #05142c;
     -fx-cursor: hand;
 }
