@@ -11,8 +11,9 @@ public class FileAuthenticator {
     public boolean authenticateUser(String username, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
+            reader.readLine(); // skip first line
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(" ");
+                String[] parts = line.split("#");
                 if (parts.length == 2) {
                     String storedUsername = parts[0];
                     String storedHashedPassword = parts[1];

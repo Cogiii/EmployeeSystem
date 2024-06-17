@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -17,9 +22,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class DashboardPage {
@@ -133,8 +136,6 @@ public class DashboardPage {
         
         HBox panel_data = new HBox(5);
 
-        
-
         Image originalImage = new Image("images/userImage/hannipham.jpg");
 
         // Calculate dimensions for the square
@@ -241,8 +242,9 @@ public class DashboardPage {
         check_outColumn.setMinWidth(80);
         check_outColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("check_out"));
 
+        ObservableList<Employee> employees = getEmployees();
         table = new TableView<>();
-        table.setItems(getEmployees());
+        table.setItems(employees);
         table.getColumns().addAll(ID_Column, nameColumn, departmentColumn, designationColumn, check_inColumn, check_outColumn);
 
         VBox vBox = new VBox(table);
@@ -251,10 +253,35 @@ public class DashboardPage {
 
     private ObservableList<Employee> getEmployees(){
         ObservableList<Employee> employees = FXCollections.observableArrayList();
-        employees.add(new Employee(1,"Laurence Lesmoras","IT","Software Engineer","8:15AM","4:30PM"));
-        employees.add(new Employee(2,"Laurence Kharl Devera","IT","Software Engineer","8:10AM","--"));
-        employees.add(new Employee(3,"Meriah Borja","Accounting","Accountant","--","--"));
+
+        Path usersDataPath = Paths.get("data/employee.txt");
+        try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
+            String line;
+            int employeeID;
+            String employeeName,department,designation,checkIn,checkOut;
+
+            // Skip the first line/header line
+            br.readLine();  
+            while ((line = br.readLine()) != null) {
+                String[] employeeDetails = line.split("#");
+
+                employeeID = Integer.parseInt(employeeDetails[0]);
+                employeeName = (!employeeDetails[1].equals(" "))? employeeDetails[1] : "--";
+                department = (!employeeDetails[2].equals(" "))? employeeDetails[2] : "--";
+                designation = (!employeeDetails[3].equals(" "))? employeeDetails[3] : "--";
+                checkIn = (!employeeDetails[13].equals(" "))? employeeDetails[13] : "--";
+                checkOut = (!employeeDetails[14].equals(" "))? employeeDetails[14] : "--";
+
+                if (employeeDetails.length >= 14) {
+                    employees.add(new Employee(employeeID,employeeName,department,designation,checkIn,checkOut));
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading from file: " + e.getMessage());
+        }
       
         return employees;
     }
+
+    
 }
