@@ -7,7 +7,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -22,11 +24,14 @@ import javafx.stage.Stage;
 public class ViewEmployeeModal {
     private int user_ID;
     private String grossPay, name, department, designation, username;
+    Data data = new Data();
+    DashboardPage dashboardPage = new DashboardPage();
+    Stage detailsStage;
 
-    void showEmployeeDetails(Employee employee) {
+    void showEmployeeDetails(Stage window, Employee employee) {
         this.user_ID = employee.getID();
 
-        Stage detailsStage = new Stage();
+        detailsStage = new Stage();
         detailsStage.initModality(Modality.APPLICATION_MODAL);
         detailsStage.setTitle("Employee Details");
 
@@ -35,7 +40,7 @@ public class ViewEmployeeModal {
 
         Label titleLabel = new Label("View an Employee (Employee ID #"+ user_ID+")");
         StackPane userImage = showImage();
-        VBox userInfo = showUserInfo(employee);
+        VBox userInfo = showUserInfo(employee, window);
 
         detailsLayout.setAlignment(Pos.TOP_LEFT);
         detailsLayout.getChildren().addAll(titleLabel, userImage, userInfo);
@@ -87,7 +92,7 @@ public class ViewEmployeeModal {
             System.err.println("Error reading from file: " + e.getMessage());
         }
     }
-    private VBox showUserInfo(Employee employee){
+    private VBox showUserInfo(Employee employee, Stage window){
         VBox userInfo = new VBox(10);
 
         getEmployeeDetails(String.valueOf(employee.getID()));
@@ -117,7 +122,7 @@ public class ViewEmployeeModal {
         grossPayField.getStyleClass().add("long-Field");
         grossPayField.setPromptText("Gross Pay");
 
-        HBox button = createButton();
+        HBox button = createButton(usernameField, passwordField, nameField, departmentField, designationField, grossPayField, window);
 
         passwordField.setEditable(false);
 
@@ -158,7 +163,7 @@ public class ViewEmployeeModal {
         return stackPane;
     }
 
-    private HBox createButton(){
+    private HBox createButton(TextField usernameField, TextField passwordField, TextField nameField, TextField departmentField, TextField designationField, TextField grossPayField, Stage window){
         HBox layout = new HBox(5);
 
         Button deleteButton = new Button("Delete");
@@ -166,11 +171,46 @@ public class ViewEmployeeModal {
         deleteButton.getStyleClass().add("delete-button");
         updateButton.getStyleClass().add("update-button");
 
-        deleteButton.setOnAction(e -> deleteEmployee());
+        deleteButton.setOnAction(e -> deleteEmployee(window));
+        updateButton.setOnAction(e -> updateEmployee(window, usernameField.getText(), nameField.getText(), departmentField.getText(), designationField.getText(), grossPayField.getText(), String.valueOf(user_ID)));
 
         layout.getChildren().addAll(deleteButton,updateButton);
         return layout;
     }
 
-    private void deleteEmployee(){}
+    private void deleteEmployee(Stage window){
+        // Show confirmation dialog for delete operation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setHeaderText("Confirm Deletion");
+        alert.setContentText("Are you sure you want to delete this employee?");
+        
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                data.deleteEmployeeData(String.valueOf(user_ID));
+                data.deleteUser(String.valueOf(user_ID));
+                detailsStage.close();
+                dashboardPage.showDashboard(window);
+            }
+        });
+
+    }
+    private void updateEmployee(Stage window, String newUsername, String newName, String newDepartment, String newDesignation, String newGrossPay, String user_ID){
+        // Show confirmation dialog for update operation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Update");
+        alert.setHeaderText("Confirm Update");
+        alert.setContentText("Are you sure you want to update this employee?");
+        
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                data.updateEmployeeData(newUsername, newName, newDepartment, newDesignation, newGrossPay, user_ID);
+                detailsStage.close();
+                dashboardPage.showDashboard(window);
+            }
+        });
+        
+    }
+
+    
 }

@@ -33,13 +33,14 @@ public class DashboardPage {
     TableView<Employee> table;
     SidebarPanel sidebarPanel = new SidebarPanel();
     TextField searchEmployee;
+    ObservableList<Employee> employees = FXCollections.observableArrayList(); // Make employees a class-level field
 
     public void showDashboard(Stage window) {
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
         VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "dashboard");
-        VBox mainContent = createMainContent();
+        VBox mainContent = createMainContent(window);
 
         HBox.setMargin(sidebar, new Insets(10));
         HBox.setMargin(mainContent, new Insets(30, 10, 10, 10));
@@ -50,13 +51,13 @@ public class DashboardPage {
         window.setScene(dashboardPage);
     }
 
-    private VBox createMainContent() {
+    private VBox createMainContent(Stage window) {
         VBox main = new VBox(10);
 
         HBox top = createMainTop("Admin Dashboard", "Hanni Pham", "Admin");
         StackPane userPanel = createUserPanel("Hanni Pham", "Senior Admin Janitor", "Davao");
         HBox mainHeader = createMainHeader();
-        VBox table = createTable();
+        VBox table = createTable(window);
 
         main.getChildren().addAll(top, userPanel, mainHeader, table);
         return main;
@@ -97,6 +98,7 @@ public class DashboardPage {
         double startX = (originalImage.getWidth() - squareSize) / 2;
         double startY = (originalImage.getHeight() - squareSize) / 2;
 
+        //
         // Create a viewport to crop the original image to square
         Rectangle2D viewportRect = new Rectangle2D(startX, startY, squareSize, squareSize);
 
@@ -225,7 +227,7 @@ public class DashboardPage {
         return header;
     }
 
-    private VBox createTable() {
+    private VBox createTable(Stage window) {
         TableColumn<Employee, Integer> ID_Column = new TableColumn<>("Employee ID");
         ID_Column.setMinWidth(100);
         ID_Column.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("ID"));
@@ -252,7 +254,7 @@ public class DashboardPage {
 
         table = new TableView<>();  // Initialize the table here
 
-        ObservableList<Employee> employees = getEmployees();
+        employees = getEmployees();
 
         // Create a filtered list
         FilteredList<Employee> filteredData = new FilteredList<>(employees, p -> true);
@@ -295,7 +297,7 @@ public class DashboardPage {
                 if (!row.isEmpty()) {
                     Employee rowData = row.getItem();
                     ViewEmployeeModal viewEmployee = new ViewEmployeeModal();
-                    viewEmployee.showEmployeeDetails(rowData);
+                    viewEmployee.showEmployeeDetails(window, rowData);  // Pass the DashboardPage instance
                 }
             });
             return row;
@@ -335,5 +337,12 @@ public class DashboardPage {
         }
 
         return employees;
+    }
+
+    // Method to update the table after changes (delete/update)
+    public void updateTable() {
+        employees.clear();
+        employees.addAll(getEmployees());
+        table.refresh();
     }
 }

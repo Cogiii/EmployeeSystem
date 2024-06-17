@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "dashboardTable",
+            "request": "launch",
+            "mainClass": "dashboardTable",
+            "projectName": "EmployeeSystem_baa52f6e"
+        },
+        {
+            "type": "java",
             "name": "Resources",
             "request": "launch",
             "mainClass": "Resources",

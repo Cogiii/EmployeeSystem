@@ -1,4 +1,4 @@
 ID#Name#Deparment#Designation#Birth Date#Hire Date#Address#Phone Number#Pay/Hour#Total Hours Worked#Total Overtime#Gross Deductions#Gross Pay#Check-In#Check-Out
-1#Laurence Kharl Devera#IT#Software Engineer#June 29, 2004#June 17,2004#Buhangin Davao City#09123456789#2000#40#5#500#5000#8:30AM#4:00PM
-2#Laurence Lesmoras#IT#Software Engineer#October 23, 2004#June 18,2004#Davao City#09321456798#1000#10#5#500#10000#8:00AM# #
+1#Laurence Devera#IT#Software Engineer#June 29, 2004#June 17,2004#Buhangin Davao City#09123456789#2000#40#5#500#5000#8:30AM#4:00PM
+2#Laurence Lesmoras#IT#Software Engineer#October 23, 2004#June 18,2004#Davao City#09321456798#1000#10#5#500#10000#8:00AM# 
 3#Meriah Juliana Borja#Accounting#Accountancy#September 9, 2004#June 1,2004#Davao City#09321456798#1000#10#5#500#10000# # #
