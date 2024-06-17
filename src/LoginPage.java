@@ -52,21 +52,11 @@ public class LoginPage {
     }
 
     private void validateAndLogin(Stage window) {
-        if (authenticate(usernameInput, passwordInput)) 
+        FileAuthenticator auth = new FileAuthenticator();
+        if (auth.authenticateUser(usernameInput.getText(), passwordInput.getText())) 
             proceedToDashboard(window);
         else 
             showAlert("Invalid credentials", "Invalid credentials. Please try again.");
-    }
-
-    private boolean authenticate(TextField usernameInput, PasswordField passwordInput) {
-        String inputUsername = usernameInput.getText();
-        String inputPassword = passwordInput.getText();
-
-        // This line is for testing only
-        String usernameTest = "admin";
-        String passwordTest = "123";
-
-        return inputUsername.equals(usernameTest) && inputPassword.equals(passwordTest);
     }
 
     private void proceedToDashboard(Stage window) {
