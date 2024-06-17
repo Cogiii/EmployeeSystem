@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class FileAuthenticator {
 
-    private static final String FILE_PATH = "users.txt"; // Path to your file containing usernames and hashed passwords
+    private static final String FILE_PATH = "data/users.txt"; // Path to your file containing usernames and hashed passwords
     public boolean authenticateUser(String username, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;

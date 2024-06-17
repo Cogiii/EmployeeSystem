@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -17,21 +16,19 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class DashboardPage {
+public class Payroll {
     TableView<Employee> table;
 
     SidebarPanel sidebarPanel = new SidebarPanel();
 
-    public void showDashboard(Stage window) {
+    public void showPayroll(Stage window) {
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
-        VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "dashboard");
+        VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "payroll");
         VBox mainContent = createMainContent();
 
         HBox.setMargin(sidebar, new Insets(10));
@@ -66,12 +63,6 @@ public class DashboardPage {
     
         VBox userLabel = new VBox();
         userLabel.setAlignment(Pos.CENTER_RIGHT); // Align labels to the center right
-
-        Label userName = new Label("Hanni Pham");
-        userName.getStyleClass().add("top-user_name");
-    
-        Label userPosition = new Label("Admin");
-        userPosition.getStyleClass().add("top-user_position");
     
         Label usernameLabel = new Label(username);
         usernameLabel.getStyleClass().add("top-user_name");
@@ -79,10 +70,8 @@ public class DashboardPage {
         Label userPositionLabel = new Label(position);
         userPositionLabel.getStyleClass().add("top-user_position");
     
-        userLabel.getChildren().addAll(userName, userPosition);
-
-        // IMAGE CODE -- CURVED EDGES
-
+        userLabel.getChildren().addAll(usernameLabel, userPositionLabel);
+    
         Image originalImage = new Image("images/userImage/hannipham.jpg");
 
         // Calculate dimensions for the square
@@ -111,7 +100,8 @@ public class DashboardPage {
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(userPicture); 
 
-        // END IMAGE EDGE CURVE CODE
+        userPicture.setFitWidth(50);
+        userPicture.setFitHeight(50);
     
         topRight.getChildren().addAll(userLabel, stackPane);
         topRight.setSpacing(5);
@@ -132,8 +122,6 @@ public class DashboardPage {
         panel.getStyleClass().add("panel");
         
         HBox panel_data = new HBox(5);
-
-        
 
         Image originalImage = new Image("images/userImage/hannipham.jpg");
 
@@ -162,6 +150,7 @@ public class DashboardPage {
         // Create a StackPane and add the Rectangle and ImageView
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(userPicture); 
+
         userPicture.getStyleClass().add("image");
 
         VBox userInfo = new VBox();
@@ -179,22 +168,18 @@ public class DashboardPage {
         loc_data.getChildren().addAll(locationLabel,user_Location);
 
         userInfo.getChildren().addAll(user_name,user_position,loc_data);
-        panel_data.getChildren().addAll(userPicture, userInfo);
+        panel_data.getChildren().addAll(stackPane, userInfo);
 
         panel.getChildren().addAll(panel_data);
         return panel;
     }
 
     private HBox createMainHeader(){
-        HBox header = new HBox();
+        HBox header = new HBox(236);
         
         // Label for header title
-        Label headerTitle = new Label("Employee Details");
+        Label headerTitle = new Label("Payroll");
         headerTitle.setAlignment(Pos.CENTER_LEFT); // Align left
-        
-        // Add a region to create space dynamically between title and search field
-        Region spacer1 = new Region();
-        HBox.setHgrow(spacer1, Priority.ALWAYS); 
         
         // TextField for searching employees
         TextField searchEmployee = new TextField();
@@ -202,16 +187,7 @@ public class DashboardPage {
         searchEmployee.getStyleClass().add("search");
         searchEmployee.setAlignment(Pos.CENTER_LEFT);
         
-        // Add a region to create space dynamically between search field and button
-        Region spacer2 = new Region();
-        HBox.setHgrow(spacer2, Priority.ALWAYS);
-        
-        // Button for adding employees
-        Button addEmployeeButton = new Button("Add Employee");
-        addEmployeeButton.getStyleClass().add("add-button");
-        addEmployeeButton.setAlignment(Pos.CENTER_RIGHT);
-        
-        header.getChildren().addAll(headerTitle, spacer1, searchEmployee, spacer2, addEmployeeButton);
+        header.getChildren().addAll(headerTitle, searchEmployee);
         
         return header;
     }
@@ -225,25 +201,25 @@ public class DashboardPage {
         nameColumn.setMinWidth(200);
         nameColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
 
-        TableColumn<Employee, String> departmentColumn = new TableColumn<>("Department");
-        departmentColumn.setMinWidth(130);
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("department"));
+        TableColumn<Employee, Integer> pay_per_hourColumn = new TableColumn<>("Pay/Hour");
+        pay_per_hourColumn.setMinWidth(80);
+        pay_per_hourColumn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("pay_per_hour"));
 
-        TableColumn<Employee, String> designationColumn = new TableColumn<>("Designation");
-        designationColumn.setMinWidth(160);
-        designationColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("designation"));
+        TableColumn<Employee, Integer> total_hours_workColumn = new TableColumn<>("Total Hours Worked");
+        total_hours_workColumn.setMinWidth(160);
+        total_hours_workColumn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("total_hours_work"));
         
-        TableColumn<Employee, String> check_inColumn = new TableColumn<>("Check In");
-        check_inColumn.setMinWidth(80);
-        check_inColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("check_in"));
+        TableColumn<Employee, Integer> total_overtimeColumn = new TableColumn<>("Total Overtime");
+        total_overtimeColumn.setMinWidth(130);
+        total_overtimeColumn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("total_overtime"));
 
-        TableColumn<Employee, String> check_outColumn = new TableColumn<>("Check Out");
-        check_outColumn.setMinWidth(80);
-        check_outColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("check_out"));
+        TableColumn<Employee, Integer> gross_payColumn = new TableColumn<>("Gross Pay");
+        gross_payColumn.setMinWidth(80);
+        gross_payColumn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("gross_pay"));
 
         table = new TableView<>();
         table.setItems(getEmployees());
-        table.getColumns().addAll(ID_Column, nameColumn, departmentColumn, designationColumn, check_inColumn, check_outColumn);
+        table.getColumns().addAll(ID_Column, nameColumn, pay_per_hourColumn, total_hours_workColumn, total_overtimeColumn, gross_payColumn);
 
         VBox vBox = new VBox(table);
         return vBox;
@@ -251,9 +227,10 @@ public class DashboardPage {
 
     private ObservableList<Employee> getEmployees(){
         ObservableList<Employee> employees = FXCollections.observableArrayList();
-        employees.add(new Employee(1,"Laurence Lesmoras","IT","Software Engineer","8:15AM","4:30PM"));
-        employees.add(new Employee(2,"Laurence Kharl Devera","IT","Software Engineer","8:10AM","--"));
-        employees.add(new Employee(3,"Meriah Borja","Accounting","Accountant","--","--"));
+        employees.add(new Employee(1,"Laurence Lesmoras",2000,40,5,5000));
+        employees.add(new Employee(2,"Laurence Kharl Devera",2000,40,5,5000));
+        employees.add(new Employee(3,"Meriah Borja",2000,40,5,5000));
+        employees.add(new Employee(4,"Jasper Nikko Navarez",2000,40,5,5000));
       
         return employees;
     }
