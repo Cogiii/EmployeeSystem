@@ -22,7 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class DashboardPage {
+public class DashboardPageEmployee {
     TableView<Employee> table;
 
     SidebarPanel sidebarPanel = new SidebarPanel();
@@ -31,14 +31,14 @@ public class DashboardPage {
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
-        VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "dashboard", "Admin");
+        VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "dashboard", "Employee");
         VBox mainContent = createMainContent();
 
         HBox.setMargin(sidebar, new Insets(10));
         HBox.setMargin(mainContent, new Insets(30,10,10,10));
         layout.getChildren().addAll(sidebar, mainContent);
 
-        dashboardPage.getStylesheets().add("css/main.css");
+        dashboardPage.getStylesheets().add("css/main-employee.css");
         window.setTitle("Employee Management System");
         window.setScene(dashboardPage);
     }
@@ -46,8 +46,8 @@ public class DashboardPage {
     private VBox createMainContent(){
         VBox main = new VBox(10);
 
-        HBox top = createMainTop("Admin Dashboard", "Hanni Pham", "Admin");
-        StackPane userPanel = createUserPanel("Hanni Pham", "Senior Admin Janitor", "Davao");
+        HBox top = createMainTop("Dashboard", "Hanni Pham", "Employee");
+        StackPane userPanel = createUserPanel("Hanni Pham", "Employee", "Davao");
         HBox mainHeader = createMainHeader();
         VBox table = createTable();
 
@@ -70,7 +70,7 @@ public class DashboardPage {
         Label userName = new Label("Hanni Pham");
         userName.getStyleClass().add("top-user_name");
     
-        Label userPosition = new Label("Admin");
+        Label userPosition = new Label("Employee");
         userPosition.getStyleClass().add("top-user_position");
     
         Label usernameLabel = new Label(username);
@@ -189,29 +189,10 @@ public class DashboardPage {
         HBox header = new HBox();
         
         // Label for header title
-        Label headerTitle = new Label("Employee Details");
+        Label headerTitle = new Label("Time Sheet");
         headerTitle.setAlignment(Pos.CENTER_LEFT); // Align left
         
-        // Add a region to create space dynamically between title and search field
-        Region spacer1 = new Region();
-        HBox.setHgrow(spacer1, Priority.ALWAYS); 
-        
-        // TextField for searching employees
-        TextField searchEmployee = new TextField();
-        searchEmployee.setPromptText("Search Employee");
-        searchEmployee.getStyleClass().add("search");
-        searchEmployee.setAlignment(Pos.CENTER_LEFT);
-        
-        // Add a region to create space dynamically between search field and button
-        Region spacer2 = new Region();
-        HBox.setHgrow(spacer2, Priority.ALWAYS);
-        
-        // Button for adding employees
-        Button addEmployeeButton = new Button("Add Employee");
-        addEmployeeButton.getStyleClass().add("add-button");
-        addEmployeeButton.setAlignment(Pos.CENTER_RIGHT);
-        
-        header.getChildren().addAll(headerTitle, spacer1, searchEmployee, spacer2, addEmployeeButton);
+        header.getChildren().addAll(headerTitle);
         
         return header;
     }
@@ -251,9 +232,11 @@ public class DashboardPage {
 
     private ObservableList<Employee> getEmployees(){
         ObservableList<Employee> employees = FXCollections.observableArrayList();
-        employees.add(new Employee(1,"Laurence Lesmoras","IT","Software Engineer","8:15AM","4:30PM"));
-        employees.add(new Employee(2,"Laurence Kharl Devera","IT","Software Engineer","8:10AM","--"));
-        employees.add(new Employee(3,"Meriah Borja","Accounting","Accountant","--","--"));
+        employees.add(new Employee(1,"Hanni Pham","IT","Software Engineer","8:15AM","4:30PM"));
+        employees.add(new Employee(1,"Hanni Pham","IT","Software Engineer","8:15AM","4:30PM"));
+        employees.add(new Employee(1,"Hanni Pham","IT","Software Engineer","8:15AM","4:30PM"));
+
+        
       
         return employees;
     }

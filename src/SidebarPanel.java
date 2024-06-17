@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class SidebarPanel{
-    public VBox createSidebar(Stage window, Scene scene, String activeButton){
+    public VBox createSidebar(Stage window, Scene scene, String activeButton, String position){
         VBox sidebar = new VBox(10);
         sidebar.getStyleClass().add("sidebar");
         sidebar.setPrefWidth(200);
@@ -27,40 +27,85 @@ public class SidebarPanel{
         titleLabel.getStyleClass().add("title");
 
         // Buttons for sidebar navigation
-        Button dashboardButton = createSidebarButton("Dashboard", "images/article.png");
-        Button timesheetsButton = createSidebarButton("Timesheets", "images/calendar_month.png");
-        Button payrollButton = createSidebarButton("Payroll", "images/contract.png");
-        if (activeButton.equals("dashboard"))    
-            dashboardButton.getStyleClass().add("active-Button");
-        else if(activeButton.equals("timesheets"))
-            timesheetsButton.getStyleClass().add("active-Button");
-        else if(activeButton.equals("payroll"))
-            payrollButton.getStyleClass().add("active-Button");
+        if (position == "Admin"){
+            Button dashboardButton = createSidebarButton("Dashboard", "images/article.png");
+            Button timesheetsButton = createSidebarButton("Timesheets", "images/calendar_month.png");
+            Button payrollButton = createSidebarButton("Payroll", "images/contract.png");
+            if (activeButton.equals("dashboard"))    
+                dashboardButton.getStyleClass().add("active-Button");
+            else if(activeButton.equals("timesheets"))
+                timesheetsButton.getStyleClass().add("active-Button");
+            else if(activeButton.equals("payroll"))
+                payrollButton.getStyleClass().add("active-Button");
 
-        dashboardButton.setOnAction(e -> {
-            DashboardPage dashboardPage = new DashboardPage();
-            dashboardPage.showDashboard(window);
-        });
-        timesheetsButton.setOnAction(e -> {
-            Timesheets timesheetsPage = new Timesheets();
-            timesheetsPage.showTimesheets(window);
-        });
-        payrollButton.setOnAction(e -> {
-            Payroll payrollPage = new Payroll();
-            payrollPage.showPayroll(window);
-        });
+            dashboardButton.setOnAction(e -> {
+                DashboardPage dashboardPage = new DashboardPage();
+                dashboardPage.showDashboard(window);
+            });
+            timesheetsButton.setOnAction(e -> {
+                Timesheets timesheetsPage = new Timesheets();
+                timesheetsPage.showTimesheets(window);
+            });
+            payrollButton.setOnAction(e -> {
+                Payroll payrollPage = new Payroll();
+                payrollPage.showPayroll(window);
+            });
 
-        // Logout Button
-        Button logoutButton = createSidebarButton("Log Out | Time Out", "images/door_open.png");
-        logoutButton.getStyleClass().add("logout-button");
+            // Logout Button
+            Button logoutButton = createSidebarButton("Log Out | Time Out", "images/door_open.png");
+            logoutButton.getStyleClass().add("logout-button");
 
-        // Spacer to push logoutButton to the bottom
-        VBox spacer = new VBox();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
+            logoutButton.setOnAction(e -> {
+                LoginPage loginPage = new LoginPage();
+                try {
+                    loginPage.showLogin(window);
+                } catch (Exception ex) {
+                    ex.printStackTrace();  // Handle or log the exception appropriately
+                }
+            });
 
-        sidebar.getChildren().addAll(logo, titleLabel, dashboardButton, timesheetsButton, payrollButton, spacer, logoutButton);
+            // Spacer to push logoutButton to the bottom
+            VBox spacer = new VBox();
+            VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        scene.getStylesheets().add("css/main.css");
+            sidebar.getChildren().addAll(logo, titleLabel, dashboardButton, timesheetsButton, payrollButton, spacer, logoutButton);
+
+            scene.getStylesheets().add("css/main.css");
+        } else {
+            Button dashboardButton = createSidebarButton("Dashboard", "images/article.png");
+            if (activeButton.equals("dashboard"))    
+                dashboardButton.getStyleClass().add("active-Button");
+
+
+            dashboardButton.setOnAction(e -> {
+                DashboardPage dashboardPage = new DashboardPage();
+                dashboardPage.showDashboard(window);
+
+                
+            });
+
+            // Logout Button
+            Button logoutButton = createSidebarButton("Log Out | Time Out", "images/door_open.png");
+            logoutButton.getStyleClass().add("logout-button");
+
+            logoutButton.setOnAction(e -> {
+                LoginPage loginPage = new LoginPage();
+                try {
+                    loginPage.showLogin(window);
+                } catch (Exception ex) {
+                    ex.printStackTrace();  // Handle or log the exception appropriately
+                }
+            });
+
+            // Spacer to push logoutButton to the bottom
+            VBox spacer = new VBox();
+            VBox.setVgrow(spacer, Priority.ALWAYS);
+
+            sidebar.getChildren().addAll(logo, titleLabel, dashboardButton, spacer, logoutButton);
+
+            scene.getStylesheets().add("css/main.css");
+        }
+        
         return sidebar;
     }
     private Button createSidebarButton(String text, String iconPath) {

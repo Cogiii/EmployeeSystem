@@ -16,12 +16,14 @@ public class Main extends Application{
         DashboardPage dashboard = new DashboardPage();
         Timesheets timesheets = new Timesheets();
         Payroll payroll = new Payroll();
+        DashboardPageEmployee dashboardEmployee = new DashboardPageEmployee();
 
-        // dashboard.showDashboard(window); // show dashboard
+        dashboard.showDashboard(window); // show dashboard
         // timesheets.showTimesheets(window); // show timesheets
         // payroll.showPayroll(window); // show timesheets
         
-        login.showLogin(window); // show login page first
+        // login.showLogin(window); // show login page first
+        // dashboardEmployee.showDashboard(window);
 
         window.setResizable(false);
         window.show();
