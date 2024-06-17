@@ -1,4 +1,6 @@
-
+.root{
+    -fx-background-color: #ECECEC;
+}
 /* Sidebar */
 .sidebar {
     -fx-background-color: #0A1F37;
