@@ -25,13 +25,12 @@ public class DashboardPage {
     public void showDashboard(Stage window) {
         HBox layout = new HBox();
 
-        VBox sidebar = sideBarPanel();
-
-        VBox main = main();
+        VBox sidebar = createSidebar();
+        VBox mainContent = createMainContent();
 
         HBox.setMargin(sidebar, new Insets(10));
-        HBox.setMargin(main, new Insets(30,10,10,10));
-        layout.getChildren().addAll(sidebar, main);
+        HBox.setMargin(mainContent, new Insets(30,10,10,10));
+        layout.getChildren().addAll(sidebar, mainContent);
 
         Scene dashboardPage = new Scene(layout, 1000, 600);
         dashboardPage.getStylesheets().add("css/dashboard.css");
@@ -39,7 +38,7 @@ public class DashboardPage {
         window.setScene(dashboardPage);
     }
 
-    public VBox sideBarPanel(){
+    public VBox createSidebar(){
         VBox sidebar = new VBox(10);
         sidebar.getStyleClass().add("sidebar");
         sidebar.setPrefWidth(200);
@@ -55,6 +54,7 @@ public class DashboardPage {
         // Buttons for sidebar navigation
         Button dashboardButton = createSidebarButton("Dashboard", "images/article.png");
         dashboardButton.getStyleClass().add("active-Button");
+
         Button timesheetsButton = createSidebarButton("Timesheets", "images/calendar_month.png");
         Button payrollButton = createSidebarButton("Payroll", "images/contract.png");
 
@@ -83,33 +83,26 @@ public class DashboardPage {
         return button;
     }
 
-    private VBox main(){
+    private VBox createMainContent(){
         VBox main = new VBox(10);
 
-        HBox top = topMain();
-
-        StackPane userPanel = userPanel();
-
-        HBox mainHeader = mainHeader();
-
-        VBox table = table();
-        
+        HBox top = createMainTop();
+        StackPane userPanel = createUserPanel();
+        HBox mainHeader = createMainHeader();
+        VBox table = createTable();
 
         main.getChildren().addAll(top, userPanel, mainHeader, table);
-
         return main;
     }
 
-    private HBox topMain(){
+    private HBox createMainTop(){
         HBox top = new HBox();
     
-        // Left side: Title
         Label title = new Label("Admin Dashboard");
         HBox.setMargin(title, new Insets(0, 10, 0, 0));
         
-        // Right side: User information
         HBox topRight = new HBox();
-        topRight.setAlignment(Pos.CENTER_RIGHT); // Align items to the right
+        topRight.setAlignment(Pos.CENTER_RIGHT);
     
         VBox userLabel = new VBox();
         userLabel.setAlignment(Pos.CENTER_RIGHT); // Align labels to the center right
@@ -140,7 +133,7 @@ public class DashboardPage {
         return top;
     }
 
-    private StackPane userPanel(){
+    private StackPane createUserPanel(){
         StackPane panel = new StackPane();
         panel.getStyleClass().add("panel");
         
@@ -170,14 +163,14 @@ public class DashboardPage {
         return panel;
     }
 
-    private HBox mainHeader(){
+    private HBox createMainHeader(){
         HBox header = new HBox();
         
         // Label for header title
         Label headerTitle = new Label("Employee Details");
         headerTitle.setAlignment(Pos.CENTER_LEFT); // Align left
         
-        // Add a region to create space between title and search field
+        // Add a region to create space dynamically between title and search field
         Region spacer1 = new Region();
         HBox.setHgrow(spacer1, Priority.ALWAYS); 
         
@@ -187,7 +180,7 @@ public class DashboardPage {
         searchEmployee.getStyleClass().add("search");
         searchEmployee.setAlignment(Pos.CENTER_LEFT);
         
-        // Add a region to create space between search field and button
+        // Add a region to create space dynamically between search field and button
         Region spacer2 = new Region();
         HBox.setHgrow(spacer2, Priority.ALWAYS);
         
@@ -201,7 +194,7 @@ public class DashboardPage {
         return header;
     }
     
-    private VBox table(){
+    private VBox createTable(){
         TableColumn<Employee, Integer> ID_Column = new TableColumn<>("Employee ID");
         ID_Column.setMinWidth(100);
         ID_Column.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("ID"));
@@ -227,33 +220,19 @@ public class DashboardPage {
         check_outColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("check_out"));
 
         table = new TableView<>();
-        table.setItems(getEmployee());
+        table.setItems(getEmployees());
         table.getColumns().addAll(ID_Column, nameColumn, departmentColumn, designationColumn, check_inColumn, check_outColumn);
 
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(table);
-
+        VBox vBox = new VBox(table);
         return vBox;
     }
 
-    private ObservableList<Employee> getEmployee(){
+    private ObservableList<Employee> getEmployees(){
         ObservableList<Employee> employees = FXCollections.observableArrayList();
         employees.add(new Employee(1,"Laurence Lesmoras","IT","Software Engineer","8:15AM","4:30PM"));
         employees.add(new Employee(2,"Laurence Kharl Devera","IT","Software Engineer","8:10AM","--"));
         employees.add(new Employee(3,"Meriah Borja","Accounting","Accountant","--","--"));
-        employees.add(new Employee(1,"Laurence Lesmoras","IT","Software Engineer","8:15AM","4:30PM"));
-        employees.add(new Employee(2,"Laurence Kharl Devera","IT","Software Engineer","8:10AM","--"));
-        employees.add(new Employee(3,"Meriah Borja","Accounting","Accountant","--","--"));
-        employees.add(new Employee(1,"Laurence Lesmoras","IT","Software Engineer","8:15AM","4:30PM"));
-        employees.add(new Employee(2,"Laurence Kharl Devera","IT","Software Engineer","8:10AM","--"));
-        employees.add(new Employee(3,"Meriah Borja","Accounting","Accountant","--","--"));
-        employees.add(new Employee(1,"Laurence Lesmoras","IT","Software Engineer","8:15AM","4:30PM"));
-        employees.add(new Employee(2,"Laurence Kharl Devera","IT","Software Engineer","8:10AM","--"));
-        employees.add(new Employee(3,"Meriah Borja","Accounting","Accountant","--","--"));
-        employees.add(new Employee(1,"Laurence Lesmoras","IT","Software Engineer","8:15AM","4:30PM"));
-        employees.add(new Employee(2,"Laurence Kharl Devera","IT","Software Engineer","8:10AM","--"));
-        employees.add(new Employee(3,"Meriah Borja","Accounting","Accountant","--","--"));
-
+      
         return employees;
     }
 }
