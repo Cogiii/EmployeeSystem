@@ -19,9 +19,9 @@ public class Main extends Application{
 
         // dashboard.showDashboard(window); // show dashboard
         // timesheets.showTimesheets(window); // show timesheets
-        payroll.showPayroll(window); // show timesheets
+        // payroll.showPayroll(window); // show timesheets
         
-        // login.showLogin(window); // show login page first
+        login.showLogin(window); // show login page first
 
         window.setResizable(false);
         window.show();
