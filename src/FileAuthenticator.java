@@ -14,7 +14,7 @@ public class FileAuthenticator {
             reader.readLine(); // skip first line
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("#");
-                if (parts.length == 2) {
+                if (parts.length == 3) {
                     String storedUsername = parts[0];
                     String storedHashedPassword = parts[1];
                     if (storedUsername.equals(username) && verifyPassword(password, storedHashedPassword)) {

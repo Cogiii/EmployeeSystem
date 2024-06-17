@@ -10,13 +10,14 @@ public class SHA256HashGenerator {
         System.out.print("Enter a string to hash with SHA-256: ");
         String input = scanner.nextLine().trim();
 
-        String sha256Hash = generateSHA256Hash(input);
+        SHA256HashGenerator hash = new SHA256HashGenerator();
+        String sha256Hash = hash.generateSHA256Hash(input);
         System.out.println("SHA-256 hash of '" + input + "' is: " + sha256Hash);
 
         scanner.close();
     }
 
-    private static String generateSHA256Hash(String input) {
+    String generateSHA256Hash(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hashedBytes = md.digest(input.getBytes());

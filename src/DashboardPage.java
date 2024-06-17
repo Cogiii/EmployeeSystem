@@ -56,7 +56,7 @@ public class DashboardPage {
 
         HBox top = createMainTop("Admin Dashboard", "Hanni Pham", "Admin");
         StackPane userPanel = createUserPanel("Hanni Pham", "Senior Admin Janitor", "Davao");
-        HBox mainHeader = createMainHeader();
+        HBox mainHeader = createMainHeader(window);
         VBox table = createTable(window);
 
         main.getChildren().addAll(top, userPanel, mainHeader, table);
@@ -192,7 +192,7 @@ public class DashboardPage {
         return panel;
     }
 
-    private HBox createMainHeader() {
+    private HBox createMainHeader(Stage window) {
         HBox header = new HBox();
 
         // Label for header title
@@ -219,7 +219,7 @@ public class DashboardPage {
         addEmployeeButton.setAlignment(Pos.CENTER_RIGHT);
         addEmployeeButton.setOnAction(e -> {
             AddEmployeeModal addModal = new AddEmployeeModal();
-            addModal.showAddModal();
+            addModal.showAddModal(window);
         });
 
         header.getChildren().addAll(headerTitle, spacer1, searchEmployee, spacer2, addEmployeeButton);

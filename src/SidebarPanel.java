@@ -54,6 +54,15 @@ public class SidebarPanel{
         Button logoutButton = createSidebarButton("Log Out | Time Out", "images/door_open.png");
         logoutButton.getStyleClass().add("logout-button");
 
+        logoutButton.setOnAction(e -> {
+            LoginPage login = new LoginPage();
+            try {
+                login.showLogin(window);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         // Spacer to push logoutButton to the bottom
         VBox spacer = new VBox();
         VBox.setVgrow(spacer, Priority.ALWAYS);
