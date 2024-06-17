@@ -2,6 +2,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +17,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -121,12 +124,40 @@ public class DashboardPage {
         userPosition.getStyleClass().add("top-user_position");
     
         userLabel.getChildren().addAll(userName, userPosition);
-    
-        ImageView userPicture = new ImageView(new Image("images/HanniPham.png"));
+
+        // IMAGE CODE -- CURVED EDGES
+
+        Image originalImage = new Image("images/userImage/hannipham.jpg");
+
+        // Calculate dimensions for the square
+        double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());
+        double startX = (originalImage.getWidth() - squareSize) / 2;
+        double startY = (originalImage.getHeight() - squareSize) / 2;
+
+        // Create a viewport to crop the original image to square
+        Rectangle2D viewportRect = new Rectangle2D(startX, startY, squareSize, squareSize);
+        
+        ImageView userPicture = new ImageView(originalImage);
+        userPicture.setViewport(viewportRect);
         userPicture.setFitWidth(50);
         userPicture.setFitHeight(50);
+        userPicture.setPreserveRatio(false);
+
+        // Create a Rectangle with rounded corners (as a clipping mask)
+        Rectangle clip = new Rectangle(50, 50);
+        clip.setArcWidth(20); // Adjust the arc width as needed
+        clip.setArcHeight(20); // Adjust the arc height as needed
+
+        // Apply clipping to the ImageView
+        userPicture.setClip(clip);
+
+        // Create a StackPane and add the Rectangle and ImageView
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(userPicture); 
+
+        // END IMAGE EDGE CURVE CODE
     
-        topRight.getChildren().addAll(userLabel, userPicture);
+        topRight.getChildren().addAll(userLabel, stackPane);
         topRight.setSpacing(5);
 
          // Add spacer to align user information to the right
@@ -146,7 +177,35 @@ public class DashboardPage {
         
         HBox panel_data = new HBox(5);
 
-        ImageView userPicture = new ImageView(new Image("images/HanniPham.png"));
+        
+
+        Image originalImage = new Image("images/userImage/hannipham.jpg");
+
+        // Calculate dimensions for the square
+        double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());
+        double startX = (originalImage.getWidth() - squareSize) / 2;
+        double startY = (originalImage.getHeight() - squareSize) / 2;
+
+        // Create a viewport to crop the original image to square
+        Rectangle2D viewportRect = new Rectangle2D(startX, startY, squareSize, squareSize);
+        
+        ImageView userPicture = new ImageView(originalImage);
+        userPicture.setViewport(viewportRect);
+        userPicture.setFitWidth(100);
+        userPicture.setFitHeight(100);
+        userPicture.setPreserveRatio(false);
+
+        // Create a Rectangle with rounded corners (as a clipping mask)
+        Rectangle clip = new Rectangle(130, 130);
+        clip.setArcWidth(20); // Adjust the arc width as needed
+        clip.setArcHeight(20); // Adjust the arc height as needed
+
+        // Apply clipping to the ImageView
+        userPicture.setClip(clip);
+
+        // Create a StackPane and add the Rectangle and ImageView
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(userPicture); 
         userPicture.getStyleClass().add("image");
 
         VBox userInfo = new VBox();
