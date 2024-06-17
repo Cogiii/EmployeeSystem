@@ -18,16 +18,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class DashboardPage {
+public class Payroll {
     TableView<Employee> table;
 
     SidebarPanel sidebarPanel = new SidebarPanel();
 
-    public void showDashboard(Stage window) {
+    public void showPayroll(Stage window) {
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
-        VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "dashboard");
+        VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "payroll");
         VBox mainContent = createMainContent();
 
         HBox.setMargin(sidebar, new Insets(10));
