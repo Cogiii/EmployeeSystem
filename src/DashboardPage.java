@@ -215,6 +215,10 @@ public class DashboardPage {
         Button addEmployeeButton = new Button("Add Employee");
         addEmployeeButton.getStyleClass().add("add-button");
         addEmployeeButton.setAlignment(Pos.CENTER_RIGHT);
+        addEmployeeButton.setOnAction(e -> {
+            AddEmployeeModal addModal = new AddEmployeeModal();
+            addModal.showAddModal();
+        });
 
         header.getChildren().addAll(headerTitle, spacer1, searchEmployee, spacer2, addEmployeeButton);
 
