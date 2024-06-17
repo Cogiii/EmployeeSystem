@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class SHA256HashGenerator {
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter a string to hash with SHA-256: ");
@@ -16,7 +16,7 @@ public class SHA256HashGenerator {
         scanner.close();
     }
 
-    private static String generateSHA256Hash(String input) {
+    public String generateSHA256Hash(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hashedBytes = md.digest(input.getBytes());

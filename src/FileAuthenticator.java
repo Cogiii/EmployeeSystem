@@ -8,17 +8,39 @@ import java.security.NoSuchAlgorithmException;
 public class FileAuthenticator {
 
     private static final String FILE_PATH = "data/users.txt"; // Path to your file containing usernames and hashed passwords
+
+    public String getUserPostion(String username, String password) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" ");
+                if (parts.length == 3) {
+                    String storedUsername = parts[0];
+                    String storedHashedPassword = parts[1];
+                    String storedPosition = parts[2];
+                    if (storedUsername.equals(username) && verifyPassword(password, storedHashedPassword)) {
+                        return storedPosition;
+                    }
+                    
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading from file: " + e.getMessage());
+        }
+        return "NA";
+    }
     public boolean authenticateUser(String username, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" ");
-                if (parts.length == 2) {
+                if (parts.length == 3) {
                     String storedUsername = parts[0];
                     String storedHashedPassword = parts[1];
                     if (storedUsername.equals(username) && verifyPassword(password, storedHashedPassword)) {
                         return true;
                     }
+                    
                 }
             }
         } catch (IOException e) {
