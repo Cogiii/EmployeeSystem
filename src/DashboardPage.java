@@ -1,23 +1,13 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -26,12 +16,12 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class DashboardPage {
-    TableView<Employee> table;
     SidebarPanel sidebarPanel = new SidebarPanel();
+    Table table = new Table();
+    TableView<Employee> tableData;
     TextField searchEmployee;
     ObservableList<Employee> employees = FXCollections.observableArrayList(); // Make employees a class-level field
 
@@ -53,13 +43,14 @@ public class DashboardPage {
 
     private VBox createMainContent(Stage window) {
         VBox main = new VBox(10);
+        String[][] tableHeader = {{"Employee ID", "ID"}, {"Employee Name", "name"}, {"Department", "department"}, {"Designation", "designation"}, {"Check In", "check_in"}, {"Check Out", "check_out"}};
 
         HBox top = createMainTop("Admin Dashboard", "Hanni Pham", "Admin");
         StackPane userPanel = createUserPanel("Hanni Pham", "Senior Admin Janitor", "Davao");
         HBox mainHeader = createMainHeader(window);
-        VBox table = createTable(window);
+        VBox mainTable = table.createTable(window, tableHeader, searchEmployee, tableData, employees);
 
-        main.getChildren().addAll(top, userPanel, mainHeader, table);
+        main.getChildren().addAll(top, userPanel, mainHeader, mainTable);
         return main;
     }
 
@@ -218,8 +209,9 @@ public class DashboardPage {
         addEmployeeButton.getStyleClass().add("add-button");
         addEmployeeButton.setAlignment(Pos.CENTER_RIGHT);
         addEmployeeButton.setOnAction(e -> {
-            AddEmployeeModal addModal = new AddEmployeeModal();
-            addModal.showAddModal(window);
+            // AddEmployeeModal addModal = new AddEmployeeModal();
+            // addModal.showAddModal(window);
+            // updateTable();
         });
 
         header.getChildren().addAll(headerTitle, spacer1, searchEmployee, spacer2, addEmployeeButton);
@@ -227,122 +219,4 @@ public class DashboardPage {
         return header;
     }
 
-    private VBox createTable(Stage window) {
-        TableColumn<Employee, Integer> ID_Column = new TableColumn<>("Employee ID");
-        ID_Column.setMinWidth(100);
-        ID_Column.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("ID"));
-
-        TableColumn<Employee, String> nameColumn = new TableColumn<>("Employee Name");
-        nameColumn.setMinWidth(200);
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
-
-        TableColumn<Employee, String> departmentColumn = new TableColumn<>("Department");
-        departmentColumn.setMinWidth(130);
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("department"));
-
-        TableColumn<Employee, String> designationColumn = new TableColumn<>("Designation");
-        designationColumn.setMinWidth(160);
-        designationColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("designation"));
-
-        TableColumn<Employee, String> check_inColumn = new TableColumn<>("Check In");
-        check_inColumn.setMinWidth(80);
-        check_inColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("check_in"));
-
-        TableColumn<Employee, String> check_outColumn = new TableColumn<>("Check Out");
-        check_outColumn.setMinWidth(80);
-        check_outColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("check_out"));
-
-        table = new TableView<>();  // Initialize the table here
-
-        employees = getEmployees();
-
-        // Create a filtered list
-        FilteredList<Employee> filteredData = new FilteredList<>(employees, p -> true);
-
-        searchEmployee.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(employee -> {
-                // If filter text is empty, display all persons.
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                // Compare first name and last name of every person with filter text.
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                if (employee.getName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches first name.
-                } else if (employee.getDepartment().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches last name.
-                } else if (employee.getDesignation().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches last name.
-                } else if (String.valueOf(employee.getID()).contains(lowerCaseFilter)) {
-                    return true;
-                } else {
-                    return false; // Does not match.
-                }
-            });
-        });
-
-        SortedList<Employee> sortedData = new SortedList<>(filteredData);
-
-        sortedData.comparatorProperty().bind(table.comparatorProperty());
-
-        table.setItems(sortedData);
-        table.getColumns().addAll(ID_Column, nameColumn, departmentColumn, designationColumn, check_inColumn, check_outColumn);
-
-        // Set row factory to handle row clicks
-        table.setRowFactory(tv -> {
-            TableRow<Employee> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty()) {
-                    Employee rowData = row.getItem();
-                    ViewEmployeeModal viewEmployee = new ViewEmployeeModal();
-                    viewEmployee.showEmployeeDetails(window, rowData);  // Pass the DashboardPage instance
-                }
-            });
-            return row;
-        });
-
-        VBox vBox = new VBox(table);
-        return vBox;
-    }
-
-    private ObservableList<Employee> getEmployees() {
-        ObservableList<Employee> employees = FXCollections.observableArrayList();
-
-        Path usersDataPath = Paths.get("data/employee.txt");
-        try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
-            String line;
-            int employeeID;
-            String employeeName, department, designation, checkIn, checkOut;
-
-            // Skip the first line/header line
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] employeeDetails = line.split("#");
-
-                employeeID = Integer.parseInt(employeeDetails[0]);
-                employeeName = (!employeeDetails[1].equals(" ")) ? employeeDetails[1] : "--";
-                department = (!employeeDetails[2].equals(" ")) ? employeeDetails[2] : "--";
-                designation = (!employeeDetails[3].equals(" ")) ? employeeDetails[3] : "--";
-                checkIn = (!employeeDetails[13].equals(" ")) ? employeeDetails[13] : "--";
-                checkOut = (!employeeDetails[14].equals(" ")) ? employeeDetails[14] : "--";
-
-                if (employeeDetails.length >= 14) {
-                    employees.add(new Employee(employeeID, employeeName, department, designation, checkIn, checkOut));
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading from file: " + e.getMessage());
-        }
-
-        return employees;
-    }
-
-    // Method to update the table after changes (delete/update)
-    public void updateTable() {
-        employees.clear();
-        employees.addAll(getEmployees());
-        table.refresh();
-    }
 }

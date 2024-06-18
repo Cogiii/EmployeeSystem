@@ -227,10 +227,9 @@ public class Payroll {
 
     private ObservableList<Employee> getEmployees(){
         ObservableList<Employee> employees = FXCollections.observableArrayList();
-        employees.add(new Employee(1,"Laurence Lesmoras",2000,40,5,5000));
-        employees.add(new Employee(2,"Laurence Kharl Devera",2000,40,5,5000));
-        employees.add(new Employee(3,"Meriah Borja",2000,40,5,5000));
-        employees.add(new Employee(4,"Jasper Nikko Navarez",2000,40,5,5000));
+        employees.add(new Employee("1","Laurence Lesmoras","2000","40","5","5000"));
+        employees.add(new Employee("2","Laurence Kharl Devera","2000","40","5","5000"));
+        employees.add(new Employee("3","Meriah Borja","2000","40","5","5000"));
       
         return employees;
     }

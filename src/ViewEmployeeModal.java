@@ -22,8 +22,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ViewEmployeeModal {
-    private int user_ID;
-    private String grossPay, name, department, designation, username;
+    private String user_ID, grossPay, name, department, designation, username;
     Data data = new Data();
     DashboardPage dashboardPage = new DashboardPage();
     Stage detailsStage;
