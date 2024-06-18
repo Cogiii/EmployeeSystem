@@ -5,10 +5,8 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -20,16 +18,19 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Payroll {
-    TableView<Employee> table;
-
+    Table table = new Table();
     SidebarPanel sidebarPanel = new SidebarPanel();
+
+    TableView<Employee> tableData;
+    TextField searchEmployee;
+    ObservableList<Employee> employees = FXCollections.observableArrayList();
 
     public void showPayroll(Stage window) {
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
         VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "payroll");
-        VBox mainContent = createMainContent();
+        VBox mainContent = createMainContent(window);
 
         HBox.setMargin(sidebar, new Insets(10));
         HBox.setMargin(mainContent, new Insets(30,10,10,10));
@@ -40,15 +41,18 @@ public class Payroll {
         window.setScene(dashboardPage);
     }
 
-    private VBox createMainContent(){
+    private VBox createMainContent(Stage window){
+        // width, variable, column width
+        String[][] tableHeader = {{"ID", "ID", "70"}, {"Employee Name", "name", "200"}, {"Pay/Hour", "hour_pay", "100"}, {"Hours Worked", "hours_worked", "130"}, {"Total Overtime", "total_overtime", "130"}, {"Gross Pay", "gross_pay", "115"}};
+        
         VBox main = new VBox(10);
 
         HBox top = createMainTop("Admin Dashboard", "Hanni Pham", "Admin");
         StackPane userPanel = createUserPanel("Hanni Pham", "Senior Admin Janitor", "Davao");
         HBox mainHeader = createMainHeader();
-        VBox table = createTable();
+        VBox tablelayout = table.createTable(window, tableHeader, searchEmployee, tableData, employees, "payroll");
 
-        main.getChildren().addAll(top, userPanel, mainHeader, table);
+        main.getChildren().addAll(top, userPanel, mainHeader, tablelayout);
         return main;
     }
 
@@ -182,7 +186,7 @@ public class Payroll {
         headerTitle.setAlignment(Pos.CENTER_LEFT); // Align left
         
         // TextField for searching employees
-        TextField searchEmployee = new TextField();
+        searchEmployee = new TextField();
         searchEmployee.setPromptText("Search Employee");
         searchEmployee.getStyleClass().add("search");
         searchEmployee.setAlignment(Pos.CENTER_LEFT);
@@ -190,47 +194,5 @@ public class Payroll {
         header.getChildren().addAll(headerTitle, searchEmployee);
         
         return header;
-    }
-    
-    private VBox createTable(){
-        TableColumn<Employee, Integer> ID_Column = new TableColumn<>("Employee ID");
-        ID_Column.setMinWidth(100);
-        ID_Column.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("ID"));
-
-        TableColumn<Employee, String> nameColumn = new TableColumn<>("Employee Name");
-        nameColumn.setMinWidth(200);
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
-
-        TableColumn<Employee, Integer> pay_per_hourColumn = new TableColumn<>("Pay/Hour");
-        pay_per_hourColumn.setMinWidth(80);
-        pay_per_hourColumn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("pay_per_hour"));
-
-        TableColumn<Employee, Integer> total_hours_workColumn = new TableColumn<>("Total Hours Worked");
-        total_hours_workColumn.setMinWidth(160);
-        total_hours_workColumn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("total_hours_work"));
-        
-        TableColumn<Employee, Integer> total_overtimeColumn = new TableColumn<>("Total Overtime");
-        total_overtimeColumn.setMinWidth(130);
-        total_overtimeColumn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("total_overtime"));
-
-        TableColumn<Employee, Integer> gross_payColumn = new TableColumn<>("Gross Pay");
-        gross_payColumn.setMinWidth(80);
-        gross_payColumn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("gross_pay"));
-
-        table = new TableView<>();
-        table.setItems(getEmployees());
-        table.getColumns().addAll(ID_Column, nameColumn, pay_per_hourColumn, total_hours_workColumn, total_overtimeColumn, gross_payColumn);
-
-        VBox vBox = new VBox(table);
-        return vBox;
-    }
-
-    private ObservableList<Employee> getEmployees(){
-        ObservableList<Employee> employees = FXCollections.observableArrayList();
-        employees.add(new Employee("1","Laurence Lesmoras","2000","40","5","5000"));
-        employees.add(new Employee("2","Laurence Kharl Devera","2000","40","5","5000"));
-        employees.add(new Employee("3","Meriah Borja","2000","40","5","5000"));
-      
-        return employees;
     }
 }

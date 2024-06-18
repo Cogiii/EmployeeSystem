@@ -121,6 +121,8 @@
 /* Main - Table */
 .table-view {
     -fx-background-color: transparent;
+    -fx-min-width: 748px;
+    -fx-max-width: 748px;
 }
 .table-view .column-header-background .filler {
     -fx-background-color: transparent;

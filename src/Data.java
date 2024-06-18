@@ -1,98 +1,72 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Data {
-    private final String EMPLOYEE_DATA_FILE = "data/employee.txt";
-    private final String USERS_DATA_FILE = "data/users.txt";
+    Path employeeDataPath = Paths.get("data/employee.txt");
+    Path usersDataPath = Paths.get("data/users.txt");
 
-    // Method to delete a row from the employee data file based on user_ID
+    // Method to delete the row of data file based on user_ID (set to inactive instead of deleting)
     public void deleteEmployeeData(String user_ID) {
         try {
-            File inputFile = new File(EMPLOYEE_DATA_FILE);
-            File tempFile = new File("temp.txt");
+            List<String> employeeLines = Files.readAllLines(employeeDataPath);
+            List<String> usersLines = Files.readAllLines(usersDataPath);
 
-            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+            // set user status to inactive in employee.txt
+            for (int i = 1; i < employeeLines.size(); i++) { // Start from index 1 to skip header line
+                String line = employeeLines.get(i);
+                String[] row = line.split("#");
+                if (row[0].equals(String.valueOf(user_ID))) {
+                    row[row.length-1] = "inactive";
 
-            String lineToRemoveStr = "";
-            String currentLine;
-            
-            int lineNum = 0;
-            while ((currentLine = reader.readLine()) != null) {
-                String[] data = currentLine.split("#");
-                if (data[0].equals(user_ID)) {
-                    lineToRemoveStr = currentLine; // Store the line we want to delete
-                    lineNum++;
-                    continue;
+                    // Reconstruct the line
+                    StringBuilder updatedLine = new StringBuilder();
+                    for (int j = 0; j < row.length; j++) {
+                        if (j > 0) {
+                            updatedLine.append("#");
+                        }
+                        updatedLine.append(row[j]);
+                    }
+
+                    // Update the list
+                    employeeLines.set(i, updatedLine.toString());
+                    break; // Exit loop once updated
                 }
-                writer.write(currentLine + System.getProperty("line.separator"));
-                lineNum++;
             }
-            writer.close();
-            reader.close();
 
-            // Delete the original file
-            if (inputFile.delete()) {
-                // Rename the temp file to the original file name
-                if (!tempFile.renameTo(inputFile)) {
-                    throw new IOException("Could not rename temp file to " + EMPLOYEE_DATA_FILE);
+            // set user status to inactive in users.txt
+            for (int i = 1; i < usersLines.size(); i++) { // Start from index 1 to skip header line
+                String line = usersLines.get(i);
+                String[] row = line.split("#");
+                if (row[0].equals(String.valueOf(user_ID))) {
+                    // Update username
+                    row[3] = "inactive";
+
+                    // Reconstruct the line
+                    StringBuilder updatedLine = new StringBuilder();
+                    for (int j = 0; j < row.length; j++) {
+                        if (j > 0) {
+                            updatedLine.append("#");
+                        }
+                        updatedLine.append(row[j]);
+                    }
+
+                    // Update the list
+                    usersLines.set(i, updatedLine.toString());
+                    break; // Exit loop once updated
                 }
-            } else {
-                System.out.println("Failed to delete the line.");
             }
+
+            // Write updated lines back to files
+            Files.write(employeeDataPath, employeeLines);
+            Files.write(usersDataPath, usersLines);
+
+            System.out.println("Employee details updated successfully.");
 
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Method to delete a row from the users data file based on user_ID
-    public void deleteUser(String user_ID) {
-        try {
-            File inputFile = new File(USERS_DATA_FILE);
-            File tempFile = new File("temp.txt");
-
-            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
-            String lineToRemoveStr = "";
-            String currentLine;
-            
-            int lineNum = 0;
-            while ((currentLine = reader.readLine()) != null) {
-                String[] data = currentLine.split("#");
-                if (data[2].equals(user_ID)) {
-                    lineToRemoveStr = currentLine; // Store the line we want to delete
-                    lineNum++;
-                    continue;
-                }
-                writer.write(currentLine + System.getProperty("line.separator"));
-                lineNum++;
-            }
-            writer.close();
-            reader.close();
-
-            // Delete the original file
-            if (inputFile.delete()) {
-                // Rename the temp file to the original file name
-                if (!tempFile.renameTo(inputFile)) {
-                    throw new IOException("Could not rename temp file to " + USERS_DATA_FILE);
-                }
-            } else {
-                System.out.println("Failed to delete the line.");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error updating employee data: " + e.getMessage());
         }
     }
 
@@ -163,5 +137,4 @@ public class Data {
             System.err.println("Error updating employee data: " + e.getMessage());
         }
     }
-    
 }

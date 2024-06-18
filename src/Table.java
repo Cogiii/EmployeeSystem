@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -17,14 +18,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Table {
-    public VBox createTable(Stage window, String[][] tableLists, TextField search, TableView<Employee> table, ObservableList<Employee> employees) {
+    public VBox createTable(Stage window, String[][] tableLists, TextField search, TableView<Employee> table, ObservableList<Employee> employees, String from) {
+
         // Create Header Columns from the table lists
-        ArrayList<TableColumn<Employee, String>> columns = new ArrayList<>();;
+        ArrayList<TableColumn<Employee, String>> columns = new ArrayList<>();
         for (String[] header : tableLists) {
             String headerLabel = header[0];
             String employeeVariable = header[1];
-
-            int size = (headerLabel.length()*headerLabel.length())+15;
+            int size = Integer.parseInt(header[2]);
 
             TableColumn<Employee, String> column = new TableColumn<>(headerLabel);
             column.setMinWidth(size);
@@ -35,7 +36,7 @@ public class Table {
 
         // Initialize the table and data
         table = new TableView<>();  
-        employees = getEmployees();
+        employees = getEmployees(tableLists, from);
 
         // sort data dynamically with search
         SortedList<Employee> sortedData = new SortedList<>(searchData(employees, search));
@@ -52,9 +53,14 @@ public class Table {
             TableRow<Employee> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty()) {
-                    Employee rowData = row.getItem();
-                    ViewEmployeeModal viewEmployee = new ViewEmployeeModal();
-                    viewEmployee.showEmployeeDetails(window, rowData);  // Pass the DashboardPage instance
+                    if (from.equals("dashboard")){
+                        Employee rowData = row.getItem();
+                        ViewEmployeeModal viewEmployee = new ViewEmployeeModal();
+                        viewEmployee.showEmployeeDetails(window, rowData);
+                    }else if (from.equals("payroll")){
+                        // View Payroll functions
+                    }
+                    
                 }
             });
             return row;
@@ -95,29 +101,36 @@ public class Table {
         return filteredData;
     }
 
-    private ObservableList<Employee> getEmployees() {
-        ObservableList<Employee> employees = FXCollections.observableArrayList();
+    private ObservableList<Employee> getEmployees(String[][] tableLists, String from) {
+        ObservableList<Employee> employees = FXCollections.observableArrayList(); // store all employees data
+        HashMap<String, String> data = new HashMap<>(); // store data that get from the employee.txt
 
         Path usersDataPath = Paths.get("data/employee.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
             String line;
-            String employeeID, employeeName, department, designation, checkIn, checkOut;
 
-            // Skip the first line/header line
-            br.readLine();
+            // Get the header of the text file and add the key to the data(map)
+            line = br.readLine();
+            String[] dataHeader = line.split("#");
+            for (String header : dataHeader) {
+                data.put(header, "");
+            }
+
+            // check if line exists then get the data and add it to the employees
             while ((line = br.readLine()) != null) {
                 String[] employeeDetails = line.split("#");
-
-                employeeID = (!employeeDetails[0].equals(" ")) ? employeeDetails[0] : "--";
-                employeeName = (!employeeDetails[1].equals(" ")) ? employeeDetails[1] : "--";
-                department = (!employeeDetails[2].equals(" ")) ? employeeDetails[2] : "--";
-                designation = (!employeeDetails[3].equals(" ")) ? employeeDetails[3] : "--";
-                checkIn = (!employeeDetails[13].equals(" ")) ? employeeDetails[13] : "--";
-                checkOut = (!employeeDetails[14].equals(" ")) ? employeeDetails[14] : "--";
-
-                if (employeeDetails.length >= 14) {
-                    employees.add(new Employee(employeeID, employeeName, department, designation, checkIn, checkOut));
+                for (int i = 0; i < employeeDetails.length; i++) {
+                    data.put(dataHeader[i], (!employeeDetails[i].equals(" ")) ? employeeDetails[i] : "--");
                 }
+                
+                if (data.get("status").equals("active")){
+                    if (from.equals("dashboard")) 
+                        employees.add(new Employee(data.get(tableLists[0][1]), data.get(tableLists[1][1]), data.get(tableLists[2][1]), data.get(tableLists[3][1]), data.get(tableLists[4][1]), data.get(tableLists[5][1])));
+                    else if (from.equals("payroll"))
+                        employees.add(new Employee(data.get(tableLists[0][1]), data.get(tableLists[1][1]), data.get(tableLists[2][1]), data.get(tableLists[3][1]), data.get(tableLists[4][1]), data.get(tableLists[5][1]), ""));
+                }
+                
+
             }
         } catch (IOException e) {
             System.err.println("Error reading from file: " + e.getMessage());
@@ -131,9 +144,9 @@ public class Table {
     }
 
     // Method to update the table after changes (delete/update)
-    public void updateTable(TableView<Employee> table, ObservableList<Employee> employees) {
+    public void updateTable(TableView<Employee> table, ObservableList<Employee> employees,  String[][] tableLists, String from) {
         employees.clear();
-        employees.addAll(getEmployees());
+        employees.addAll(getEmployees(tableLists, from));
         table.refresh();
     }
 }

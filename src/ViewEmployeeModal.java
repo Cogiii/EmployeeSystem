@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -84,8 +85,8 @@ public class ViewEmployeeModal {
             while ((line = br.readLine()) != null) {
                 String[] row = line.split("#");
                 
-                if (row[2].equals(id))
-                    this.username = row[0];
+                if (row[0].equals(id))
+                    this.username = row[1];
             }
         } catch (IOException e) {
             System.err.println("Error reading from file: " + e.getMessage());
@@ -99,9 +100,9 @@ public class ViewEmployeeModal {
         HBox userLoginDetails = new HBox(5);
         TextField usernameField = new TextField(username);
         usernameField.setPromptText("Username");
-        TextField passwordField = new TextField("*******");
+        PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Password");
-
+        passwordField.setText("********");
 
         userLoginDetails.getChildren().addAll(usernameField,passwordField);
 
@@ -162,7 +163,7 @@ public class ViewEmployeeModal {
         return stackPane;
     }
 
-    private HBox createButton(TextField usernameField, TextField passwordField, TextField nameField, TextField departmentField, TextField designationField, TextField grossPayField, Stage window){
+    private HBox createButton(TextField usernameField, PasswordField passwordField, TextField nameField, TextField departmentField, TextField designationField, TextField grossPayField, Stage window){
         HBox layout = new HBox(5);
 
         Button deleteButton = new Button("Delete");
@@ -187,7 +188,6 @@ public class ViewEmployeeModal {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 data.deleteEmployeeData(String.valueOf(user_ID));
-                data.deleteUser(String.valueOf(user_ID));
                 detailsStage.close();
                 dashboardPage.showDashboard(window);
             }

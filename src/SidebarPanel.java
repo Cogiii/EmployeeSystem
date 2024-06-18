@@ -1,5 +1,3 @@
-import java.sql.Time;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

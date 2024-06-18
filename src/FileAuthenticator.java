@@ -4,22 +4,23 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
 public class FileAuthenticator {
 
     private static final String FILE_PATH = "data/users.txt"; // Path to your file containing usernames and hashed passwords
+    public String status;
+
     public boolean authenticateUser(String username, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             reader.readLine(); // skip first line
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("#");
-                if (parts.length == 3) {
-                    String storedUsername = parts[0];
-                    String storedHashedPassword = parts[1];
-                    if (storedUsername.equals(username) && verifyPassword(password, storedHashedPassword)) {
+                if (parts.length == 4) {
+                    String storedUsername = parts[1];
+                    String storedHashedPassword = parts[2];
+                    status = parts[3];
+                    if (storedUsername.equals(username) && verifyPassword(password, storedHashedPassword))
                         return true;
-                    }
                 }
             }
         } catch (IOException e) {

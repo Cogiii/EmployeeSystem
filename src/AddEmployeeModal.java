@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -14,16 +13,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class AddEmployeeModal {
-    private String grossPay, name, department, designation, username;
     Stage window;
     DashboardPage dashboardPage = new DashboardPage();
 
@@ -121,19 +116,20 @@ public class AddEmployeeModal {
         }
         newID++;
         //[0]Id, [1]name, [2]department, [3]designation, [4]Birth Date, [5]Hire Date, [6]Address, [7],Phone Number, [8]Pay/Hour, [9]Total Hours Worked, [10]Total Overtime, [11]Gross Deductions, [12]GrossPay, [13]Check-In, [14]Check-Out
-        String newName = " ", newDeparment= " ", newDesignation = " ", newBirthDate = " ", newHireDate = " ", newAddress = " ", newPhoneNumber = " ", newPayHour = " ", newTotalHoursWorked = " ", newTotalOvertime = " ", newGrossDeductions = " ", newGrossPay = " ", newCheckIn = " ", newCheckOut = " ";
+        String newName = " ", newDeparment= " ", newDesignation = " ", newBirthDate = " ", newHireDate = " ", newAddress = " ", newPhoneNumber = " ", newPayHour = " ", newTotalHoursWorked = " ", newTotalOvertime = " ", newGrossDeductions = " ", newGrossPay = " ", newCheckIn = " ", newCheckOut = " ", newStatus = " ";
 
         newName = nameField;
         newDeparment = departmentField;
         newDesignation = designationField;
         newPayHour = pay_hourField;
+        newStatus = "active";
 
-        String addEmployeeLine = newID+"#"+newName+"#"+newDeparment+"#"+newDesignation+"#"+newBirthDate+"#"+newHireDate+"#"+newAddress+"#"+newPhoneNumber+"#"+newPayHour+"#"+newTotalHoursWorked+"#"+newTotalOvertime+"#"+newGrossDeductions+"#"+newGrossPay+"#"+newCheckIn+"#"+newCheckOut;
+        String addEmployeeLine = newID+"#"+newName+"#"+newDeparment+"#"+newDesignation+"#"+newBirthDate+"#"+newHireDate+"#"+newAddress+"#"+newPhoneNumber+"#"+newPayHour+"#"+newTotalHoursWorked+"#"+newTotalOvertime+"#"+newGrossDeductions+"#"+newGrossPay+"#"+newCheckIn+"#"+newCheckOut+"#"+newStatus;
 
         SHA256HashGenerator hash = new SHA256HashGenerator();
 
         String hashString = hash.generateSHA256Hash(passwordField);
-        String addUserLine = usernameField+"#"+hashString+"#"+newID;
+        String addUserLine = newID+"#"+usernameField+"#"+hashString+"#"+newStatus;
 
         try {
             FileWriter addEmployee = new FileWriter("data/employee.txt", true); // Set true for append mode

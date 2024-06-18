@@ -53,10 +53,15 @@ public class LoginPage {
 
     private void validateAndLogin(Stage window) {
         FileAuthenticator auth = new FileAuthenticator();
-        if (auth.authenticateUser(usernameInput.getText(), passwordInput.getText())) 
+        boolean isAuthenticated = auth.authenticateUser(usernameInput.getText(), passwordInput.getText());
+        String status = auth.status;
+
+        if (isAuthenticated && status.equals("active")) 
             proceedToDashboard(window);
+        else if(isAuthenticated && status.equals("inactive"))
+            showAlertInformation("Invalid User", "Invalid User. This user has been deleted.");
         else 
-            showAlert("Invalid credentials", "Invalid credentials. Please try again.");
+            showAlerError("Invalid credentials", "Invalid credentials. Please try again.");
     }
 
     private void proceedToDashboard(Stage window) {
@@ -64,7 +69,14 @@ public class LoginPage {
         dashboardPage.showDashboard(window);
     }
 
-    private void showAlert(String title, String message) {
+    private void showAlertInformation(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showAlerError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setContentText(message);

@@ -62,24 +62,30 @@ public class Timesheets {
     
     private VBox createTable(){
         TableColumn<EmployeeTimesheets, String> dateColumn = new TableColumn<>("Date");
-        dateColumn.setMinWidth(150);
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        TableColumn<EmployeeTimesheets, String> inMorningColumn = new TableColumn<>("Check-In Morning");
-        inMorningColumn.setMinWidth(150);
+        TableColumn<EmployeeTimesheets, String> inMorningColumn = new TableColumn<>("Check-In AM");
         inMorningColumn.setCellValueFactory(new PropertyValueFactory<>("check_in_AM"));
 
-        TableColumn<EmployeeTimesheets, String> outMorningColumn = new TableColumn<>("Check-Out Morning");
-        outMorningColumn.setMinWidth(150);
+        TableColumn<EmployeeTimesheets, String> outMorningColumn = new TableColumn<>("Check-Out AM");
         outMorningColumn.setCellValueFactory(new PropertyValueFactory<>("check_out_AM"));
         
-        TableColumn<EmployeeTimesheets, String> inAfternoonColumn = new TableColumn<>("Check-In Afternoon");
-        inAfternoonColumn.setMinWidth(150);
+        TableColumn<EmployeeTimesheets, String> inAfternoonColumn = new TableColumn<>("Check-In PM");
         inAfternoonColumn.setCellValueFactory(new PropertyValueFactory<>("check_in_PM"));
 
-        TableColumn<EmployeeTimesheets, String> outAfternoonColumn = new TableColumn<>("Check-Out Afternoon");
-        outAfternoonColumn.setMinWidth(150);
+        TableColumn<EmployeeTimesheets, String> outAfternoonColumn = new TableColumn<>("Check-Out PM");
         outAfternoonColumn.setCellValueFactory(new PropertyValueFactory<>("check_out_PM"));
+
+        final double dateColumnWidth = 169; // already set
+        final double remainingWidth = 576;
+        final double widthPerColumn = remainingWidth / 4;
+
+        dateColumn.setMinWidth(dateColumnWidth);
+        inMorningColumn.setMinWidth(widthPerColumn);
+        outMorningColumn.setMinWidth(widthPerColumn);
+        inAfternoonColumn.setMinWidth(widthPerColumn);
+        outAfternoonColumn.setMinWidth(widthPerColumn);
+
 
         table = new TableView<>();
         table.setItems(getEmployees());

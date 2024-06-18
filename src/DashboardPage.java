@@ -42,13 +42,14 @@ public class DashboardPage {
     }
 
     private VBox createMainContent(Stage window) {
+        String[][] tableHeader = {{"ID", "ID", "70"}, {"Employee Name", "name", "200"}, {"Department", "department", "125"}, {"Designation", "designation", "150"}, {"Check In", "check_in", "100"}, {"Check Out", "check_out", "100"}};
+
         VBox main = new VBox(10);
-        String[][] tableHeader = {{"Employee ID", "ID"}, {"Employee Name", "name"}, {"Department", "department"}, {"Designation", "designation"}, {"Check In", "check_in"}, {"Check Out", "check_out"}};
 
         HBox top = createMainTop("Admin Dashboard", "Hanni Pham", "Admin");
         StackPane userPanel = createUserPanel("Hanni Pham", "Senior Admin Janitor", "Davao");
         HBox mainHeader = createMainHeader(window);
-        VBox mainTable = table.createTable(window, tableHeader, searchEmployee, tableData, employees);
+        VBox mainTable = table.createTable(window, tableHeader, searchEmployee, tableData, employees, "dashboard");
 
         main.getChildren().addAll(top, userPanel, mainHeader, mainTable);
         return main;

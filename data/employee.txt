@@ -1,5 +1,5 @@
-ID#Name#Deparment#Designation#Birth Date#Hire Date#Address#Phone Number#Pay/Hour#Total Hours Worked#Total Overtime#Gross Deductions#Gross Pay#Check-In#Check-Out#Status
+ID#name#department#designation#birth_date#hire_date#address#phone_number#hour_pay#hours_worked#total_overtime#gross_deductions#gross_pay#check_in#check_out#status
 1#Laurence Kharl Devera#IT#Software Engineer#June 29, 2004#June 17,2004#Buhangin Davao City#09123456789#2000#40#5#500#5000#8:30AM#4:00PM#active
 2#Laurence Lesmoras#IT#Software Engineer#October 23, 2004#June 18,2004#Davao City#09321456798#1000#10#5#500#10000#8:00AM# #active
-3#Anya Pangilinan#Accounting#Accountancy#September 9, 2004#June 1,2004#Davao City#09321456798#1000#10#5#500#10000# # #inactive
-5#Admin Test#CAS#Psychology# # # # #500# # # # # # # 
+7#Supremo Caloy Benedicto Blanco#DOH#desigm# # # # #100000000000000000#0#0#0#23# # #inactive
+8#Jasper Nikko Navarez#IT#Game Developer# # # # #500# # # # # # #active
