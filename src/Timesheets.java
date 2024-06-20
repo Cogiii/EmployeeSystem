@@ -1,16 +1,24 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class Timesheets {
     SidebarPanel sidebarPanel = new SidebarPanel();
@@ -49,8 +58,8 @@ public class Timesheets {
         dashboardPage.getStylesheets().add("css/main.css");
         mainStage.setTitle("Employee Management System");
         mainStage.setScene(dashboardPage);
-        
     }
+
     // Time sheets Main Content
     public VBox createMainContent(){
         VBox main = new VBox(10);
@@ -75,7 +84,7 @@ public class Timesheets {
         
         return header;
     }
-    
+
     @SuppressWarnings("unchecked")
     private VBox createTable(){
         TableColumn<EmployeeTimesheets, String> dateColumn = new TableColumn<>("Date");
@@ -102,6 +111,9 @@ public class Timesheets {
         inAfternoonColumn.setMinWidth(widthPerColumn);
         outAfternoonColumn.setMinWidth(widthPerColumn);
 
+        lateChecker(inMorningColumn, 8);
+        lateChecker(inAfternoonColumn, 13);
+
         table = new TableView<>();
         table.setItems(getEmployees());
         table.getColumns().addAll(dateColumn, inMorningColumn, outMorningColumn, inAfternoonColumn, outAfternoonColumn);
@@ -115,6 +127,10 @@ public class Timesheets {
         ArrayList<HashMap<String, String>> timesheetsData = new ArrayList<>();
         
         Path usersDataPath = Paths.get("data/timesheets.txt");
+        LocalDate currentDate = LocalDate.now();
+        boolean currentDateExists = false;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy");
+
         try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
             String line;
             
@@ -132,11 +148,35 @@ public class Timesheets {
                         data.put(dataHeader[i], (!employeeDetails[i].equals(" ")) ? employeeDetails[i] : "--");
                     }
                     timesheetsData.add(data);
+                    
+                    // Check if the current date already exists in the timesheets
+                    if (employeeDetails[1].equals(currentDate.format(formatter))) {
+                        currentDateExists = true;
+                    }
                 }
             }
 
-            // Add EmployeeTimesheets objects to employees list in reverse order
-            for (int i = timesheetsData.size() - 1; i >= 0; i--) {
+            // Add a new entry for the current date if it doesn't exist
+            if (!currentDateExists) {
+                HashMap<String, String> newEntry = new HashMap<>();
+                newEntry.put("ID", userData.get("ID"));
+                newEntry.put("date", currentDate.format(formatter));
+                newEntry.put("timeInAM", "--");
+                newEntry.put("timeOutAM", "--");
+                newEntry.put("timeInPM", "--");
+                newEntry.put("timeOutPM", "--");
+                
+                // Write the new entry to the file
+                List<String> newEntryList = new ArrayList<>();
+                newEntryList.add(userData.get("ID") + "#" + currentDate.format(formatter) + "#--#--#--#--");
+                Files.write(usersDataPath, newEntryList, StandardOpenOption.APPEND);
+                
+                timesheetsData.add(newEntry);
+            }
+
+            // Add EmployeeTimesheets objects to employees list in reverse order and limit to the last 7 days
+            int count = 0;
+            for (int i = timesheetsData.size() - 1; i >= 0 && count < 7; i--, count++) {
                 HashMap<String, String> userTimesheets = timesheetsData.get(i);
                 employees.add(new EmployeeTimesheets(
                     userTimesheets.get("date"),
@@ -152,5 +192,39 @@ public class Timesheets {
         }
 
         return employees;
+    }
+
+    public void lateChecker(TableColumn<EmployeeTimesheets, String> column, int timeLate){
+        // Add custom cell factory to inMorningColumn to change text color
+        column.setCellFactory(new Callback<TableColumn<EmployeeTimesheets, String>, TableCell<EmployeeTimesheets, String>>() {
+            @Override
+            public TableCell<EmployeeTimesheets, String> call(TableColumn<EmployeeTimesheets, String> param) {
+                return new TableCell<EmployeeTimesheets, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setText(null);
+                            setStyle("");
+                        } else {
+                            setText(item);
+                            if (!item.equals("--")) {
+                                try {
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mma");
+                                    LocalTime time = LocalTime.parse(item, formatter);
+                                    if (time.isAfter(LocalTime.of(timeLate, 0))) {
+                                        setStyle("-fx-text-fill: red;");
+                                    } else {
+                                        setStyle("");
+                                    }
+                                } catch (DateTimeParseException e) {
+                                    setStyle(""); // reset style if parsing fails
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+        });
     }
 }
