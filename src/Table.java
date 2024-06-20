@@ -52,7 +52,7 @@ public class Table {
         table.setRowFactory(e -> {
             TableRow<Employee> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (!row.isEmpty()) {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
                     if (from.equals("dashboard")){
                         Employee rowData = row.getItem();
                         ViewEmployeeModal viewEmployee = new ViewEmployeeModal();
@@ -60,7 +60,6 @@ public class Table {
                     }else if (from.equals("payroll")){
                         // View Payroll functions
                     }
-                    
                 }
             });
             return row;
