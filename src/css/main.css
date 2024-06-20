@@ -55,7 +55,7 @@
 .top-user_position{
     -fx-font-size: 10px;
     -fx-font-weight: 900;
-    -fx-text-fill: #6B36AF;
+    -fx-text-fill:#282828;
 }
 
 /* Main - User Panel */
@@ -75,7 +75,7 @@
 .panel-user_position{
     -fx-font-size: 15px;
     -fx-font-weight: 500;
-    -fx-text-fill: #6B36AF;
+    -fx-text-fill: #282828;
 }
 
 .image {
@@ -105,6 +105,7 @@
 }
 .add-button{
     -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
     -fx-Background-color: #848282;
     -fx-font-weight:500;
     -fx-font-size:14px;
@@ -180,4 +181,18 @@
 }
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
     -fx-background-color:  #0A1F37;
+}
+
+
+
+.text-field:focused {
+    -fx-border-width: 2px; 
+    -fx-border-color: #071f43;
+}
+.button:focused {
+    -fx-border-width: 2px; 
+    -fx-border-color: #071f43;
+}
+.admin_position {
+    -fx-text-fill: #6B36AF;
 }

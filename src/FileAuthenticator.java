@@ -8,6 +8,7 @@ public class FileAuthenticator {
 
     private static final String FILE_PATH = "data/users.txt"; // Path to your file containing usernames and hashed passwords
     public String status;
+    public String userID;
 
     public boolean authenticateUser(String username, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
@@ -18,9 +19,11 @@ public class FileAuthenticator {
                 if (parts.length == 4) {
                     String storedUsername = parts[1];
                     String storedHashedPassword = parts[2];
-                    status = parts[3];
-                    if (storedUsername.equals(username) && verifyPassword(password, storedHashedPassword))
+                    if (storedUsername.equals(username) && verifyPassword(password, storedHashedPassword)){
+                        status = parts[3];
+                        userID = parts[0];
                         return true;
+                    }
                 }
             }
         } catch (IOException e) {

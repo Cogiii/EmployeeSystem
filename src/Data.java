@@ -2,11 +2,42 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 
 public class Data {
     Path employeeDataPath = Paths.get("data/employee.txt");
     Path usersDataPath = Paths.get("data/users.txt");
+
+    public HashMap<String,String> getUserData(String ID){
+        HashMap<String, String> userData = new HashMap<>();
+
+        try {
+            List<String> employeeLines = Files.readAllLines(employeeDataPath);
+
+            String[] headerLine = employeeLines.get(0).split("#");
+            for (String key : headerLine) {
+                userData.put(key, "");
+            }
+
+            // set user status to inactive in employee.txt
+            for (int i = 1; i < employeeLines.size(); i++) { // Start from index 1 to skip header line
+                String line = employeeLines.get(i);
+                String[] row = line.split("#");
+
+                if (row[0].equals(String.valueOf(ID))) {;
+                    for (int j = 0; j < row.length; j++) {
+                        userData.put(headerLine[j], row[j]);
+                    }
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return userData;
+    }
 
     // Method to delete the row of data file based on user_ID (set to inactive instead of deleting)
     public void deleteEmployeeData(String user_ID) {
@@ -19,7 +50,7 @@ public class Data {
                 String line = employeeLines.get(i);
                 String[] row = line.split("#");
                 if (row[0].equals(String.valueOf(user_ID))) {
-                    row[row.length-1] = "inactive";
+                    row[15] = "deleted";
 
                     // Reconstruct the line
                     StringBuilder updatedLine = new StringBuilder();
@@ -42,7 +73,7 @@ public class Data {
                 String[] row = line.split("#");
                 if (row[0].equals(String.valueOf(user_ID))) {
                     // Update username
-                    row[3] = "inactive";
+                    row[3] = "deleted";
 
                     // Reconstruct the line
                     StringBuilder updatedLine = new StringBuilder();

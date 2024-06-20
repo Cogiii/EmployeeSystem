@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Table {
-    public VBox createTable(Stage window, String[][] tableLists, TextField search, TableView<Employee> table, ObservableList<Employee> employees, String from) {
+    public VBox createTable(Stage window, String[][] tableLists, TextField search, TableView<Employee> table, ObservableList<Employee> employees, String from, String userID) {
 
         // Create Header Columns from the table lists
         ArrayList<TableColumn<Employee, String>> columns = new ArrayList<>();
@@ -56,7 +56,7 @@ public class Table {
                     if (from.equals("dashboard")){
                         Employee rowData = row.getItem();
                         ViewEmployeeModal viewEmployee = new ViewEmployeeModal();
-                        viewEmployee.showEmployeeDetails(window, rowData);
+                        viewEmployee.showEmployeeDetails(window, rowData, userID);
                     }else if (from.equals("payroll")){
                         // View Payroll functions
                     }
@@ -123,7 +123,7 @@ public class Table {
                     data.put(dataHeader[i], (!employeeDetails[i].equals(" ")) ? employeeDetails[i] : "--");
                 }
                 
-                if (data.get("status").equals("active")){
+                if (data.get("status").equals("employee")){
                     if (from.equals("dashboard")) 
                         employees.add(new Employee(data.get(tableLists[0][1]), data.get(tableLists[1][1]), data.get(tableLists[2][1]), data.get(tableLists[3][1]), data.get(tableLists[4][1]), data.get(tableLists[5][1])));
                     else if (from.equals("payroll"))
@@ -137,10 +137,6 @@ public class Table {
         }
 
         return employees;
-    }
-
-    public TableView<Employee> getTable(TableView<Employee> table){
-        return table;
     }
 
     // Method to update the table after changes (delete/update)

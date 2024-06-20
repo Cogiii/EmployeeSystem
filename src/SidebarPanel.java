@@ -11,7 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class SidebarPanel{
-    public VBox createSidebar(Stage window, Scene scene, String activeButton){
+
+    public VBox createAdminSidebar(Stage window, String userID, Scene scene, String activeButton){
         VBox sidebar = new VBox(10);
         sidebar.getStyleClass().add("sidebar");
         sidebar.setPrefWidth(200);
@@ -23,7 +24,7 @@ public class SidebarPanel{
 
         Label titleLabel = new Label("Employee System");
         titleLabel.getStyleClass().add("title");
-
+        
         // Buttons for sidebar navigation
         Button dashboardButton = createSidebarButton("Dashboard", "images/article.png");
         Button timesheetsButton = createSidebarButton("Timesheets", "images/calendar_month.png");
@@ -37,15 +38,15 @@ public class SidebarPanel{
 
         dashboardButton.setOnAction(e -> {
             DashboardPage dashboardPage = new DashboardPage();
-            dashboardPage.showDashboard(window);
+            dashboardPage.showDashboard(window, userID);
         });
         timesheetsButton.setOnAction(e -> {
             Timesheets timesheetsPage = new Timesheets();
-            timesheetsPage.showTimesheets(window);
+            timesheetsPage.showTimesheets(window, userID, "admin");
         });
         payrollButton.setOnAction(e -> {
             Payroll payrollPage = new Payroll();
-            payrollPage.showPayroll(window);
+            payrollPage.showPayroll(window, userID);
         });
 
         // Logout Button
@@ -70,6 +71,47 @@ public class SidebarPanel{
         scene.getStylesheets().add("css/main.css");
         return sidebar;
     }
+
+    public VBox createEmployeeSidebar(Stage window, Scene scene){
+        VBox sidebar = new VBox(10);
+        sidebar.getStyleClass().add("sidebar");
+        sidebar.setPrefWidth(200);
+        sidebar.setAlignment(Pos.TOP_CENTER);
+        sidebar.setPadding(new Insets(20));
+
+        ImageView logo = new ImageView(new Image("images/logo.png"));
+        logo.getStyleClass().add("logo");
+
+        Label titleLabel = new Label("Employee System");
+        titleLabel.getStyleClass().add("title");
+
+        // Buttons for sidebar navigation
+        Button timesheetsButton = createSidebarButton("Timesheets", "images/calendar_month.png");
+        timesheetsButton.getStyleClass().add("active-Button");
+
+        // Logout Button
+        Button logoutButton = createSidebarButton("Log Out | Time Out", "images/door_open.png");
+        logoutButton.getStyleClass().add("logout-button");
+
+        logoutButton.setOnAction(e -> {
+            LoginPage login = new LoginPage();
+            try {
+                login.showLogin(window);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Spacer to push logoutButton to the bottom
+        VBox spacer = new VBox();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        sidebar.getChildren().addAll(logo, titleLabel, timesheetsButton, spacer, logoutButton);
+
+        scene.getStylesheets().add("css/main.css");
+        return sidebar;
+    }
+
     private Button createSidebarButton(String text, String iconPath) {
         ImageView icon = new ImageView(new Image(iconPath));
         icon.setFitWidth(20);

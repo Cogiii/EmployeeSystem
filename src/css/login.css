@@ -39,9 +39,16 @@
     -fx-padding: 8px;
     -fx-font-size: 14px;
 }
+.text-field:focused {
+    -fx-border-width: 2px; 
+    -fx-border-color: #071f43;
+}
 .login-button {
     -fx-background-color: #071f43;
     -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
     -fx-min-width: 300px;
     -fx-max-width: 300px;
     -fx-min-height: 35px;
@@ -50,7 +57,15 @@
     -fx-font-weight: bold;
     -fx-font-size: 13px;
 }
+
 .login-button:hover {
     -fx-background-color: #05142c; /* Background color on hover */
     -fx-cursor: hand;
 }
+
+    .login-button:focused {
+    -fx-background-color: #05142c;
+    -fx-border-color: white; /* Border color on focus */
+    -fx-text-fill: white;
+}
+

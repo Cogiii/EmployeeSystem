@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -20,37 +21,43 @@ import javafx.stage.Stage;
 public class Payroll {
     Table table = new Table();
     SidebarPanel sidebarPanel = new SidebarPanel();
-
+    Data data = new Data();
+    
+    Stage mainStage;
     TableView<Employee> tableData;
     TextField searchEmployee;
     ObservableList<Employee> employees = FXCollections.observableArrayList();
+    HashMap<String,String> userData;
 
-    public void showPayroll(Stage window) {
+    public void showPayroll(Stage window, String ID) {
+        mainStage = window;
+        userData = data.getUserData(ID);
+
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
-        VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "payroll");
-        VBox mainContent = createMainContent(window);
+        VBox sidebar = sidebarPanel.createAdminSidebar(mainStage, userData.get("ID"), dashboardPage, "payroll");
+        VBox mainContent = createMainContent();
 
         HBox.setMargin(sidebar, new Insets(10));
         HBox.setMargin(mainContent, new Insets(30,10,10,10));
         layout.getChildren().addAll(sidebar, mainContent);
 
         dashboardPage.getStylesheets().add("css/main.css");
-        window.setTitle("Employee Management System");
-        window.setScene(dashboardPage);
+        mainStage.setTitle("Employee Management System");
+        mainStage.setScene(dashboardPage);
     }
 
-    private VBox createMainContent(Stage window){
+    private VBox createMainContent(){
         // width, variable, column width
-        String[][] tableHeader = {{"ID", "ID", "70"}, {"Employee Name", "name", "200"}, {"Pay/Hour", "hour_pay", "100"}, {"Hours Worked", "hours_worked", "130"}, {"Total Overtime", "total_overtime", "130"}, {"Gross Pay", "gross_pay", "115"}};
+        String[][] tableHeader = {{"ID", "ID", "70"}, {"Employee Name", "name", "200"}, {"Pay/Hour", "hourPay", "100"}, {"Hours Worked", "hoursWorked", "130"}, {"Total Overtime", "totalOvertime", "130"}, {"Gross Pay", "grossPay", "115"}};
         
         VBox main = new VBox(10);
 
-        HBox top = createMainTop("Admin Dashboard", "Hanni Pham", "Admin");
-        StackPane userPanel = createUserPanel("Hanni Pham", "Senior Admin Janitor", "Davao");
+        HBox top = createMainTop("Payroll Page", userData.get("name"), userData.get("designation"));
+        StackPane userPanel = createUserPanel(userData.get("name"), userData.get("designation"), userData.get("address"));
         HBox mainHeader = createMainHeader();
-        VBox tablelayout = table.createTable(window, tableHeader, searchEmployee, tableData, employees, "payroll");
+        VBox tablelayout = table.createTable(mainStage, tableHeader, searchEmployee, tableData, employees, "payroll", userData.get("ID"));
 
         main.getChildren().addAll(top, userPanel, mainHeader, tablelayout);
         return main;
@@ -121,10 +128,10 @@ public class Payroll {
         return top;
     }
 
-    StackPane createUserPanel(String username, String position, String location){
+    StackPane createUserPanel(String username, String position, String location) {
         StackPane panel = new StackPane();
         panel.getStyleClass().add("panel");
-        
+
         HBox panel_data = new HBox(5);
 
         Image originalImage = new Image("images/userImage/hannipham.jpg");
@@ -136,7 +143,7 @@ public class Payroll {
 
         // Create a viewport to crop the original image to square
         Rectangle2D viewportRect = new Rectangle2D(startX, startY, squareSize, squareSize);
-        
+
         ImageView userPicture = new ImageView(originalImage);
         userPicture.setViewport(viewportRect);
         userPicture.setFitWidth(100);
@@ -153,12 +160,11 @@ public class Payroll {
 
         // Create a StackPane and add the Rectangle and ImageView
         StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(userPicture); 
-
+        stackPane.getChildren().addAll(userPicture);
         userPicture.getStyleClass().add("image");
 
         VBox userInfo = new VBox();
-        Label user_name = new Label(username); 
+        Label user_name = new Label(username);
         user_name.getStyleClass().add("panel-user_name");
         Label user_position = new Label(position);
         user_position.getStyleClass().add("panel-user_position");
@@ -169,10 +175,10 @@ public class Payroll {
         Label user_Location = new Label(location);
         user_Location.getStyleClass().add("loc-user_label");
         loc_data.setPadding(new Insets(60, 0, 0, 0));
-        loc_data.getChildren().addAll(locationLabel,user_Location);
+        loc_data.getChildren().addAll(locationLabel, user_Location);
 
-        userInfo.getChildren().addAll(user_name,user_position,loc_data);
-        panel_data.getChildren().addAll(stackPane, userInfo);
+        userInfo.getChildren().addAll(user_name, user_position, loc_data);
+        panel_data.getChildren().addAll(userPicture, userInfo);
 
         panel.getChildren().addAll(panel_data);
         return panel;

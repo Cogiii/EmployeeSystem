@@ -9,6 +9,7 @@
     -fx-background-color: #B6B6B6;
     -fx-font-size: 18;
     -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
     -fx-border-color: transparent;
     -fx-min-width: 268px;
     -fx-max-width: 268px;
@@ -65,4 +66,14 @@
 .update-button:hover {
     -fx-background-color: #228818; /* Background color on hover */
     -fx-cursor: hand;
+}
+
+.button:focused {
+    -fx-border-width: 2px; 
+    -fx-border-color: #071f43;
+}
+
+.text-field:focused {
+    -fx-border-width: 2px; 
+    -fx-border-color: #071f43;
 }

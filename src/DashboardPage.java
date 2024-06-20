@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -21,35 +22,42 @@ import javafx.stage.Stage;
 public class DashboardPage {
     SidebarPanel sidebarPanel = new SidebarPanel();
     Table table = new Table();
+    Data data = new Data();
+
     TableView<Employee> tableData;
     TextField searchEmployee;
+    Stage mainStage;
     ObservableList<Employee> employees = FXCollections.observableArrayList(); // Make employees a class-level field
+    HashMap<String, String> userData = new HashMap<>();
 
-    public void showDashboard(Stage window) {
+    public void showDashboard(Stage window, String ID) {
+        mainStage = window;
+        userData = data.getUserData(ID);
+
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
-        VBox sidebar = sidebarPanel.createSidebar(window, dashboardPage, "dashboard");
-        VBox mainContent = createMainContent(window);
+        VBox sidebar = sidebarPanel.createAdminSidebar(mainStage, ID, dashboardPage, "dashboard");
+        VBox mainContent = createMainContent();
 
         HBox.setMargin(sidebar, new Insets(10));
         HBox.setMargin(mainContent, new Insets(30, 10, 10, 10));
         layout.getChildren().addAll(sidebar, mainContent);
 
         dashboardPage.getStylesheets().add("css/main.css");
-        window.setTitle("Employee Management System");
-        window.setScene(dashboardPage);
+        mainStage.setTitle("Employee Management System");
+        mainStage.setScene(dashboardPage);
     }
 
-    private VBox createMainContent(Stage window) {
-        String[][] tableHeader = {{"ID", "ID", "70"}, {"Employee Name", "name", "200"}, {"Department", "department", "125"}, {"Designation", "designation", "150"}, {"Check In", "check_in", "100"}, {"Check Out", "check_out", "100"}};
+    private VBox createMainContent() {
+        String[][] tableHeader = {{"ID", "ID", "70"}, {"Employee Name", "name", "200"}, {"Department", "department", "125"}, {"Designation", "designation", "150"}, {"Time-In", "timeIn", "100"}, {"Time-Out", "timeOut", "100"}};
 
         VBox main = new VBox(10);
 
-        HBox top = createMainTop("Admin Dashboard", "Hanni Pham", "Admin");
-        StackPane userPanel = createUserPanel("Hanni Pham", "Senior Admin Janitor", "Davao");
-        HBox mainHeader = createMainHeader(window);
-        VBox mainTable = table.createTable(window, tableHeader, searchEmployee, tableData, employees, "dashboard");
+        HBox top = createMainTop("Dashboard Page", userData.get("name"), userData.get("designation"));
+        StackPane userPanel = createUserPanel(userData.get("name"), userData.get("designation"), userData.get("address"));
+        HBox mainHeader = createMainHeader();
+        VBox mainTable = table.createTable(mainStage, tableHeader, searchEmployee, tableData, employees, "dashboard", userData.get("ID"));
 
         main.getChildren().addAll(top, userPanel, mainHeader, mainTable);
         return main;
@@ -67,19 +75,15 @@ public class DashboardPage {
         VBox userLabel = new VBox();
         userLabel.setAlignment(Pos.CENTER_RIGHT); // Align labels to the center right
 
-        Label userName = new Label("Hanni Pham");
-        userName.getStyleClass().add("top-user_name");
-
-        Label userPosition = new Label("Admin");
-        userPosition.getStyleClass().add("top-user_position");
-
         Label usernameLabel = new Label(username);
         usernameLabel.getStyleClass().add("top-user_name");
 
         Label userPositionLabel = new Label(position);
         userPositionLabel.getStyleClass().add("top-user_position");
+        if (position.equals("Admin"))
+            userPositionLabel.getStyleClass().add("admin_position");
 
-        userLabel.getChildren().addAll(userName, userPosition);
+        userLabel.getChildren().addAll(usernameLabel, userPositionLabel);
 
         // IMAGE CODE -- CURVED EDGES
 
@@ -168,6 +172,8 @@ public class DashboardPage {
         user_name.getStyleClass().add("panel-user_name");
         Label user_position = new Label(position);
         user_position.getStyleClass().add("panel-user_position");
+        if (position.equals("Admin")) 
+            user_position.getStyleClass().add("admin_position");
 
         HBox loc_data = new HBox();
         Label locationLabel = new Label("Location: ");
@@ -184,7 +190,7 @@ public class DashboardPage {
         return panel;
     }
 
-    private HBox createMainHeader(Stage window) {
+    private HBox createMainHeader() {
         HBox header = new HBox();
 
         // Label for header title
@@ -211,12 +217,11 @@ public class DashboardPage {
         addEmployeeButton.setAlignment(Pos.CENTER_RIGHT);
         addEmployeeButton.setOnAction(e -> {
             AddEmployeeModal addModal = new AddEmployeeModal();
-            addModal.showAddModal(window);
+            addModal.showAddModal(mainStage, userData.get("ID"));
         });
 
         header.getChildren().addAll(headerTitle, spacer1, searchEmployee, spacer2, addEmployeeButton);
 
         return header;
     }
-
 }

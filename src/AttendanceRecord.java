@@ -2,14 +2,14 @@ import java.util.*;
 
 // Class representing an attendance record
 class AttendanceRecord {
-    private String date;
-    private String timeIn;
-    private String timeOut;
+    private String date, timeInAM, timeOutAM, timeInPM, timeOutPM;
 
-    public AttendanceRecord(String date, String timeIn, String timeOut) {
+    public AttendanceRecord(String date, String timeInAM, String timeOutAM, String timeInPM, String timeOutPM) {
         this.date = date;
-        this.timeIn = timeIn;
-        this.timeOut = timeOut;
+        this.timeInAM = timeInAM;
+        this.timeOutAM = timeOutAM;
+        this.timeInPM = timeInPM;
+        this.timeOutPM = timeOutPM;
     }
 
     // Getters and Setters
@@ -21,25 +21,41 @@ class AttendanceRecord {
         this.date = date;
     }
 
-    public String getTimeIn() {
-        return timeIn;
+    public String getTimeInAM() {
+        return timeInAM;
     }
 
-    public void setTimeIn(String timeIn) {
-        this.timeIn = timeIn;
+    public void setTimeInAM(String timeInAM) {
+        this.timeInAM = timeInAM;
     }
 
-    public String getTimeOut() {
-        return timeOut;
+    public String getTimeOutAM() {
+        return timeOutAM;
     }
 
-    public void setTimeOut(String timeOut) {
-        this.timeOut = timeOut;
+    public void setTimeOutAM(String timeOutAM) {
+        this.timeOutAM = timeOutAM;
+    }
+
+    public String getTimeInPM() {
+        return timeInPM;
+    }
+
+    public void setTimeInPM(String timeInPM) {
+        this.timeInPM = timeInPM;
+    }
+
+    public String getTimeOutPM() {
+        return timeOutPM;
+    }
+
+    public void setTimeOutPM(String timeOutPM) {
+        this.timeOutPM = timeOutPM;
     }
 
     @Override
     public String toString() {
-        return "Date: " + date + ", Time In: " + timeIn + ", Time Out: " + timeOut;
+        return "Date: " + date + ", Time In: " + timeInAM + ", Time Out: " + timeOutAM;
     }
 }
 
@@ -97,8 +113,8 @@ class User {
         for (AttendanceRecord record : attendanceRecords) {
             Map<String, String> attendanceMap = new HashMap<>();
             attendanceMap.put("Date", record.getDate());
-            attendanceMap.put("Time In", record.getTimeIn());
-            attendanceMap.put("Time Out", record.getTimeOut());
+            attendanceMap.put("Time In", record.getTimeInAM());
+            attendanceMap.put("Time Out", record.getTimeOutAM());
             attendanceList.add(attendanceMap);
         }
         userDataMap.put("Attendance Records", attendanceList);
@@ -106,6 +122,7 @@ class User {
         return userDataMap;
     }
 }
+
 
 // // Example usage in a main class
 // public class UserDataManager {

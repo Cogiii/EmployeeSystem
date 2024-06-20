@@ -55,18 +55,26 @@ public class LoginPage {
         FileAuthenticator auth = new FileAuthenticator();
         boolean isAuthenticated = auth.authenticateUser(usernameInput.getText(), passwordInput.getText());
         String status = auth.status;
+        String userID = auth.userID;
 
-        if (isAuthenticated && status.equals("active")) 
-            proceedToDashboard(window);
-        else if(isAuthenticated && status.equals("inactive"))
+        if (isAuthenticated && status.equals("employee")) 
+            proceedToEmployeeDashboard(window, userID, status);
+        else if (isAuthenticated && status.equals("admin"))
+            proceedToAdminDashboard(window, userID);
+        else if(isAuthenticated && status.equals("deleted"))
             showAlertInformation("Invalid User", "Invalid User. This user has been deleted.");
         else 
             showAlerError("Invalid credentials", "Invalid credentials. Please try again.");
     }
 
-    private void proceedToDashboard(Stage window) {
+    private void proceedToAdminDashboard(Stage window, String userID) {
         DashboardPage dashboardPage = new DashboardPage();
-        dashboardPage.showDashboard(window);
+        dashboardPage.showDashboard(window, userID);
+    }
+
+    private void proceedToEmployeeDashboard(Stage window, String userID, String status){
+        Timesheets timesheets = new Timesheets();
+        timesheets.showTimesheets(window, userID, status);
     }
 
     private void showAlertInformation(String title, String message) {

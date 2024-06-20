@@ -27,9 +27,11 @@ public class ViewEmployeeModal {
     Data data = new Data();
     DashboardPage dashboardPage = new DashboardPage();
     Stage detailsStage;
+    String userID;
 
-    void showEmployeeDetails(Stage window, Employee employee) {
+    void showEmployeeDetails(Stage window, Employee employee, String ID) {
         this.user_ID = employee.getID();
+        userID = ID;
 
         detailsStage = new Stage();
         detailsStage.initModality(Modality.APPLICATION_MODAL);
@@ -103,6 +105,7 @@ public class ViewEmployeeModal {
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Password");
         passwordField.setText("********");
+        passwordField.setEditable(false);
 
         userLoginDetails.getChildren().addAll(usernameField,passwordField);
 
@@ -189,7 +192,7 @@ public class ViewEmployeeModal {
             if (response == ButtonType.OK) {
                 data.deleteEmployeeData(String.valueOf(user_ID));
                 detailsStage.close();
-                dashboardPage.showDashboard(window);
+                dashboardPage.showDashboard(window, userID);
             }
         });
 
@@ -205,7 +208,7 @@ public class ViewEmployeeModal {
             if (response == ButtonType.OK) {
                 data.updateEmployeeData(newUsername, newName, newDepartment, newDesignation, newGrossPay, user_ID);
                 detailsStage.close();
-                dashboardPage.showDashboard(window);
+                dashboardPage.showDashboard(window, userID);
             }
         });
         

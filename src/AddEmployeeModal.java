@@ -1,9 +1,11 @@
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,10 +21,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class AddEmployeeModal {
-    Stage window;
     DashboardPage dashboardPage = new DashboardPage();
 
-    void showAddModal(Stage stage) {
+    Stage window;
+    String userID; 
+
+    void showAddModal(Stage stage, String ID) {
+        userID = ID;
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Employee Details");
@@ -32,7 +37,6 @@ public class AddEmployeeModal {
 
         Label titleLabel = new Label("Add An Employee");
         VBox addFields = showTextFields(stage);
-
 
         detailsLayout.setAlignment(Pos.TOP_LEFT);
         detailsLayout.getChildren().addAll(titleLabel, addFields);
@@ -141,7 +145,7 @@ public class AddEmployeeModal {
             addUser.close();
 
             window.close();
-            dashboardPage.showDashboard(stage);
+            dashboardPage.showDashboard(stage, userID);
         } catch (IOException e) {
             System.err.println("An error occurred while writing to the file: " + e.getMessage());
         }

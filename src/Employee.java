@@ -1,44 +1,44 @@
 public class Employee {
     // this is for design only, ipang change or add ra mga
-    private String ID, name, department, designation, check_in, check_out, hour_pay, hours_worked, total_overtime, gross_pay;
+    private String ID, name, department, designation, timeIn, timeOut, hourPay, hoursWorked, totalOvertime, grossPay;
 
     public Employee() {
         this.ID = "";
         this.name = "";
         this.department = "";
         this.designation = "";
-        this.check_in = "";
-        this.check_out = "";
-        this.hour_pay = "";
-        this.hours_worked = "";
-        this.total_overtime = "";
-        this.gross_pay = "";
+        this.timeIn = "";
+        this.timeOut = "";
+        this.hourPay = "";
+        this.hoursWorked = "";
+        this.totalOvertime = "";
+        this.grossPay = "";
     }
 
-    public Employee(String ID, String name, String department, String designation, String check_in, String check_out) {
+    public Employee(String ID, String name, String department, String designation, String timeIn, String timeOut) {
         this.ID = ID;
         this.name = name;
         this.department = department;
         this.designation = designation;
-        this.check_in = check_in;
-        this.check_out = check_out;
-        this.hour_pay = "";
-        this.hours_worked = "";
-        this.total_overtime = "";
-        this.gross_pay = "";
+        this.timeIn = timeIn;
+        this.timeOut = timeOut;
+        this.hourPay = "";
+        this.hoursWorked = "";
+        this.totalOvertime = "";
+        this.grossPay = "";
     }
 
-    public Employee(String ID, String name, String hour_pay, String hours_worked, String total_overtime, String gross_pay, String dummy) {
+    public Employee(String ID, String name, String hourPay, String hoursWorked, String totalOvertime, String grossPay, String dummy) {
         this.ID = ID;
         this.name = name;
         this.department = "";
         this.designation = "";
-        this.check_in = "";
-        this.check_out = "";
-        this.hour_pay = hour_pay;
-        this.hours_worked = hours_worked;
-        this.total_overtime = total_overtime;
-        this.gross_pay = gross_pay;
+        this.timeIn = "";
+        this.timeOut = "";
+        this.hourPay = hourPay;
+        this.hoursWorked = hoursWorked;
+        this.totalOvertime = totalOvertime;
+        this.grossPay = grossPay;
     }
 
     public String getID(){
@@ -67,45 +67,45 @@ public class Employee {
     }
 
     
-    public String getCheck_in(){
-        return check_in;
+    public String getTimeIn(){
+        return timeIn;
     }
-    public void setCheck_in(String check_in){
-        this.check_in = check_in;
-    }
-
-    public String getCheck_out(){
-        return check_out;
-    }
-    public void setCheck_out(String check_out){
-        this.check_out = check_out;
+    public void setTimeIn(String timeIn){
+        this.timeIn = timeIn;
     }
 
-    public String getHour_pay(){
-        return hour_pay;
+    public String getTimeOut(){
+        return timeOut;
     }
-    public void setHour_pay(String hour_pay){
-        this.hour_pay = hour_pay;
-    }
-
-    public String getHours_worked(){
-        return hours_worked;
-    }
-    public void setHours_worked(String hours_worked){
-        this.hours_worked = hours_worked;
+    public void setTimeOut(String timeOut){
+        this.timeOut = timeOut;
     }
 
-    public String getTotal_overtime(){
-        return total_overtime;
+    public String getHourPay(){
+        return hourPay;
     }
-    public void setTotal_overtime(String total_overtime){
-        this.total_overtime = total_overtime;
+    public void setHourPay(String hourPay){
+        this.hourPay = hourPay;
     }
 
-    public String getGross_pay(){
-        return gross_pay;
+    public String getHoursWorked(){
+        return hoursWorked;
     }
-    public void setGross_pay(String gross_pay){
-        this.gross_pay = gross_pay;
+    public void setHoursWorked(String hoursWorked){
+        this.hoursWorked = hoursWorked;
+    }
+
+    public String getTotalOvertime(){
+        return totalOvertime;
+    }
+    public void setTotalOvertime(String totalOvertime){
+        this.totalOvertime = totalOvertime;
+    }
+
+    public String getGrossPay(){
+        return grossPay;
+    }
+    public void setGrossPay(String grossPay){
+        this.grossPay = grossPay;
     }
 }
