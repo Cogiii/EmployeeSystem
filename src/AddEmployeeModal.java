@@ -126,7 +126,7 @@ public class AddEmployeeModal {
         newDeparment = departmentField;
         newDesignation = designationField;
         newPayHour = pay_hourField;
-        newStatus = "active";
+        newStatus = "employee";
 
         String addEmployeeLine = newID+"#"+newName+"#"+newDeparment+"#"+newDesignation+"#"+newBirthDate+"#"+newHireDate+"#"+newAddress+"#"+newPhoneNumber+"#"+newPayHour+"#"+newTotalHoursWorked+"#"+newTotalOvertime+"#"+newGrossDeductions+"#"+newGrossPay+"#"+newCheckIn+"#"+newCheckOut+"#"+newStatus;
 
