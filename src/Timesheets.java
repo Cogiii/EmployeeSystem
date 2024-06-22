@@ -115,20 +115,19 @@ public class Timesheets {
         lateChecker(inAfternoonColumn, 13);
 
         table = new TableView<>();
-        table.setItems(getEmployees());
+        table.setItems(getTimesheetsEmployees());
         table.getColumns().addAll(dateColumn, inMorningColumn, outMorningColumn, inAfternoonColumn, outAfternoonColumn);
 
         VBox vBox = new VBox(table);
         return vBox;
     }
 
-    private ObservableList<EmployeeTimesheets> getEmployees(){
+    private ObservableList<EmployeeTimesheets> getTimesheetsEmployees(){
         ObservableList<EmployeeTimesheets> employees = FXCollections.observableArrayList(); // store all employees data
         ArrayList<HashMap<String, String>> timesheetsData = new ArrayList<>();
         
         Path usersDataPath = Paths.get("data/timesheets.txt");
         LocalDate currentDate = LocalDate.now();
-        boolean currentDateExists = false;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy");
 
         try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
@@ -148,43 +147,53 @@ public class Timesheets {
                         data.put(dataHeader[i], (!employeeDetails[i].equals(" ")) ? employeeDetails[i] : "--");
                     }
                     timesheetsData.add(data);
-                    
-                    // Check if the current date already exists in the timesheets
-                    if (employeeDetails[1].equals(currentDate.format(formatter))) {
-                        currentDateExists = true;
-                    }
                 }
             }
 
-            // Add a new entry for the current date if it doesn't exist
-            if (!currentDateExists) {
-                HashMap<String, String> newEntry = new HashMap<>();
-                newEntry.put("ID", userData.get("ID"));
-                newEntry.put("date", currentDate.format(formatter));
-                newEntry.put("timeInAM", "--");
-                newEntry.put("timeOutAM", "--");
-                newEntry.put("timeInPM", "--");
-                newEntry.put("timeOutPM", "--");
-                
-                // Write the new entry to the file
-                List<String> newEntryList = new ArrayList<>();
-                newEntryList.add(userData.get("ID") + "#" + currentDate.format(formatter) + "#--#--#--#--");
-                Files.write(usersDataPath, newEntryList, StandardOpenOption.APPEND);
-                
-                timesheetsData.add(newEntry);
-            }
-
             // Add EmployeeTimesheets objects to employees list in reverse order and limit to the last 7 days
-            int count = 0;
-            for (int i = timesheetsData.size() - 1; i >= 0 && count < 7; i--, count++) {
-                HashMap<String, String> userTimesheets = timesheetsData.get(i);
-                employees.add(new EmployeeTimesheets(
-                    userTimesheets.get("date"),
-                    userTimesheets.get("timeInAM"),
-                    userTimesheets.get("timeOutAM"),
-                    userTimesheets.get("timeInPM"),
-                    userTimesheets.get("timeOutPM")
-                ));
+            for (int i = 0; i < 8; i++) {
+                LocalDate prevDate = currentDate.minusDays(i);
+                String date = prevDate.format(formatter);
+                boolean dateExist = false;
+                
+                for (int j = 0; j < timesheetsData.size(); j++) {
+                    HashMap<String, String> userTimesheets = timesheetsData.get(j);
+
+                    if (date.equals(userTimesheets.get("date"))) {
+                        employees.add(new EmployeeTimesheets(
+                            userTimesheets.get("date"),
+                            userTimesheets.get("timeInAM"),
+                            userTimesheets.get("timeOutAM"),
+                            userTimesheets.get("timeInPM"),
+                            userTimesheets.get("timeOutPM")
+                        ));
+                        dateExist = true;
+                        break;
+                    }
+                }
+
+                if (!dateExist) {
+                    HashMap<String, String> newEntry = new HashMap<>();
+                    newEntry.put("ID", userData.get("ID"));
+                    newEntry.put("date", date);
+                    newEntry.put("timeInAM", "--");
+                    newEntry.put("timeOutAM", "--");
+                    newEntry.put("timeInPM", "--");
+                    newEntry.put("timeOutPM", "--");
+                    
+                    // Write the new entry to the file
+                    List<String> newEntryList = new ArrayList<>();
+                    newEntryList.add(userData.get("ID") + "#" + date + "#--#--#--#--");
+                    Files.write(usersDataPath, newEntryList, StandardOpenOption.APPEND);
+
+                    employees.add(new EmployeeTimesheets(
+                        newEntry.get("date"),
+                        newEntry.get("timeInAM"),
+                        newEntry.get("timeOutAM"),
+                        newEntry.get("timeInPM"),
+                        newEntry.get("timeOutPM")
+                    ));
+                }
             }
 
         } catch (IOException e) {
@@ -195,7 +204,7 @@ public class Timesheets {
     }
 
     public void lateChecker(TableColumn<EmployeeTimesheets, String> column, int timeLate){
-        // Add custom cell factory to inMorningColumn to change text color
+        // Add custom cell factory to inMorningColumn and inAfternoonColumn to change text color
         column.setCellFactory(new Callback<TableColumn<EmployeeTimesheets, String>, TableCell<EmployeeTimesheets, String>>() {
             @Override
             public TableCell<EmployeeTimesheets, String> call(TableColumn<EmployeeTimesheets, String> param) {

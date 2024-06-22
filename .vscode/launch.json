@@ -6,27 +6,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "dashboardTable",
-            "request": "launch",
-            "mainClass": "dashboardTable",
-            "projectName": "EmployeeSystem_baa52f6e"
-        },
-        {
-            "type": "java",
-            "name": "Resources",
-            "request": "launch",
-            "mainClass": "Resources",
-            "projectName": "EmployeeSystem_baa52f6e"
-        },
-        {
-            "type": "java",
-            "name": "SHA256HashGenerator",
-            "request": "launch",
-            "mainClass": "SHA256HashGenerator",
-            "projectName": "EmployeeSystem_baa52f6e"
-        },
-        {
-            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "Main",

@@ -8,6 +8,7 @@ import java.util.List;
 public class Data {
     Path employeeDataPath = Paths.get("data/employee.txt");
     Path usersDataPath = Paths.get("data/users.txt");
+    Path userTimesheetsPath = Paths.get("data/timesheets.txt");
 
     public HashMap<String,String> getUserData(String ID){
         HashMap<String, String> userData = new HashMap<>();
@@ -168,4 +169,7 @@ public class Data {
             System.err.println("Error updating employee data: " + e.getMessage());
         }
     }
+
+    
+
 }
