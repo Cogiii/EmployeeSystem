@@ -37,11 +37,11 @@ public class DashboardPage {
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
-        VBox sidebar = sidebarPanel.createAdminSidebar(mainStage, ID, dashboardPage, "dashboard");
+        VBox sidebar = sidebarPanel.createSidebar(mainStage, ID, dashboardPage, "dashboard", userData.get("status"));
         VBox mainContent = createMainContent();
 
         HBox.setMargin(sidebar, new Insets(10));
-        HBox.setMargin(mainContent, new Insets(30, 10, 10, 10));
+        HBox.setMargin(mainContent, new Insets(10));
         layout.getChildren().addAll(sidebar, mainContent);
 
         dashboardPage.getStylesheets().add("css/main.css");

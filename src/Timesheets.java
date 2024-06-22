@@ -1,5 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,15 +42,11 @@ public class Timesheets {
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
-        VBox sidebar;
-        if (status.equals("admin"))
-            sidebar = sidebarPanel.createAdminSidebar(mainStage, ID, dashboardPage, "timesheets");
-        else
-            sidebar = sidebarPanel.createEmployeeSidebar(mainStage, dashboardPage);
+        VBox sidebar = sidebarPanel.createSidebar(mainStage, ID, dashboardPage, "timesheets", userData.get("status"));
         VBox mainContent = createMainContent();
     
         HBox.setMargin(sidebar, new Insets(10));
-        HBox.setMargin(mainContent, new Insets(30,10,10,10));
+        HBox.setMargin(mainContent, new Insets(10));
         layout.getChildren().addAll(sidebar, mainContent);
     
         dashboardPage.getStylesheets().add("css/main.css");
@@ -103,7 +97,7 @@ public class Timesheets {
         outAfternoonColumn.setCellValueFactory(new PropertyValueFactory<>("timeOutPM"));
 
         final double dateColumnWidth = 169; // already set
-        final double widthPerColumn = 144;
+        final double widthPerColumn = 143;
 
         dateColumn.setMinWidth(dateColumnWidth);
         inMorningColumn.setMinWidth(widthPerColumn);
@@ -125,33 +119,35 @@ public class Timesheets {
     private ObservableList<EmployeeTimesheets> getTimesheetsEmployees(){
         ObservableList<EmployeeTimesheets> employees = FXCollections.observableArrayList(); // store all employees data
         ArrayList<HashMap<String, String>> timesheetsData = new ArrayList<>();
+        ArrayList<EmployeeTimesheets> employeeTimesheets = new ArrayList<>();
         
         Path usersDataPath = Paths.get("data/timesheets.txt");
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy");
 
-        try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
-            String line;
-            
+        try {
+            List<String> employeeTimesheetsLines = Files.readAllLines(usersDataPath);
+
             // Get the header of the text file and add the key to the data(map)
-            line = br.readLine();
-            String[] dataHeader = line.split("#");
-            
+            String[] dataHeader = employeeTimesheetsLines.get(0).split("#");
+
             // check if line exists then get the data and add it to the employees
-            while ((line = br.readLine()) != null) {
-                String[] employeeDetails = line.split("#");
+            for (int i = 1; i < employeeTimesheetsLines.size(); i++) {
+                String line = employeeTimesheetsLines.get(i);
+                String[] timesheets = line.split("#");
                 
-                if (employeeDetails[0].equals(userData.get("ID"))){
+                if (timesheets[0].equals(userData.get("ID"))){
                     HashMap<String, String> data = new HashMap<>(); // store data that get from the timesheets.txt
-                    for (int i = 0; i < employeeDetails.length; i++) {
-                        data.put(dataHeader[i], (!employeeDetails[i].equals(" ")) ? employeeDetails[i] : "--");
+
+                    for (int k = 0; k < timesheets.length; k++) {
+                        data.put(dataHeader[k], (!timesheets[k].equals(" ")) ? timesheets[k] : "--");
                     }
                     timesheetsData.add(data);
                 }
             }
 
-            // Add EmployeeTimesheets objects to employees list in reverse order and limit to the last 7 days
-            for (int i = 0; i < 8; i++) {
+            // Add EmployeeTimesheets objects to employees list in reverse order and limit to the last 9 days
+            for (int i = 8; i >= 0; i--) {
                 LocalDate prevDate = currentDate.minusDays(i);
                 String date = prevDate.format(formatter);
                 boolean dateExist = false;
@@ -160,18 +156,14 @@ public class Timesheets {
                     HashMap<String, String> userTimesheets = timesheetsData.get(j);
 
                     if (date.equals(userTimesheets.get("date"))) {
-                        employees.add(new EmployeeTimesheets(
-                            userTimesheets.get("date"),
-                            userTimesheets.get("timeInAM"),
-                            userTimesheets.get("timeOutAM"),
-                            userTimesheets.get("timeInPM"),
-                            userTimesheets.get("timeOutPM")
-                        ));
+                        employeeTimesheets.add(new EmployeeTimesheets(userTimesheets.get("date"), userTimesheets.get("timeInAM"), userTimesheets.get("timeOutAM"), userTimesheets.get("timeInPM"), userTimesheets.get("timeOutPM")));
+
                         dateExist = true;
                         break;
                     }
                 }
 
+                // add the date if it doesn't exist
                 if (!dateExist) {
                     HashMap<String, String> newEntry = new HashMap<>();
                     newEntry.put("ID", userData.get("ID"));
@@ -186,14 +178,12 @@ public class Timesheets {
                     newEntryList.add(userData.get("ID") + "#" + date + "#--#--#--#--");
                     Files.write(usersDataPath, newEntryList, StandardOpenOption.APPEND);
 
-                    employees.add(new EmployeeTimesheets(
-                        newEntry.get("date"),
-                        newEntry.get("timeInAM"),
-                        newEntry.get("timeOutAM"),
-                        newEntry.get("timeInPM"),
-                        newEntry.get("timeOutPM")
-                    ));
+                    employeeTimesheets.add(new EmployeeTimesheets(newEntry.get("date"), newEntry.get("timeInAM"), newEntry.get("timeOutAM"), newEntry.get("timeInPM"), newEntry.get("timeOutPM")));
                 }
+            }
+
+            for (int i = employeeTimesheets.size()-1; i >= 0; i--) {
+                employees.add(employeeTimesheets.get(i));
             }
 
         } catch (IOException e) {

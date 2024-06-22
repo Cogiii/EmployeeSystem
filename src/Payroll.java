@@ -36,11 +36,11 @@ public class Payroll {
         HBox layout = new HBox();
         Scene dashboardPage = new Scene(layout, 1000, 600);
 
-        VBox sidebar = sidebarPanel.createAdminSidebar(mainStage, userData.get("ID"), dashboardPage, "payroll");
+        VBox sidebar = sidebarPanel.createSidebar(mainStage, userData.get("ID"), dashboardPage, "payroll", userData.get("status"));
         VBox mainContent = createMainContent();
 
         HBox.setMargin(sidebar, new Insets(10));
-        HBox.setMargin(mainContent, new Insets(30,10,10,10));
+        HBox.setMargin(mainContent, new Insets(10));
         layout.getChildren().addAll(sidebar, mainContent);
 
         dashboardPage.getStylesheets().add("css/main.css");
@@ -63,26 +63,30 @@ public class Payroll {
         return main;
     }
 
-    HBox createMainTop(String title, String username, String position){
+    HBox createMainTop(String title, String username, String position) {
         HBox top = new HBox();
-    
+
         Label titleLabel = new Label(title);
         HBox.setMargin(titleLabel, new Insets(0, 10, 0, 0));
-        
+
         HBox topRight = new HBox();
         topRight.setAlignment(Pos.CENTER_RIGHT);
-    
+
         VBox userLabel = new VBox();
         userLabel.setAlignment(Pos.CENTER_RIGHT); // Align labels to the center right
-    
+
         Label usernameLabel = new Label(username);
         usernameLabel.getStyleClass().add("top-user_name");
-    
+
         Label userPositionLabel = new Label(position);
         userPositionLabel.getStyleClass().add("top-user_position");
-    
+        if (position.equals("Admin"))
+            userPositionLabel.getStyleClass().add("admin_position");
+
         userLabel.getChildren().addAll(usernameLabel, userPositionLabel);
-    
+
+        // IMAGE CODE -- CURVED EDGES
+
         Image originalImage = new Image("images/userImage/hannipham.jpg");
 
         // Calculate dimensions for the square
@@ -90,9 +94,10 @@ public class Payroll {
         double startX = (originalImage.getWidth() - squareSize) / 2;
         double startY = (originalImage.getHeight() - squareSize) / 2;
 
+        //
         // Create a viewport to crop the original image to square
         Rectangle2D viewportRect = new Rectangle2D(startX, startY, squareSize, squareSize);
-        
+
         ImageView userPicture = new ImageView(originalImage);
         userPicture.setViewport(viewportRect);
         userPicture.setFitWidth(50);
@@ -109,22 +114,21 @@ public class Payroll {
 
         // Create a StackPane and add the Rectangle and ImageView
         StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(userPicture); 
+        stackPane.getChildren().addAll(userPicture);
 
-        userPicture.setFitWidth(50);
-        userPicture.setFitHeight(50);
-    
+        // END IMAGE EDGE CURVE CODE
+
         topRight.getChildren().addAll(userLabel, stackPane);
         topRight.setSpacing(5);
 
-         // Add spacer to align user information to the right
+        // Add spacer to align user information to the right
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         top.getChildren().addAll(titleLabel, spacer, topRight);
         HBox.setHgrow(topRight, Priority.ALWAYS); // Allow topRight to grow horizontally
         top.setAlignment(Pos.CENTER_LEFT);
-    
+
         return top;
     }
 
@@ -168,6 +172,8 @@ public class Payroll {
         user_name.getStyleClass().add("panel-user_name");
         Label user_position = new Label(position);
         user_position.getStyleClass().add("panel-user_position");
+        if (position.equals("Admin")) 
+            user_position.getStyleClass().add("admin_position");
 
         HBox loc_data = new HBox();
         Label locationLabel = new Label("Location: ");
