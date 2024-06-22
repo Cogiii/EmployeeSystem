@@ -46,7 +46,7 @@ public class Attendance {
                                 }
         
                                 parts[2] = currentTime; // Set time in for morning
-                            } else if (time.isAfter(LocalTime.of(12, 30)) && time.isBefore(LocalTime.of(16, 0))) {
+                            } else if (time.isAfter(LocalTime.of(12, 29)) && time.isBefore(LocalTime.of(16, 0))) {
                                 if (!parts[4].equals("--")){
                                     // User has already clocked in, return early
                                     return; 
@@ -57,7 +57,7 @@ public class Attendance {
                             break;
                         case "time Out": 
                             // Check the time if they can log out and check if they time in (cannot time out if did not time in)
-                            if(time.isAfter(LocalTime.of(12, 0)) && time.isBefore(LocalTime.of(12, 30)) && !parts[2].equals("--")){
+                            if(time.isAfter(LocalTime.of(11, 59)) && time.isBefore(LocalTime.of(12, 30)) && !parts[2].equals("--")){
                                 if (!parts[3].equals("--")) {
                                     // User has already clocked in, return early
                                     return;
@@ -93,7 +93,7 @@ public class Attendance {
                         // Check time in for morning (Valid for 6AM to 12PM) or afternoon (Valid for 12:30 to 4PM)
                         if (time.isAfter(LocalTime.of(6, 0)) && time.isBefore(LocalTime.of(12, 0))) {
                             newEntry = userID + "#" + currentDate + "#" + currentTime + "#--#--#--";
-                        } else if (time.isAfter(LocalTime.of(12, 30)) && time.isBefore(LocalTime.of(16, 0))) {
+                        } else if (time.isAfter(LocalTime.of(12, 29)) && time.isBefore(LocalTime.of(16, 0))) {
                             newEntry = userID + "#" + currentDate + "#--#--#" + currentTime + "#--";
                         }
                         break;
