@@ -1,7 +1,7 @@
 ID#date#timeInAM#timeOutAM#timeInPM#timeOutPM
 0#Monday, June 10, 2024#8:00AM#12:03AM#12:59PM#4:05PM
-0#Tuesday, June 11, 2024#8:00AM#12:03AM#12:59PM# 
-0#Wednesday, June 12, 2024#8:00AM#12:03PM# # 
+0#Tuesday, June 11, 2024#8:00AM#12:03AM#12:59PM#--
+0#Wednesday, June 12, 2024#8:00AM#12:03PM#--#--
 0#Thursday, June 13, 2024#8:00AM#12:03PM#1:00PM#5:00PM
 0#Friday, June 14, 2024#8:00AM#12:03PM#1:00PM#5:00PM
 0#Saturday, June 15, 2024#9:00AM#1:00PM#2:00PM#6:00PM
@@ -58,5 +58,7 @@ ID#date#timeInAM#timeOutAM#timeInPM#timeOutPM
 1#Sunday, June 23, 2024#--#--#3:00PM#--
 2#Sunday, June 23, 2024#--#--#--#--
 9#Saturday, June 22, 2024#--#--#--#--
-0#Sunday, June 23, 2024#--#--#2:58PM#--
+0#Sunday, June 23, 2024#--#--#2:58PM#9:17PM
 9#Saturday, June 15, 2024#--#--#--#--
+2#Saturday, June 22, 2024#--#--#--#--
+0#Monday, June 24, 2024#--#--#--#--

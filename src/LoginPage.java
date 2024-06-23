@@ -88,7 +88,7 @@ public class LoginPage {
     }
 
     private void proceedToEmployeeDashboard(Stage window, String userID, String status){
-        Timesheets timesheets = new Timesheets();
+        TimesheetsPage timesheets = new TimesheetsPage();
         timesheets.showTimesheets(window, userID, status);
     }
 

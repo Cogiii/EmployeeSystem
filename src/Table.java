@@ -57,8 +57,6 @@ public class Table {
                         Employee rowData = row.getItem();
                         ViewEmployeeModal viewEmployee = new ViewEmployeeModal();
                         viewEmployee.showEmployeeDetails(window, rowData, userID);
-                    }else if (from.equals("payroll")){
-                        // View Payroll functions
                     }
                 }
             });
@@ -104,6 +102,10 @@ public class Table {
         ObservableList<Employee> employees = FXCollections.observableArrayList(); // store all employees data
         HashMap<String, String> data = new HashMap<>(); // store data that get from the employee.txt
 
+        // update employee lates
+        Attendance attendance = new Attendance();
+        attendance.updateEmployee();
+
         Path usersDataPath = Paths.get("data/employee.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
             String line;
@@ -119,7 +121,7 @@ public class Table {
             while ((line = br.readLine()) != null) {
                 String[] employeeDetails = line.split("#");
                 for (int i = 0; i < employeeDetails.length; i++) {
-                    data.put(dataHeader[i], (!employeeDetails[i].equals(" ")) ? employeeDetails[i] : "--");
+                    data.put(dataHeader[i], employeeDetails[i]);
                 }
                 
                 if (data.get("status").equals("employee")){

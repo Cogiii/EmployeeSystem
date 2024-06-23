@@ -1,7 +1,7 @@
-ID#name#department#designation#birthDate#hireDate#address#phoneNumber#hourPay#hoursWorked#totalOvertime#grossDeductions#lates#deductions#grossPay#timeIn#timeOut#status
-0#Admin#Admin#Admin#None#None#None#None#0# # # # # # # # #admin
-1#Laurence Kharl Devera#IT#Software Engineer#June 29, 2004#June 17,2004#Buhangin Davao City#09123456789#2000#40#5#500#3#4#5000#8:30AM#4:00PM#employee
-2#Laurence Lesmoras#IT#Software Engineer#October 23, 2004#June 18,2004#Davao City#09321456798#1000#10#5#500#3#4#10000#8:00AM# #employee
-7#Supremo Caloy Benedicto Blanco#DOH#desigm# # # # #100000000000000000#0#0#0#3#4#23# # #deleted
-8#Jasper Nikko Navarez#IT#Game Developer# # # # #500# # # # #3#4# # #employee
-9#Hanni Pham#Cleaner#Senior Janitor# # # # #1000# # # # #4#3# # #employee
+ID#name#department#designation#birthDate#hireDate#address#phoneNumber#hourPay#hoursWorked#totalOvertime#lates#deductions#grossPay#timeIn#timeOut#status
+0#Admin#Admin#Admin#None#None#None#None#0#62#0#7#0#0#--#--#admin
+1#Laurence Kharl Devera#IT#Software Engineer#June 29, 2004#June 17,2004#Buhangin Davao City#09123456789#2000#88#4#3#4#5000#8:30AM#4:00PM#employee
+2#Laurence Lesmoras#IT#Software Engineer#October 23, 2004#June 18,2004#Davao City#09321456798#1000#88#0#22#4#10000#8:00AM#--#employee
+7#Supremo Caloy Benedicto Blanco#DOH#desigm#--#--#--#--#100000000000000000#88#0#3#4#23#--#--#deleted
+8#Jasper Nikko Navarez#IT#Game Developer#--#--#--#--#500#0#0#0#3#4#--#--#employee
+9#Hanni Pham#Cleaner#Senior Janitor#--#--#--#--#1000#0#0#0#4#3#--#--#employee

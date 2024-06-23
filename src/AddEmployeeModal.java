@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -120,7 +119,7 @@ public class AddEmployeeModal {
         }
         newID++;
         //[0]Id, [1]name, [2]department, [3]designation, [4]Birth Date, [5]Hire Date, [6]Address, [7],Phone Number, [8]Pay/Hour, [9]Total Hours Worked, [10]Total Overtime, [11]Gross Deductions, [12]GrossPay, [13]Check-In, [14]Check-Out
-        String newName = " ", newDeparment= " ", newDesignation = " ", newBirthDate = " ", newHireDate = " ", newAddress = " ", newPhoneNumber = " ", newPayHour = " ", newTotalHoursWorked = " ", newTotalOvertime = " ", newGrossDeductions = " ", newGrossPay = " ", newCheckIn = " ", newCheckOut = " ", newStatus = " ";
+        String newName = "--", newDeparment= "--", newDesignation = "--", newBirthDate = "--", newHireDate = "--", newAddress = "--", newPhoneNumber = "--", newPayHour = "--", newTotalHoursWorked = "--", newTotalOvertime = "--", newGrossDeductions = "--", newGrossPay = "--", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
 
         newName = nameField;
         newDeparment = departmentField;

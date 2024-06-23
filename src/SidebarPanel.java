@@ -47,11 +47,11 @@ public class SidebarPanel{
                 dashboardPage.showDashboard(window, userID);
             });
             timesheetsButton.setOnAction(e -> {
-                Timesheets timesheetsPage = new Timesheets();
+                TimesheetsPage timesheetsPage = new TimesheetsPage();
                 timesheetsPage.showTimesheets(window, userID, status);
             });
             payrollButton.setOnAction(e -> {
-                Payroll payrollPage = new Payroll();
+                PayrollPage payrollPage = new PayrollPage();
                 payrollPage.showPayroll(window, userID);
             });
 
@@ -73,7 +73,7 @@ public class SidebarPanel{
             Attendance attendance = new Attendance();
             try {
                 login.showLogin(window);
-                attendance.record(userID, status);
+                attendance.record(userID, "time out");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
