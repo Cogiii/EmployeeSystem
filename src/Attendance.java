@@ -238,7 +238,7 @@ public class Attendance {
     public void updateEmployee() {
         Map<String, Integer> lateCounts = lateCounts();
         Map<String, Map<String, Integer>> countHoursWorked = countHoursWorked();
-        HashMap<String, String> timesheetsData = new HashMap<>();
+        HashMap<String, String> employeeData = new HashMap<>();
 
         try {
             List<String> employeeLines = Files.readAllLines(employeePath);
@@ -249,10 +249,10 @@ public class Attendance {
             for (String line : employeeLines) {
                 String[] parts = line.split("#");
                 for (int i = 0; i < parts.length; i++) {
-                    timesheetsData.put(employeeHeader[i], parts[i]);
+                    employeeData.put(employeeHeader[i], parts[i]);
                 }
 
-                String userID = timesheetsData.get("ID");
+                String userID = employeeData.get("ID");
 
                 if (lateCounts.containsKey(userID)) {
                     parts[indexOf(employeeHeader, "lates")] = String.valueOf(lateCounts.get(userID));

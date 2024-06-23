@@ -106,6 +106,10 @@ public class Table {
         Attendance attendance = new Attendance();
         attendance.updateEmployee();
 
+        // update payroll
+        Payroll payroll = new Payroll();
+        payroll.updatePayroll();
+
         Path usersDataPath = Paths.get("data/employee.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
             String line;
