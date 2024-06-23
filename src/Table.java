@@ -126,7 +126,7 @@ public class Table {
                     if (from.equals("dashboard")) 
                         employees.add(new Employee(data.get(tableLists[0][1]), data.get(tableLists[1][1]), data.get(tableLists[2][1]), data.get(tableLists[3][1]), data.get(tableLists[4][1]), data.get(tableLists[5][1])));
                     else if (from.equals("payroll"))
-                        employees.add(new Employee(data.get(tableLists[0][1]), data.get(tableLists[1][1]), data.get(tableLists[2][1]), data.get(tableLists[3][1]), data.get(tableLists[4][1]), data.get(tableLists[5][1]), ""));
+                        employees.add(new Employee(data.get(tableLists[0][1]), data.get(tableLists[1][1]), data.get(tableLists[2][1]), data.get(tableLists[3][1]), data.get(tableLists[4][1]), data.get(tableLists[5][1]), data.get(tableLists[6][1]), data.get(tableLists[7][1])));
                 }
                 
 

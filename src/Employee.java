@@ -1,19 +1,6 @@
 public class Employee {
     // this is for design only, ipang change or add ra mga
-    private String ID, name, department, designation, timeIn, timeOut, hourPay, hoursWorked, totalOvertime, grossPay;
-
-    public Employee() {
-        this.ID = "";
-        this.name = "";
-        this.department = "";
-        this.designation = "";
-        this.timeIn = "";
-        this.timeOut = "";
-        this.hourPay = "";
-        this.hoursWorked = "";
-        this.totalOvertime = "";
-        this.grossPay = "";
-    }
+    private String ID, name, department, designation, timeIn, timeOut, hourPay, hoursWorked, totalOvertime, lates, deductions, grossPay;
 
     public Employee(String ID, String name, String department, String designation, String timeIn, String timeOut) {
         this.ID = ID;
@@ -22,22 +9,16 @@ public class Employee {
         this.designation = designation;
         this.timeIn = timeIn;
         this.timeOut = timeOut;
-        this.hourPay = "";
-        this.hoursWorked = "";
-        this.totalOvertime = "";
-        this.grossPay = "";
     }
 
-    public Employee(String ID, String name, String hourPay, String hoursWorked, String totalOvertime, String grossPay, String dummy) {
+    public Employee(String ID, String name, String hourPay, String hoursWorked, String totalOvertime, String lates, String deductions, String grossPay) {
         this.ID = ID;
         this.name = name;
-        this.department = "";
-        this.designation = "";
-        this.timeIn = "";
-        this.timeOut = "";
         this.hourPay = hourPay;
         this.hoursWorked = hoursWorked;
         this.totalOvertime = totalOvertime;
+        this.lates = lates;
+        this.deductions = deductions;
         this.grossPay = grossPay;
     }
 
@@ -101,6 +82,22 @@ public class Employee {
     public void setTotalOvertime(String totalOvertime){
         this.totalOvertime = totalOvertime;
     }
+
+    public String getLates(){
+        return lates;
+    }
+    public void setLates(String lates){
+        this.lates = lates;
+    }
+
+    public String getDeductions(){
+        return deductions;
+    }
+    public void setDeductions(String deductions){
+        this.deductions = deductions;
+    }
+
+    
 
     public String getGrossPay(){
         return grossPay;

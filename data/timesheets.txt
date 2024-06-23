@@ -55,8 +55,8 @@ ID#date#timeInAM#timeOutAM#timeInPM#timeOutPM
 9#Tuesday, June 18, 2024#--#--#--#--
 9#Monday, June 17, 2024#--#--#--#--
 9#Sunday, June 16, 2024#--#--#--#--
-1#Sunday, June 23, 2024#--#--#--#--
+1#Sunday, June 23, 2024#--#--#3:00PM#--
 2#Sunday, June 23, 2024#--#--#--#--
 9#Saturday, June 22, 2024#--#--#--#--
-0#Sunday, June 23, 2024#--#--#--#--
+0#Sunday, June 23, 2024#--#--#2:58PM#--
 9#Saturday, June 15, 2024#--#--#--#--
