@@ -1,6 +1,6 @@
 public class Employee {
     // this is for design only, ipang change or add ra mga
-    private String ID, name, department, designation, timeIn, timeOut, hourPay, hoursWorked, totalOvertime, lates, deductions, grossPay;
+    private String ID, name, department, designation, timeIn, timeOut, payPerDay, hoursWorked, totalOvertime, lates, deductions, grossPay;
 
     public Employee(String ID, String name, String department, String designation, String timeIn, String timeOut) {
         this.ID = ID;
@@ -11,10 +11,10 @@ public class Employee {
         this.timeOut = timeOut;
     }
 
-    public Employee(String ID, String name, String hourPay, String hoursWorked, String totalOvertime, String lates, String deductions, String grossPay) {
+    public Employee(String ID, String name, String payPerDay, String hoursWorked, String totalOvertime, String lates, String deductions, String grossPay) {
         this.ID = ID;
         this.name = name;
-        this.hourPay = hourPay;
+        this.payPerDay = payPerDay;
         this.hoursWorked = hoursWorked;
         this.totalOvertime = totalOvertime;
         this.lates = lates;
@@ -62,11 +62,11 @@ public class Employee {
         this.timeOut = timeOut;
     }
 
-    public String getHourPay(){
-        return hourPay;
+    public String getPayPerDay(){
+        return payPerDay;
     }
-    public void setHourPay(String hourPay){
-        this.hourPay = hourPay;
+    public void setPayPerDay(String payPerDay){
+        this.payPerDay = payPerDay;
     }
 
     public String getHoursWorked(){

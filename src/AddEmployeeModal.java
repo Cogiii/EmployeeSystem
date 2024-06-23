@@ -72,21 +72,21 @@ public class AddEmployeeModal {
         designationField.getStyleClass().add("long-Field");
         designationField.setPromptText("Designation");
 
-        TextField pay_hourField = new TextField();
-        pay_hourField.getStyleClass().add("long-Field");
-        pay_hourField.setPromptText("Pay per hour");
+        TextField payPerDayField = new TextField();
+        payPerDayField.getStyleClass().add("long-Field");
+        payPerDayField.setPromptText("Pay per day");
 
         Button createButton = new Button("Create Employee");
         createButton.getStyleClass().add("create-button");
-        createButton.setOnAction(e -> createEmployee(usernameField.getText(), passwordField.getText(), nameField.getText(), departmentField.getText(), designationField.getText(), pay_hourField.getText(), stage));
+        createButton.setOnAction(e -> createEmployee(usernameField.getText(), passwordField.getText(), nameField.getText(), departmentField.getText(), designationField.getText(), payPerDayField.getText(), stage));
 
-        addFields.getChildren().addAll(userLoginDetails, nameField, departmentField, designationField, pay_hourField, createButton);
+        addFields.getChildren().addAll(userLoginDetails, nameField, departmentField, designationField, payPerDayField, createButton);
         return addFields;
     }
 
-    private void createEmployee(String usernameField, String passwordField, String nameField, String departmentField, String designationField, String pay_hourField, Stage stage){
+    private void createEmployee(String usernameField, String passwordField, String nameField, String departmentField, String designationField, String payPerDayField, Stage stage){
         // Check if any field is empty
-        if(usernameField.isEmpty() || passwordField.isEmpty() || nameField.isEmpty() || departmentField.isEmpty() || designationField.isEmpty() || pay_hourField.isEmpty()){
+        if(usernameField.isEmpty() || passwordField.isEmpty() || nameField.isEmpty() || departmentField.isEmpty() || designationField.isEmpty() || payPerDayField.isEmpty()){
             // Show alert using JavaFX
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning Dialog");
@@ -118,16 +118,16 @@ public class AddEmployeeModal {
             System.err.println("Error reading from file: " + e.getMessage());
         }
         newID++;
-        //[0]Id, [1]name, [2]department, [3]designation, [4]Birth Date, [5]Hire Date, [6]Address, [7],Phone Number, [8]Pay/Hour, [9]Total Hours Worked, [10]Total Overtime, [11]Gross Deductions, [12]GrossPay, [13]Check-In, [14]Check-Out
-        String newName = "--", newDeparment= "--", newDesignation = "--", newBirthDate = "--", newHireDate = "--", newAddress = "--", newPhoneNumber = "--", newPayHour = "--", newTotalHoursWorked = "--", newTotalOvertime = "--", newGrossDeductions = "--", newGrossPay = "--", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
+        //[0]Id, [1]name, [2]department, [3]designation, [4]Birth Date, [5]Hire Date, [6]Address, [7],Phone Number, [8]Pay/Day, [9]Total Hours Worked, [10]Total Overtime, [11]Gross Deductions, [12]GrossPay, [13]Check-In, [14]Check-Out
+        String newName = "--", newDeparment= "--", newDesignation = "--", newBirthDate = "--", newHireDate = "--", newAddress = "--", newPhoneNumber = "--", newPayPerDay = "--", newTotalHoursWorked = "--", newTotalOvertime = "--", newGrossDeductions = "--", newGrossPay = "--", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
 
         newName = nameField;
         newDeparment = departmentField;
         newDesignation = designationField;
-        newPayHour = pay_hourField;
+        newPayPerDay = payPerDayField;
         newStatus = "employee";
 
-        String addEmployeeLine = newID+"#"+newName+"#"+newDeparment+"#"+newDesignation+"#"+newBirthDate+"#"+newHireDate+"#"+newAddress+"#"+newPhoneNumber+"#"+newPayHour+"#"+newTotalHoursWorked+"#"+newTotalOvertime+"#"+newGrossDeductions+"#"+newGrossPay+"#"+newCheckIn+"#"+newCheckOut+"#"+newStatus;
+        String addEmployeeLine = newID+"#"+newName+"#"+newDeparment+"#"+newDesignation+"#"+newBirthDate+"#"+newHireDate+"#"+newAddress+"#"+newPhoneNumber+"#"+newPayPerDay+"#"+newTotalHoursWorked+"#"+newTotalOvertime+"#"+newGrossDeductions+"#"+newGrossPay+"#"+newCheckIn+"#"+newCheckOut+"#"+newStatus;
 
         SHA256HashGenerator hash = new SHA256HashGenerator();
 

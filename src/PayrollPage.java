@@ -50,7 +50,7 @@ public class PayrollPage {
 
     private VBox createMainContent(){
         // width, variable, column width
-        String[][] tableHeader = {{"ID", "ID", "50"}, {"Employee Name", "name", "150"}, {"Pay/Hour", "hourPay", "80"}, {"Hours Worked", "hoursWorked", "110"}, {"Overtime (hr)", "totalOvertime", "110"}, {"Lates", "lates", "50"}, {"Deductions", "deductions", "110"}, {"Gross Pay", "grossPay", "100"}};
+        String[][] tableHeader = {{"ID", "ID", "50"}, {"Employee Name", "name", "150"}, {"Pay/Day", "payPerDay", "80"}, {"Hours Worked", "hoursWorked", "110"}, {"Overtime (hr)", "totalOvertime", "110"}, {"Lates", "lates", "50"}, {"Deductions", "deductions", "110"}, {"Gross Pay", "grossPay", "100"}};
         
         VBox main = new VBox(10);
 
