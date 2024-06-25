@@ -1,3 +1,8 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,7 +20,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -28,6 +32,8 @@ public class ViewEmployeeModal {
     String userID;
     HashMap <String, String> rowData = new HashMap<>();
     HashMap <String, String> userData = new HashMap<>();
+
+    TextField textFieldID, textFieldDepartment, textFieldDesignation, textFieldHireDate, textFieldUsername, textFieldFullname, textFieldAge, textFieldGender, textFieldbirthDate, textFieldEmail, textFieldPhoneNumber, textFieldAddress;
 
     void showEmployeeDetails(Stage window, Employee employee, String ID) {
         rowID = employee.getID();
@@ -106,17 +112,17 @@ public class ViewEmployeeModal {
         //--------------------IMAGE END---------------------------------
 
         Label labelID = new Label("ID:");
-        TextField textFieldID = new TextField(rowData.get("ID"));
+        textFieldID = new TextField(rowData.get("ID"));
         textFieldID.setEditable(false);
 
         Label labelDeperment = new Label("Department:");
-        TextField textFieldDepartment = new TextField(rowData.get("department"));
+        textFieldDepartment = new TextField(rowData.get("department"));
 
         Label labelDesignation = new Label("Designation:");
-        TextField textFieldDesignation = new TextField(rowData.get("designation"));
+        textFieldDesignation = new TextField(rowData.get("designation"));
         
         Label labelHireDate = new Label("Hire Date:");
-        TextField textFieldHireDate = new TextField(rowData.get("hireDate"));
+        textFieldHireDate = new TextField(rowData.get("hireDate"));
 
         leftContent.getChildren().addAll(imagePane, labelID, textFieldID, labelDeperment, textFieldDepartment, labelDesignation, textFieldDesignation, labelHireDate, textFieldHireDate);
 
@@ -130,10 +136,17 @@ public class ViewEmployeeModal {
         personalDetailsLabel.getStyleClass().add("content-header");
 
         HBox usernameAndPass = usernameAndPass();
-        HBox rowDetails = new HBox();
-        
+        HBox employeeInfo = employeeInfo();
+        HBox birthDate = birthDateInfo();
 
-        rightContent.getChildren().addAll(personalDetailsLabel, usernameAndPass);
+
+        Label contactsLabel = new Label("Contacts");
+        contactsLabel.getStyleClass().add("content-header");
+
+        HBox emailAndPhone = emailAndPhone();
+        HBox address = address();
+
+        rightContent.getChildren().addAll(personalDetailsLabel, usernameAndPass, employeeInfo, birthDate, contactsLabel, emailAndPhone, address);
 
         return rightContent;
     }
@@ -143,7 +156,7 @@ public class ViewEmployeeModal {
 
         VBox username = new VBox();
         Label usernamLabel = new Label("Username:");
-        TextField textFieldUsername = new TextField(rowData.get("username"));
+        textFieldUsername = new TextField(rowData.get("username"));
         textFieldUsername.getStyleClass().add("long-field");
         username.getChildren().addAll(usernamLabel, textFieldUsername);
 
@@ -157,6 +170,99 @@ public class ViewEmployeeModal {
         usernameAndPass.getChildren().addAll(username, password);
 
         return usernameAndPass;
+    }
+
+    private HBox employeeInfo(){
+        HBox employeeInfo = new HBox(10);
+
+        VBox fullname = new VBox();
+        Label fullnameLabel = new Label("Full Name:");
+        textFieldFullname = new TextField(rowData.get("name"));
+        textFieldFullname.getStyleClass().add("long-field");
+        fullname.getChildren().addAll(fullnameLabel, textFieldFullname);
+
+        VBox age = new VBox();
+        Label ageLabel = new Label("Age:");
+        textFieldAge = new TextField(getAge(rowData.get("birthDate")));
+        textFieldAge.getStyleClass().add("short-field");
+        age.getChildren().addAll(ageLabel, textFieldAge);
+
+        VBox gender = new VBox();
+        Label genderLabel = new Label("Gender:");
+        textFieldGender = new TextField(rowData.get("gender"));
+        textFieldGender.getStyleClass().add("short-field");
+        gender.getChildren().addAll(genderLabel, textFieldGender);
+
+        employeeInfo.getChildren().addAll(fullname, age, gender);
+
+        return employeeInfo;
+    }
+
+    private HBox birthDateInfo(){
+        HBox birthDate = new HBox(10);
+
+        VBox birthDateBox = new VBox();
+        Label birthDateLabel = new Label("Full Name:");
+        textFieldbirthDate = new TextField(rowData.get("birthDate"));
+        textFieldbirthDate.getStyleClass().add("long-field");
+        birthDateBox.getChildren().addAll(birthDateLabel, textFieldbirthDate);
+
+        birthDate.getChildren().add(birthDateBox);
+
+        return birthDate;
+    }
+
+    private HBox emailAndPhone(){
+        HBox emailAndPhone = new HBox(10);
+
+        VBox email = new VBox();
+        Label emailLabel = new Label("Email:");
+        textFieldEmail = new TextField(rowData.get("email"));
+        textFieldEmail.getStyleClass().add("long-field");
+        email.getChildren().addAll(emailLabel, textFieldEmail);
+
+        VBox phoneNumber = new VBox();
+        Label phoneNumberLabel = new Label("Full Name:");
+        textFieldPhoneNumber = new TextField(rowData.get("name"));
+        textFieldPhoneNumber.getStyleClass().add("long-field");
+        phoneNumber.getChildren().addAll(phoneNumberLabel, textFieldPhoneNumber);
+
+        emailAndPhone.getChildren().addAll(email, phoneNumber);
+
+        return emailAndPhone;
+    }
+
+    private HBox address(){
+        HBox address = new HBox(10);
+
+        VBox addressBox = new VBox();
+        Label birthDateLabel = new Label("Full Name:");
+        textFieldAddress = new TextField(rowData.get("birthDate"));
+        textFieldAddress.getStyleClass().add("long-field");
+        addressBox.getChildren().addAll(birthDateLabel, textFieldAddress);
+
+        address.getChildren().add(addressBox);
+
+        return address;
+    }
+
+    public String getAge(String birthDate) {
+        if (birthDate == null || birthDate.equals("--")) {
+            return "--";
+        }
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        LocalDate birthday;
+
+        try {
+            birthday = LocalDate.parse(birthDate, dateFormatter);
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            return "--";
+        }
+
+        LocalDate currentDate = LocalDate.now();
+        return String.valueOf(Period.between(birthday, currentDate).getYears());
     }
 
     private HBox createButton(TextField usernameField, PasswordField passwordField, TextField nameField, TextField departmentField, TextField designationField, TextField grossPayField, Stage window){

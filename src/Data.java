@@ -15,6 +15,7 @@ public class Data {
 
         try {
             List<String> employeeLines = Files.readAllLines(employeeDataPath);
+            List<String> usersLines = Files.readAllLines(usersDataPath);
 
             String[] headerLine = employeeLines.get(0).split("#");
             for (String key : headerLine) {
@@ -33,6 +34,15 @@ public class Data {
                     break;
                 }
             }
+
+            for (String users : usersLines) {
+                String[] user = users.split("#");
+
+                if (user[0].equals(ID)){
+                    userData.put("username", user[1]);
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

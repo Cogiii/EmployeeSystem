@@ -246,24 +246,6 @@ public class AddEmployeeModal {
 
 
 
-        textFieldID.setEditable(false);
-
-        leftContent.getChildren().addAll(
-            header2,
-            username, textFieldID,
-            password, passwordField,
-            confirmPasswordLabel, confirmPassword,
-            fullNameLabel, fullNameField,
-            genderLabel, gender,
-            birthDateLabel, birthDate,
-            emailLabel, emailField,
-            phoneNumberLabel, phoneNumberField,
-            departmentLabel, department,
-            designationLabel, designation,
-            payPerHourLabel, payPerHourField,
-            pictureLabel, uploadPhoto,
-            registerButton
-        );
         return leftContent;
     }
 

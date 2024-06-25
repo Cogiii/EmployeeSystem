@@ -16,16 +16,22 @@
     -fx-min-width: 150;
     -fx-max-width: 150;
     -fx-prompt-text-fill: #7A7A7A;
-}
-.content-header{
-    -fx-font-size:20px;
-    -fx-font-weight: 900;
-    -fx-padding: 10 0 0 0;
+    -fx-padding: 5 10 5 10;
 }
 .long-field{
     -fx-min-width: 240;
     -fx-max-width: 240;
     -fx-prompt-text-fill: #7A7A7A;
+}
+.short-field{
+    -fx-min-width: 115;
+    -fx-max-width: 115;
+    -fx-prompt-text-fill: #7A7A7A;
+}
+.content-header{
+    -fx-font-size:20px;
+    -fx-font-weight: 900;
+    -fx-padding: 10 0 0 0;
 }
 .create-button {
     -fx-min-width: 540px;
