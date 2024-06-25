@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -39,27 +40,27 @@ public class ViewEmployeeModal {
         detailsStage.setTitle("View Employee");
 
         VBox detailsLayout = new VBox(10);
-        detailsLayout.setPadding(new Insets(20, 30, 10, 30));
+        detailsLayout.setPadding(new Insets(10,20,10,20));
 
         Label titleLabel = new Label("View Employee");
         titleLabel.getStyleClass().add("label-header");
 
         HBox content = showContent();
 
-        detailsLayout.setAlignment(Pos.TOP_LEFT);
+        detailsLayout.setAlignment(Pos.TOP_CENTER);
         detailsLayout.getChildren().addAll(titleLabel, content);
 
-        Scene detailsScene = new Scene(detailsLayout, 650, 450);
+        Scene detailsScene = new Scene(detailsLayout, 700, 500);
         Image icon = new Image("images/logo-icon.png");
         detailsStage.getIcons().add(icon);
-        detailsScene.getStylesheets().add("css/modal.css");
+        detailsScene.getStylesheets().add("css/viewModal.css");
         detailsStage.setScene(detailsScene);
         detailsStage.setResizable(false);
         detailsStage.showAndWait();
     }
 
     private HBox showContent(){
-        HBox content = new HBox(10);
+        HBox content = new HBox(20);
         
         VBox leftContent = leftContent();
         VBox rightContent = rightContent();
@@ -105,18 +106,57 @@ public class ViewEmployeeModal {
         //--------------------IMAGE END---------------------------------
 
         Label labelID = new Label("ID:");
-        TextField textFieldID = new TextField(userData.get("ID"));
+        TextField textFieldID = new TextField(rowData.get("ID"));
         textFieldID.setEditable(false);
 
-        leftContent.getChildren().addAll(imagePane, labelID, textFieldID);
+        Label labelDeperment = new Label("Department:");
+        TextField textFieldDepartment = new TextField(rowData.get("department"));
+
+        Label labelDesignation = new Label("Designation:");
+        TextField textFieldDesignation = new TextField(rowData.get("designation"));
+        
+        Label labelHireDate = new Label("Hire Date:");
+        TextField textFieldHireDate = new TextField(rowData.get("hireDate"));
+
+        leftContent.getChildren().addAll(imagePane, labelID, textFieldID, labelDeperment, textFieldDepartment, labelDesignation, textFieldDesignation, labelHireDate, textFieldHireDate);
 
         return leftContent;
     }
 
     private VBox rightContent(){
-        VBox rightContent = new VBox(5);
+        VBox rightContent = new VBox(10);
+
+        Label personalDetailsLabel = new Label("Personal Details");
+        personalDetailsLabel.getStyleClass().add("content-header");
+
+        HBox usernameAndPass = usernameAndPass();
+        HBox rowDetails = new HBox();
+        
+
+        rightContent.getChildren().addAll(personalDetailsLabel, usernameAndPass);
 
         return rightContent;
+    }
+
+    private HBox usernameAndPass(){
+        HBox usernameAndPass = new HBox(10);
+
+        VBox username = new VBox();
+        Label usernamLabel = new Label("Username:");
+        TextField textFieldUsername = new TextField(rowData.get("username"));
+        textFieldUsername.getStyleClass().add("long-field");
+        username.getChildren().addAll(usernamLabel, textFieldUsername);
+
+        VBox password = new VBox();
+        Label passwordLabel = new Label("Password:");
+        PasswordField passwordFieldPassword = new PasswordField();
+        passwordFieldPassword.setText("********");
+        passwordFieldPassword.getStyleClass().add("long-field");
+        password.getChildren().addAll(passwordLabel, passwordFieldPassword);
+
+        usernameAndPass.getChildren().addAll(username, password);
+
+        return usernameAndPass;
     }
 
     private HBox createButton(TextField usernameField, PasswordField passwordField, TextField nameField, TextField departmentField, TextField designationField, TextField grossPayField, Stage window){
