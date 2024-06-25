@@ -94,7 +94,6 @@ public class DashboardPage {
         double startX = (originalImage.getWidth() - squareSize) / 2;
         double startY = (originalImage.getHeight() - squareSize) / 2;
 
-        //
         // Create a viewport to crop the original image to square
         Rectangle2D viewportRect = new Rectangle2D(startX, startY, squareSize, squareSize);
 

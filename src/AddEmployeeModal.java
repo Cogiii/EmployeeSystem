@@ -5,8 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -14,33 +17,42 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class AddEmployeeModal {
     DashboardPage dashboardPage = new DashboardPage();
+    Data data = new Data();
 
     Stage window;
     String userID; 
+    HashMap<String, String> userData = new HashMap<>();
+
 
     void showAddModal(Stage stage, String ID) {
         userID = ID;
+        userData = data.getUserData(ID);
+
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Employee Details");
 
         VBox detailsLayout = new VBox(10);
-        detailsLayout.setPadding(new Insets(10, 30, 10, 30));
+        detailsLayout.setPadding(new Insets(10, 20, 10, 20));
 
-        Label titleLabel = new Label("Add An Employee");
-        VBox addFields = showTextFields(stage);
+        Label titleLabel = new Label("View Employee");
+        titleLabel.getStyleClass().add("label-header");
+        HBox content = showContent();
 
         detailsLayout.setAlignment(Pos.TOP_LEFT);
-        detailsLayout.getChildren().addAll(titleLabel, addFields);
+        detailsLayout.getChildren().addAll(titleLabel, content);
  
-        Scene detailsScene = new Scene(detailsLayout, 600, 380);
+        Scene detailsScene = new Scene(detailsLayout, 650, 450);
         Image icon = new Image("images/logo-icon.png");
         detailsScene.getStylesheets().add("css/modal.css");
         window.getIcons().add(icon);
@@ -49,39 +61,65 @@ public class AddEmployeeModal {
         window.showAndWait();
     }
 
-    private VBox showTextFields(Stage stage){
-        VBox addFields = new VBox(10);
-        VBox.setMargin(addFields, new Insets(10,0,5,0));
-
-        HBox userLoginDetails = new HBox(5);
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Username");
-        TextField passwordField = new TextField();
-        passwordField.setPromptText("Password");
-        userLoginDetails.getChildren().addAll(usernameField, passwordField);
+    private HBox showContent(){
+        HBox content = new HBox(10);
         
-        TextField nameField = new TextField();
-        nameField.getStyleClass().add("long-Field");
-        nameField.setPromptText("Full Name");
-        
-        TextField departmentField = new TextField();
-        departmentField.getStyleClass().add("long-Field");
-        departmentField.setPromptText("Department");
+        VBox leftContent = leftContent();
+        VBox rightContent = rightContent();
 
-        TextField designationField = new TextField();
-        designationField.getStyleClass().add("long-Field");
-        designationField.setPromptText("Designation");
+        content.getChildren().addAll(leftContent, rightContent);
 
-        TextField payPerDayField = new TextField();
-        payPerDayField.getStyleClass().add("long-Field");
-        payPerDayField.setPromptText("Pay per day");
+        return content;
+    }
 
-        Button createButton = new Button("Create Employee");
-        createButton.getStyleClass().add("create-button");
-        createButton.setOnAction(e -> createEmployee(usernameField.getText(), passwordField.getText(), nameField.getText(), departmentField.getText(), designationField.getText(), payPerDayField.getText(), stage));
+    private VBox leftContent(){
+        VBox leftContent = new VBox(5);
+        leftContent.setAlignment(Pos.TOP_LEFT);
 
-        addFields.getChildren().addAll(userLoginDetails, nameField, departmentField, designationField, payPerDayField, createButton);
-        return addFields;
+        //---------------------IMAGE-----------------------------
+        Image originalImage = new Image("images/userImage/hannipham.jpg");
+
+        // Calculate dimensions for the square
+        double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());
+        double startX = (originalImage.getWidth() - squareSize) / 2;
+        double startY = (originalImage.getHeight() - squareSize) / 2;
+
+        // Create a viewport to crop the original image to square
+        Rectangle2D viewportRect = new Rectangle2D(startX, startY, squareSize, squareSize);
+
+        ImageView userPicture = new ImageView(originalImage);
+        userPicture.setViewport(viewportRect);
+        userPicture.setFitWidth(150);
+        userPicture.setFitHeight(150);
+        userPicture.setPreserveRatio(false);
+
+        // Create a Rectangle with rounded corners (as a clipping mask)
+        Rectangle clip = new Rectangle(150, 150);
+        clip.setArcWidth(30); // Adjust the arc width as needed
+        clip.setArcHeight(30); // Adjust the arc height as needed
+
+        // Apply clipping to the ImageView
+        userPicture.setClip(clip);
+
+        // Create a StackPane and add the Rectangle and ImageView
+        StackPane imagePane = new StackPane();
+        imagePane.getChildren().addAll(userPicture);
+        imagePane.setAlignment(Pos.TOP_LEFT);
+        //--------------------IMAGE END---------------------------------
+
+        Label labelID = new Label("ID:");
+        TextField textFieldID = new TextField(userData.get("ID"));
+        textFieldID.setEditable(false);
+
+        leftContent.getChildren().addAll(imagePane, labelID, textFieldID);
+
+        return leftContent;
+    }
+
+    private VBox rightContent(){
+        VBox rightContent = new VBox(5);
+
+        return rightContent;
     }
 
     private void createEmployee(String usernameField, String passwordField, String nameField, String departmentField, String designationField, String payPerDayField, Stage stage){

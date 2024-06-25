@@ -63,3 +63,4 @@ ID#date#timeInAM#timeOutAM#timeInPM#timeOutPM
 2#Saturday, June 22, 2024#--#--#--#--
 0#Monday, June 24, 2024#--#--#12:45PM#4:30PM
 1#Monday, June 24, 2024#--#--#12:45PM#4:30PM
+0#Tuesday, June 25, 2024#10:37AM#--#--#--

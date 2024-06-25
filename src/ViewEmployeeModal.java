@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.HashMap;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -27,27 +23,33 @@ public class ViewEmployeeModal {
     Data data = new Data();
     DashboardPage dashboardPage = new DashboardPage();
     Stage detailsStage;
+    String rowID;
     String userID;
+    HashMap <String, String> rowData = new HashMap<>();
+    HashMap <String, String> userData = new HashMap<>();
 
     void showEmployeeDetails(Stage window, Employee employee, String ID) {
-        this.user_ID = employee.getID();
+        rowID = employee.getID();
+        rowData = data.getUserData(rowID);
         userID = ID;
+        userData = data.getUserData(ID);
 
         detailsStage = new Stage();
         detailsStage.initModality(Modality.APPLICATION_MODAL);
-        detailsStage.setTitle("Employee Details");
+        detailsStage.setTitle("View Employee");
 
         VBox detailsLayout = new VBox(10);
         detailsLayout.setPadding(new Insets(20, 30, 10, 30));
 
-        Label titleLabel = new Label("View an Employee (Employee ID #"+ user_ID+")");
-        StackPane userImage = showImage();
-        VBox userInfo = showUserInfo(employee, window);
+        Label titleLabel = new Label("View Employee");
+        titleLabel.getStyleClass().add("label-header");
+
+        HBox content = showContent();
 
         detailsLayout.setAlignment(Pos.TOP_LEFT);
-        detailsLayout.getChildren().addAll(titleLabel, userImage, userInfo);
+        detailsLayout.getChildren().addAll(titleLabel, content);
 
-        Scene detailsScene = new Scene(detailsLayout, 600, 540);
+        Scene detailsScene = new Scene(detailsLayout, 650, 450);
         Image icon = new Image("images/logo-icon.png");
         detailsStage.getIcons().add(icon);
         detailsScene.getStylesheets().add("css/modal.css");
@@ -56,85 +58,22 @@ public class ViewEmployeeModal {
         detailsStage.showAndWait();
     }
 
-    private void getEmployeeDetails(String id){
-        Path employeeDataPath = Paths.get("data/employee.txt");
-        try (BufferedReader br = new BufferedReader(new FileReader(employeeDataPath.toFile()))) {
-            String line;
+    private HBox showContent(){
+        HBox content = new HBox(10);
+        
+        VBox leftContent = leftContent();
+        VBox rightContent = rightContent();
 
-            // Skip the first line/header line
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] row = line.split("#");
-                
-                if (row[0].equals(id)){
-                    this.name = row[1];
-                    this.department = row[2];
-                    this.designation = row[3];
-                    this.grossPay = row[12];
-                }
+        content.getChildren().addAll(leftContent, rightContent);
 
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading from file: " + e.getMessage());
-        }
-
-        Path usersDataPath = Paths.get("data/users.txt");
-        try (BufferedReader br = new BufferedReader(new FileReader(usersDataPath.toFile()))) {
-            String line;
-
-            // Skip the first line/header line
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] row = line.split("#");
-                
-                if (row[0].equals(id))
-                    this.username = row[1];
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading from file: " + e.getMessage());
-        }
-    }
-    private VBox showUserInfo(Employee employee, Stage window){
-        VBox userInfo = new VBox(10);
-
-        getEmployeeDetails(String.valueOf(employee.getID()));
-
-        HBox userLoginDetails = new HBox(5);
-        TextField usernameField = new TextField(username);
-        usernameField.setPromptText("Username");
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Password");
-        passwordField.setText("********");
-        passwordField.setEditable(false);
-
-        userLoginDetails.getChildren().addAll(usernameField,passwordField);
-
-        TextField nameField = new TextField(name);
-        nameField.getStyleClass().add("long-Field");
-        nameField.setPromptText("Name");
-
-        TextField departmentField = new TextField(department);
-        departmentField.getStyleClass().add("long-Field");
-        departmentField.setPromptText("Department");
-
-        TextField designationField = new TextField(designation);
-        designationField.getStyleClass().add("long-Field");
-        designationField.setPromptText("Designation");
-
-        TextField grossPayField = new TextField(grossPay);
-        grossPayField.getStyleClass().add("long-Field");
-        grossPayField.setPromptText("Gross Pay");
-
-        HBox button = createButton(usernameField, passwordField, nameField, departmentField, designationField, grossPayField, window);
-
-        passwordField.setEditable(false);
-
-        userInfo.getChildren().addAll(userLoginDetails, nameField, departmentField, designationField, grossPayField, button);
-
-        return userInfo;
+        return content;
     }
 
-    private StackPane showImage(){
+    private VBox leftContent(){
+        VBox leftContent = new VBox(5);
+        leftContent.setAlignment(Pos.TOP_LEFT);
+
+        //---------------------IMAGE-----------------------------
         Image originalImage = new Image("images/userImage/hannipham.jpg");
 
         // Calculate dimensions for the square
@@ -153,17 +92,31 @@ public class ViewEmployeeModal {
 
         // Create a Rectangle with rounded corners (as a clipping mask)
         Rectangle clip = new Rectangle(150, 150);
-        clip.setArcWidth(20); // Adjust the arc width as needed
-        clip.setArcHeight(20); // Adjust the arc height as needed
+        clip.setArcWidth(30); // Adjust the arc width as needed
+        clip.setArcHeight(30); // Adjust the arc height as needed
 
         // Apply clipping to the ImageView
         userPicture.setClip(clip);
 
         // Create a StackPane and add the Rectangle and ImageView
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(userPicture);
+        StackPane imagePane = new StackPane();
+        imagePane.getChildren().addAll(userPicture);
+        imagePane.setAlignment(Pos.TOP_LEFT);
+        //--------------------IMAGE END---------------------------------
 
-        return stackPane;
+        Label labelID = new Label("ID:");
+        TextField textFieldID = new TextField(userData.get("ID"));
+        textFieldID.setEditable(false);
+
+        leftContent.getChildren().addAll(imagePane, labelID, textFieldID);
+
+        return leftContent;
+    }
+
+    private VBox rightContent(){
+        VBox rightContent = new VBox(5);
+
+        return rightContent;
     }
 
     private HBox createButton(TextField usernameField, PasswordField passwordField, TextField nameField, TextField departmentField, TextField designationField, TextField grossPayField, Stage window){
