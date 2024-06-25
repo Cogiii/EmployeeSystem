@@ -1,0 +1,13 @@
+IT#Software Engineer,Cyber Security Specialist,IT Support Specialist,Network Administrator,Database Administrator,DevOps Engineer,System Analyst,IT Manager
+ENGINEERING#Mechanical Engineer,Electrical Engineer,Civil Engineer,Chemical Engineer,Project Engineer,Structural Engineer,Process Engineer,Quality Engineer
+ACCOUNTANCY#Accountant,Financial Analyst,Auditor,Tax Specialist,Accounts Payable/Receivable Clerk,Payroll Specialist,Cost Accountant,Chief Financial Officer (CFO)
+HUMAN RESOURCES#HR Manager,Recruiter,HR Generalist,HR Specialist,Training and Development Manager,Compensation and Benefits Manager,Employee Relations Specialist,HR Coordinator
+MARKETING#Marketing Manager,Digital Marketing Specialist,Content Strategist,SEO Specialist,Social Media Manager,Marketing Coordinator,Brand Manager,Product Marketing Manager
+SALES#Sales Manager,Sales Representative,Account Executive,Business Development Manager,Sales Analyst,Inside Sales Representative,Territory Manager,Sales Director
+CUSTOMER SERVICE#Customer Service Representative,Call Center Agent,Technical Support Specialist,Customer Service Manager,Client Relations Specialist,Help Desk Technician,Customer Success Manager,Support Coordinator
+OPERATIONS#Operations Manager,Logistics Coordinator,Supply Chain Manager,Warehouse Manager,Production Supervisor,Operations Analyst,Procurement Specialist,Inventory Manager
+RESEARCH AND DEVELOPMENT#R&D Manager,Research Scientist,Product Development Engineer,Laboratory Technician,R&D Analyst,Innovation Manager,Research Assistant,Development Chemist
+LEGAL#Legal Counsel,Paralegal,Corporate Attorney,Compliance Officer,Contract Manager,Legal Assistant,Litigation Specialist,Intellectual Property Attorney
+ADMINISTRATIVE#Administrative Assistant,Office Manager,Executive Assistant,Receptionist,Administrative Coordinator,Office Clerk,Data Entry Specialist,Secretary
+PROCUREMENT#Procurement Manager,Purchasing Agent,Buyer,Supply Chain Analyst,Sourcing Specialist,Procurement Analyst,Vendor Manager,Procurement Coordinator
+QUALITY ASSURANCE#Quality Assurance Manager,QA Analyst,Quality Control Inspector,QA Engineer,Test Engineer,Compliance Specialist,Quality Coordinator,QA Tester

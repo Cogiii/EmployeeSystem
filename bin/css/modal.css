@@ -19,7 +19,7 @@
     -fx-alignment: CENTER;
     -fx-font-weight: bold;
     -fx-user-select: none;
-    -fx-prompt-text-fill: #7A7A7A;
+    -fx-prompt-text-fill: #132033;
 }
 .long-Field{
     -fx-min-width: 540px;
@@ -32,7 +32,7 @@
     -fx-background-color: #132033;
     -fx-text-fill: #FFFFFF;
     -fx-alignment: CENTER;
-    -fx-background-radius: 20px;
+    -fx-background-radius: 10px;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
