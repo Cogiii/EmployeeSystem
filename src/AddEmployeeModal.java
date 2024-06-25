@@ -68,7 +68,7 @@ public class AddEmployeeModal {
         detailsLayout.setAlignment(Pos.TOP_LEFT);
         detailsLayout.getChildren().addAll(titleLabel, content);
  
-        Scene detailsScene = new Scene(detailsLayout, 580, 500);
+        Scene detailsScene = new Scene(detailsLayout, 580, 490);
         Image icon = new Image("images/logo-icon.png");
         detailsScene.getStylesheets().add("css/addModal.css");
         window.getIcons().add(icon);
@@ -78,7 +78,7 @@ public class AddEmployeeModal {
     }
 
     private VBox showContent(){
-        VBox content = new VBox(5);
+        VBox content = new VBox(10);
         HBox firstLine = firstLine();
         HBox secondLine = secondLine();
         HBox thirdLine = thirdLine();
@@ -86,13 +86,12 @@ public class AddEmployeeModal {
         HBox fifthLine = fifthLine();
         HBox sixthLine = sixthLine();
 
-        HBox buttonLayout = new HBox();
         Button submitButton = new Button("Submit");
+        submitButton.getStyleClass().add("create-button");
+        HBox buttonLayout = new HBox(submitButton);
         submitButton.setOnAction(e -> {
             createEmployee(usernameField.getText(), passwordField.getText(), fullNameField.getText(), departmentField.getValue().toString(), designationField.getValue().toString(), payPerHourField.getText(), gender.getValue().toString(), birthDate.getValue().toString(), emailField.getText(), phoneNumberField.getText());
         });
-        submitButton.getStyleClass().add("create-button");
-        buttonLayout.getChildren().add(submitButton);
         
         content.getChildren().addAll(firstLine, secondLine, thirdLine, fourthLine, fifthLine, sixthLine, buttonLayout);
 
