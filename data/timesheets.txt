@@ -86,3 +86,12 @@ ID#date#timeInAM#timeOutAM#timeInPM#timeOutPM
 11#Saturday, June 22, 2024#--#--#--#--
 11#Sunday, June 23, 2024#--#--#--#--
 11#Monday, June 24, 2024#--#--#--#--
+12#Tuesday, June 25, 2024#--#--#--#--
+12#Monday, June 17, 2024#--#--#--#--
+12#Tuesday, June 18, 2024#--#--#--#--
+12#Wednesday, June 19, 2024#--#--#--#--
+12#Thursday, June 20, 2024#--#--#--#--
+12#Friday, June 21, 2024#--#--#--#--
+12#Saturday, June 22, 2024#--#--#--#--
+12#Sunday, June 23, 2024#--#--#--#--
+12#Monday, June 24, 2024#--#--#--#--

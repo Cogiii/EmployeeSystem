@@ -34,7 +34,7 @@ public class AddEmployeeModal {
     DashboardPage dashboardPage = new DashboardPage();
     Data data = new Data();
 
-    Stage window;
+    Stage window, mainStage;
     String userID; 
     HashMap<String, String> userData = new HashMap<>();
     TextField usernameField, fullNameField, emailField, phoneNumberField, payPerHourField;
@@ -49,6 +49,7 @@ public class AddEmployeeModal {
     void showAddModal(Stage stage, String ID) {
         userID = ID;
         userData = data.getUserData(ID);
+        mainStage = stage;
 
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -85,7 +86,7 @@ public class AddEmployeeModal {
         HBox buttonLayout = new HBox();
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
-            createEmployee(usernameField.getText(), passwordField.getText(), fullNameField.getText(), departmentField.getValue().toString(), designationField.getValue().toString(), payPerHourField.getText(), window);
+            createEmployee(usernameField.getText(), passwordField.getText(), fullNameField.getText(), departmentField.getValue().toString(), designationField.getValue().toString(), payPerHourField.getText());
         });
         submitButton.getStyleClass().add("create-button");
         buttonLayout.getChildren().add(submitButton);
@@ -301,7 +302,7 @@ public class AddEmployeeModal {
         return department;
     }
 
-    private void createEmployee(String usernameField, String passwordField, String nameField, String departmentField, String designationField, String payPerDayField, Stage stage){
+    private void createEmployee(String usernameField, String passwordField, String nameField, String departmentField, String designationField, String payPerDayField){
         // Check if any field is empty
         if(usernameField.isEmpty() || passwordField.isEmpty() || nameField.isEmpty() || departmentField.isEmpty() || designationField.isEmpty() || payPerDayField.isEmpty()){
             // Show alert using JavaFX
@@ -335,16 +336,19 @@ public class AddEmployeeModal {
             System.err.println("Error reading from file: " + e.getMessage());
         }
         newID++;
-        //[0]Id, [1]name, [2]department, [3]designation, [4]Birth Date, [5]Hire Date, [6]Address, [7],Phone Number, [8]Pay/Day, [9]Total Hours Worked, [10]Total Overtime, [11]Gross Deductions, [12]GrossPay, [13]Check-In, [14]Check-Out, [15] Status
-        String newName = "--", newDeparment= "--", newDesignation = "--", newBirthDate = "--", newHireDate = "--", newAddress = "--", newPhoneNumber = "--", newPayPerDay = "--", newTotalHoursWorked = "--", newTotalOvertime = "--", newTotalLates = "0", newGrossDeductions = "--", newGrossPay = "--", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
+        //[0]Id, [1]name, [2]department, [3]designation, [4]gender, [5]birthDate, [6]hireDate, [7]email, [8]address, [9]phoneNumber, [10]payPerDay, [11]hoursWorked, [12]totalOvertime, [13]lates, [14]deductions, [15]grossPay, [16]timeIn, [17]timeOut, [18]status
+        String newName = "--", newDepartment= "--", newDesignation = "--", newGender = "--", newBirthDate = "--", newHireDate = "--", newEmail = "--", newAddress = "--", newPhoneNumber = "--", newPayPerDay = "0", newTotalHoursWorked = "0", newTotalOvertime = "0", newTotalLates = "0", newGrossDeductions = "0", newGrossPay = "0", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
 
         newName = nameField;
-        newDeparment = departmentField;
+        newDepartment = departmentField;
         newDesignation = designationField;
+        newEmail = emailField.getText();
         newPayPerDay = payPerDayField;
         newStatus = "employee";
+        // add more katung mga kullaaaaaannnngggggggggg
 
-        String addEmployeeLine = newID+"#"+newName+"#"+newDeparment+"#"+newDesignation+"#"+newBirthDate+"#"+newHireDate+"#"+newAddress+"#"+newPhoneNumber+"#"+newPayPerDay+"#"+newTotalHoursWorked+"#"+newTotalOvertime+"#"+newTotalLates+"#"+newGrossDeductions+"#"+newGrossPay+"#"+newCheckIn+"#"+newCheckOut+"#"+newStatus;
+        String addEmployeeLine = newID + "#" + newName + "#" + newDepartment + "#" + newDesignation + "#" + newGender + "#" + newBirthDate + "#" + newHireDate + "#" + newEmail + "#" + newAddress + "#" + newPhoneNumber + "#" + newPayPerDay + "#" + newTotalHoursWorked + "#" + newTotalOvertime + "#" + newTotalLates + "#" + newGrossDeductions + "#" + newGrossPay + "#" + newCheckIn + "#" + newCheckOut + "#" + newStatus;
+
 
         SHA256HashGenerator hash = new SHA256HashGenerator();
 
@@ -361,7 +365,7 @@ public class AddEmployeeModal {
             addUser.close();
 
             window.close();
-            dashboardPage.showDashboard(stage, userID);
+            dashboardPage.showDashboard(mainStage, userID);
         } catch (IOException e) {
             System.err.println("An error occurred while writing to the file: " + e.getMessage());
         }
