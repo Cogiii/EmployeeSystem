@@ -80,7 +80,7 @@ public class ViewEmployeeModal {
         leftContent.setAlignment(Pos.TOP_LEFT);
 
         //---------------------IMAGE-----------------------------
-        Image originalImage = new Image("images/userImage/hannipham.jpg");
+        Image originalImage = new Image("images/userImage/" + rowData.get("username") + ".png");
 
         // Calculate dimensions for the square
         double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());

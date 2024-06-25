@@ -101,7 +101,7 @@ public class AddEmployeeModal {
         VBox usernameBox = new VBox(5);
         Label username = new Label("Username: ");
         usernameField = new TextField();
-        usernameField.setPromptText("username");
+        usernameField.setPromptText("Username");
 
         usernameBox.getChildren().addAll(username, usernameField);
         firstLine.getChildren().addAll(usernameBox);
@@ -114,14 +114,14 @@ public class AddEmployeeModal {
         VBox passwordLayout = new VBox();
         Label password = new Label("Password: ");
         passwordField = new PasswordField();
-        passwordField.setPromptText("password");
+        passwordField.setPromptText("Password");
         
         passwordLayout.getChildren().addAll(password, passwordField);
 
         VBox confirmPasswordLayout = new VBox();
         Label confirmPasswordLabel = new Label("Confirm Password: ");
         confirmPassword = new PasswordField();
-        confirmPassword.setPromptText("confirm password");
+        confirmPassword.setPromptText("Confirm Password");
         
         confirmPasswordLayout.getChildren().addAll(confirmPasswordLabel, confirmPassword);
 
@@ -136,7 +136,7 @@ public class AddEmployeeModal {
         VBox fullNameLayout = new VBox();
         Label fullNameLabel = new Label("Full Name: ");
         fullNameField = new TextField();
-        fullNameField.setPromptText("fullname");
+        fullNameField.setPromptText("Full Name");
 
         fullNameLayout.getChildren().addAll(fullNameLabel, fullNameField);
 
@@ -153,7 +153,7 @@ public class AddEmployeeModal {
 
         VBox birthDateBox = new VBox();
         Label birthDateLabel = new Label("Birth Date: ");
-        birthDate.setPromptText("birth date");
+        birthDate.setPromptText("Birth Date");
         birthDate.getStyleClass().add("birthDate-field");
 
         birthDateBox.getChildren().addAll(birthDateLabel, birthDate);
@@ -169,13 +169,13 @@ public class AddEmployeeModal {
         VBox emailLayout = new VBox();
         Label emailLabel = new Label("Email: ");
         emailField = new TextField();
-        emailField.setPromptText("email");
+        emailField.setPromptText("Email");
         emailLayout.getChildren().addAll(emailLabel, emailField);
 
         VBox phoneNumberLayout = new VBox();
         Label phoneNumberLabel = new Label("Phone Number: ");
         phoneNumberField = new TextField();
-        phoneNumberField.setPromptText("phone number");
+        phoneNumberField.setPromptText("Phone Number");
         phoneNumberLayout.getChildren().addAll(phoneNumberLabel, phoneNumberField);
 
         fourthLine.getChildren().addAll(emailLayout, phoneNumberLayout);
@@ -205,13 +205,13 @@ public class AddEmployeeModal {
 
         VBox departmentLayout = new VBox();
         Label departmentLabel = new Label("Department: ");
-        departmentField.setPromptText("department");
+        departmentField.setPromptText("Department");
         departmentField.getStyleClass().add("drop-down");
         departmentLayout.getChildren().addAll(departmentLabel, departmentField);
 
         VBox designationLayout = new VBox();
         Label designationLabel = new Label("Designation: ");
-        designationField.setPromptText("designation");
+        designationField.setPromptText("Designation");
         designationField.getStyleClass().add("drop-down");
         designationLayout.getChildren().addAll(designationLabel, designationField);
         fifthLine.getChildren().addAll(departmentLayout, designationLayout);
@@ -235,7 +235,7 @@ public class AddEmployeeModal {
         VBox payPerHourLayout = new VBox();
         Label payPerHourLabel = new Label("Pay per hour: ");
         payPerHourField = new TextField();
-        payPerHourField.setPromptText("pay per hour");
+        payPerHourField.setPromptText("Pay Per Hour");
         
         payPerHourLayout.getChildren().addAll(payPerHourLabel, payPerHourField);
 
@@ -263,10 +263,23 @@ public class AddEmployeeModal {
         
                     // Perform the copy using Files.copy() method
                     Files.copy(sourcePath, destinationPath);
+
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Picture Uploaded!");
+                    alert.setHeaderText("User Picture Uploaded");
+                    alert.setContentText("The user's picture has been uploaded successfully.");
+
+                    alert.showAndWait();
+                    return; // Exit the method if any field is empty
         
-                    System.out.println("File copied successfully.");
                 } catch (IOException s) {
-                    System.out.println("Error copying file: " + s.getMessage());
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Failed to upload");
+                    alert.setContentText("Failed to upload user's photo. Please try again.");
+
+                    alert.showAndWait();
+                    return; // Exit the method if any field is empty
                 }
 
             }

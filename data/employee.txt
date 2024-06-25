@@ -1,10 +1,4 @@
 ID#name#department#designation#gender#birthDate#hireDate#email#address#phoneNumber#payPerDay#hoursWorked#totalOvertime#lates#deductions#grossPay#timeIn#timeOut#status
-0#Admin#Admin#Admin#None#None#None#None#None#0#65#65#0#8#41.60#478.40#10:37AM#--#admin
-1#Laurence Kharl Devera#IT#Software Engineer#Male#June 29, 2004#June 17,2004#laurencedevera8@gmail.com#Buhangin Davao City#09123456789#2000#91#4#4#880.00#22000.00#2:56PM#--#employee
-2#Laurence Lesmoras#IT#Software Engineer#Male#October 23, 2004#June 18,2004#Davao City#09321456798#1000#88#88#0#24#232.32#735.68#3:25PM#--#employee
-7#Supremo Caloy Benedicto Blanco#DOH#desigm#Male#--#--#--#--#--#10000#88#0#3#3300.00#106700.00#--#--#deleted
-8#Jasper Nikko Navarez#IT#Game Developer#Male#--#--#--#--#--#500#0#0#0#0.00#0.00#--#--#employee
-9#Hanni Pham#Cleaner#Senior Janitor#Female#--#--#--#--#--#1000#0#0#0#0.00#0.00#--#--#employee
-10#Kim Minji#CUSTOMER SERVICE#Technical Support Specialist#Female#October 10, 2008#May 16, 2023#kimminji@gmail.com#Matina, Davao City#09123456789#100#0#0#0#0.00#0.00#--#--#employee
-11#Hanni Pham#LEGAL#Corporate Attorney#--#--#--#--#--#--#1000#0#0#0#0.00#0.00#--#--#employee
-12#Laurence Kharl Devera#QUALITY ASSURANCE#Test Engineer#--#--#--#--#--#--#500#0#0#0#0.00#0.00#--#--#employee
+0#Admin#Admin#Admin#None#None#None#None#None#0#65#0#0#8#0.00#0.00#--#--#admin
+1#Laurence Lesmoras#IT#Software Engineer#--#--#--#llesmoras@mcm.edu.ph#--#--#10000#0#0#0#0.00#0.00#--#--#employee
+2#Kim Minji#ACCOUNTANCY#Tax Specialist#--#--#--#kminji@mcm.edu.ph#--#--#1000#0#0#0#0.00#0.00#--#--#employee
