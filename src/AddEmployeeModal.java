@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -251,7 +252,22 @@ public class AddEmployeeModal {
             File file = fileChooser.showOpenDialog(window);
             if (file != null) {
                 setPictureDirectory(file.getAbsolutePath()); // Set directory containing the selected image
-                System.out.println("Selected file: " + getPictureDirectory());
+                String sourceFile = getPictureDirectory();
+                String destinationFile = "src/images/userImage/" + usernameField.getText() + ".png";
+
+                try {
+                    // Create Path objects from the file paths
+                    Path sourcePath = Paths.get(sourceFile);
+                    Path destinationPath = Paths.get(destinationFile);
+        
+                    // Perform the copy using Files.copy() method
+                    Files.copy(sourcePath, destinationPath);
+        
+                    System.out.println("File copied successfully.");
+                } catch (IOException s) {
+                    System.out.println("Error copying file: " + s.getMessage());
+                }
+
             }
         });
 

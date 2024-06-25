@@ -54,8 +54,8 @@ public class DashboardPage {
 
         VBox main = new VBox(10);
 
-        HBox top = createMainTop("Dashboard Page", userData.get("name"), userData.get("designation"));
-        StackPane userPanel = createUserPanel(userData.get("name"), userData.get("designation"), userData.get("address"));
+        HBox top = createMainTop("Dashboard Page", userData.get("name"), userData.get("designation"), userData.get("username"));
+        StackPane userPanel = createUserPanel(userData.get("name"), userData.get("designation"), userData.get("address"), userData.get("username"));
         HBox mainHeader = createMainHeader();
         VBox mainTable = table.createTable(mainStage, tableHeader, searchEmployee, tableData, employees, "dashboard", userData.get("ID"));
 
@@ -63,7 +63,7 @@ public class DashboardPage {
         return main;
     }
 
-    HBox createMainTop(String title, String username, String position) {
+    HBox createMainTop(String title, String userFullName, String position, String username) {
         HBox top = new HBox();
 
         Label titleLabel = new Label(title);
@@ -75,7 +75,7 @@ public class DashboardPage {
         VBox userLabel = new VBox();
         userLabel.setAlignment(Pos.CENTER_RIGHT); // Align labels to the center right
 
-        Label usernameLabel = new Label(username);
+        Label usernameLabel = new Label(userFullName);
         usernameLabel.getStyleClass().add("top-user_name");
 
         Label userPositionLabel = new Label(position);
@@ -86,8 +86,8 @@ public class DashboardPage {
         userLabel.getChildren().addAll(usernameLabel, userPositionLabel);
 
         // IMAGE CODE -- CURVED EDGES
-
-        Image originalImage = new Image("images/userImage/hannipham.jpg");
+        System.out.println("images/userImage/" + username.toLowerCase().trim() + ".png");
+        Image originalImage = new Image("images/userImage/" + username.toLowerCase().trim() + ".png");
 
         // Calculate dimensions for the square
         double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());
@@ -131,13 +131,14 @@ public class DashboardPage {
         return top;
     }
 
-    StackPane createUserPanel(String username, String position, String location) {
+    StackPane createUserPanel(String userFullName, String position, String location, String username) {
         StackPane panel = new StackPane();
         panel.getStyleClass().add("panel");
 
         HBox panel_data = new HBox(5);
 
-        Image originalImage = new Image("images/userImage/hannipham.jpg");
+        
+        Image originalImage = new Image("images/userImage/" + username.toLowerCase().trim() + ".png");
 
         // Calculate dimensions for the square
         double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());
@@ -167,7 +168,7 @@ public class DashboardPage {
         userPicture.getStyleClass().add("image");
 
         VBox userInfo = new VBox();
-        Label user_name = new Label(username);
+        Label user_name = new Label(userFullName);
         user_name.getStyleClass().add("panel-user_name");
         Label user_position = new Label(position);
         user_position.getStyleClass().add("panel-user_position");

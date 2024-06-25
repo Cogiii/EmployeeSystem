@@ -58,8 +58,8 @@ public class TimesheetsPage {
     public VBox createMainContent(){
         VBox main = new VBox(10);
 
-        HBox top = getLayout.createMainTop("Timesheets Page", userData.get("name"), userData.get("designation"));
-        StackPane userPanel = getLayout.createUserPanel(userData.get("name"), userData.get("designation"), userData.get("address"));
+        HBox top = getLayout.createMainTop("Timesheets Page", userData.get("name"), userData.get("designation"), userData.get("username"));
+        StackPane userPanel = getLayout.createUserPanel(userData.get("name"), userData.get("designation"), userData.get("address"), userData.get("username"));
         HBox mainHeader = createMainHeader();
         VBox table = createTable();
 
