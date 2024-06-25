@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -28,18 +27,18 @@ public class ViewEmployeeModal {
     Data data = new Data();
     DashboardPage dashboardPage = new DashboardPage();
     Stage detailsStage;
+    Stage window;
     String rowID;
-    String userID;
     HashMap <String, String> rowData = new HashMap<>();
     HashMap <String, String> userData = new HashMap<>();
 
     TextField textFieldID, textFieldDepartment, textFieldDesignation, textFieldHireDate, textFieldUsername, textFieldFullname, textFieldAge, textFieldGender, textFieldbirthDate, textFieldEmail, textFieldPhoneNumber, textFieldAddress;
 
-    void showEmployeeDetails(Stage window, Employee employee, String ID) {
+    void showEmployeeDetails(Stage w, Employee employee, String ID) {
         rowID = employee.getID();
         rowData = data.getUserData(rowID);
-        userID = ID;
         userData = data.getUserData(ID);
+        window = w;
 
         detailsStage = new Stage();
         detailsStage.initModality(Modality.APPLICATION_MODAL);
@@ -52,9 +51,10 @@ public class ViewEmployeeModal {
         titleLabel.getStyleClass().add("label-header");
 
         HBox content = showContent();
+        HBox buttons = createButton();
 
         detailsLayout.setAlignment(Pos.TOP_CENTER);
-        detailsLayout.getChildren().addAll(titleLabel, content);
+        detailsLayout.getChildren().addAll(titleLabel, content, buttons);
 
         Scene detailsScene = new Scene(detailsLayout, 700, 500);
         Image icon = new Image("images/logo-icon.png");
@@ -265,7 +265,9 @@ public class ViewEmployeeModal {
         return String.valueOf(Period.between(birthday, currentDate).getYears());
     }
 
-    private HBox createButton(TextField usernameField, PasswordField passwordField, TextField nameField, TextField departmentField, TextField designationField, TextField grossPayField, Stage window){
+
+
+    private HBox createButton(){
         HBox layout = new HBox(5);
 
         Button deleteButton = new Button("Delete");
@@ -273,14 +275,14 @@ public class ViewEmployeeModal {
         deleteButton.getStyleClass().add("delete-button");
         updateButton.getStyleClass().add("update-button");
 
-        deleteButton.setOnAction(e -> deleteEmployee(window));
-        updateButton.setOnAction(e -> updateEmployee(window, usernameField.getText(), nameField.getText(), departmentField.getText(), designationField.getText(), grossPayField.getText(), String.valueOf(user_ID)));
+        deleteButton.setOnAction(e -> deleteEmployee());
+        updateButton.setOnAction(e -> updateEmployee());
 
         layout.getChildren().addAll(deleteButton,updateButton);
         return layout;
     }
 
-    private void deleteEmployee(Stage window){
+    private void deleteEmployee(){
         // Show confirmation dialog for delete operation
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
@@ -289,14 +291,14 @@ public class ViewEmployeeModal {
         
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                data.deleteEmployeeData(String.valueOf(user_ID));
+                data.deleteEmployeeData(String.valueOf(rowData.get("ID")));
                 detailsStage.close();
-                dashboardPage.showDashboard(window, userID);
+                dashboardPage.showDashboard(window, userData.get("ID"));
             }
         });
 
     }
-    private void updateEmployee(Stage window, String newUsername, String newName, String newDepartment, String newDesignation, String newGrossPay, String user_ID){
+    private void updateEmployee(){
         // Show confirmation dialog for update operation
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Update");
@@ -305,9 +307,9 @@ public class ViewEmployeeModal {
         
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                data.updateEmployeeData(newUsername, newName, newDepartment, newDesignation, newGrossPay, user_ID);
+                data.updateEmployeeData(rowData.get("ID"), textFieldFullname.getText(), textFieldDepartment.getText(), textFieldDesignation.getText(), textFieldGender.getText(), textFieldbirthDate.getText(), textFieldHireDate.getText(), textFieldEmail.getText(),textFieldAddress.getText(),textFieldPhoneNumber.getText());
                 detailsStage.close();
-                dashboardPage.showDashboard(window, userID);
+                dashboardPage.showDashboard(window, userData.get("ID"));
             }
         });
         

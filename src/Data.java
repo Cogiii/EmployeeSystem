@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,59 +53,59 @@ public class Data {
     }
 
     // Method to delete the row of data file based on user_ID (set to inactive instead of deleting)
-    public void deleteEmployeeData(String user_ID) {
+    public void deleteEmployeeData(String userID) {
+        List<String> employeeUpdatedLines = new ArrayList<>();
+        List<String> usersUpdatedLines = new ArrayList<>();
+
+        HashMap<String, String> employeeData = new HashMap<>();
+        HashMap<String, String> usersData = new HashMap<>();
+
         try {
             List<String> employeeLines = Files.readAllLines(employeeDataPath);
             List<String> usersLines = Files.readAllLines(usersDataPath);
 
-            // set user status to inactive in employee.txt
-            for (int i = 1; i < employeeLines.size(); i++) { // Start from index 1 to skip header line
-                String line = employeeLines.get(i);
-                String[] row = line.split("#");
-                if (row[0].equals(String.valueOf(user_ID))) {
-                    row[15] = "deleted";
+            String[] employeeHeader = employeeLines.get(0).split("#");
+            String[] usersHeader = usersLines.get(0).split("#");
 
-                    // Reconstruct the line
-                    StringBuilder updatedLine = new StringBuilder();
-                    for (int j = 0; j < row.length; j++) {
-                        if (j > 0) {
-                            updatedLine.append("#");
-                        }
-                        updatedLine.append(row[j]);
-                    }
+            employeeUpdatedLines.add(employeeLines.get(0));
+            usersUpdatedLines.add(usersLines.get(0));
 
-                    // Update the list
-                    employeeLines.set(i, updatedLine.toString());
-                    break; // Exit loop once updated
+            int index = 0;
+            for (int i = 1; i < employeeLines.size(); i++) {
+                String employee = employeeLines.get(i);
+                String[] employeeParts = employee.split("#");
+
+                for (int k = 0; k < employeeParts.length; k++) {
+                    employeeData.put(employeeHeader[k], employeeParts[k]);
+                    if (employeeHeader[k].equals("status"))
+                        index = k;
                 }
+
+                if (employeeData.get("ID").equals(userID))
+                    employeeParts[index] = "deleted";
+
+                employeeUpdatedLines.add(String.join("#", employeeParts));
+            }            
+
+            for (int i = 1; i < usersLines.size(); i++) {
+                String user = usersLines.get(i);
+                String[] usersParts = user.split("#");
+
+                for (int k = 0; k < usersParts.length; k++) {
+                    usersData.put(usersHeader[k], usersParts[k]);
+                    if (usersHeader[k].equals("status"))
+                        index = k;
+                }
+
+                if (usersData.get("ID").equals(userID))
+                    usersParts[index] = "deleted";
+
+                usersUpdatedLines.add(String.join("#", usersParts));
+            
             }
 
-            // set user status to inactive in users.txt
-            for (int i = 1; i < usersLines.size(); i++) { // Start from index 1 to skip header line
-                String line = usersLines.get(i);
-                String[] row = line.split("#");
-                if (row[0].equals(String.valueOf(user_ID))) {
-                    // Update username
-                    row[3] = "deleted";
-
-                    // Reconstruct the line
-                    StringBuilder updatedLine = new StringBuilder();
-                    for (int j = 0; j < row.length; j++) {
-                        if (j > 0) {
-                            updatedLine.append("#");
-                        }
-                        updatedLine.append(row[j]);
-                    }
-
-                    // Update the list
-                    usersLines.set(i, updatedLine.toString());
-                    break; // Exit loop once updated
-                }
-            }
-
-            // Write updated lines back to files
-            Files.write(employeeDataPath, employeeLines);
-            Files.write(usersDataPath, usersLines);
+            Files.write(employeeDataPath, employeeUpdatedLines, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+            Files.write(usersDataPath, usersUpdatedLines, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
 
             System.out.println("Employee details updated successfully.");
 
@@ -112,66 +114,77 @@ public class Data {
         }
     }
 
-    public void updateEmployeeData(String username, String name, String department, String designation, String grossPay, String user_ID) {
-        Path employeeDataPath = Paths.get("data/employee.txt");
-        Path usersDataPath = Paths.get("data/users.txt");
+    public void updateEmployeeData(String userID, String name, String department, String designation, String gender, String birthDate, String hireDate, String email, String address, String phoneNumber) {
+        List<String> employeeUpdatedLines = new ArrayList<>();
+        List<String> usersUpdatedLines = new ArrayList<>();
+
+        HashMap<String, String> employeeData = new HashMap<>();
+        HashMap<String, String> usersData = new HashMap<>();
 
         try {
             List<String> employeeLines = Files.readAllLines(employeeDataPath);
             List<String> usersLines = Files.readAllLines(usersDataPath);
 
-            // Update employee.txt
-            for (int i = 1; i < employeeLines.size(); i++) { // Start from index 1 to skip header line
-                String line = employeeLines.get(i);
-                String[] row = line.split("#");
-                if (row[0].equals(String.valueOf(user_ID))) {
-                    // Update fields in the line
-                    row[1] = name;
-                    row[2] = department;
-                    row[3] = designation;
-                    row[12] = grossPay;
+            String[] employeeHeader = employeeLines.get(0).split("#");
+            String[] usersHeader = usersLines.get(0).split("#");
 
-                    // Reconstruct the line
-                    StringBuilder updatedLine = new StringBuilder();
-                    for (int j = 0; j < row.length; j++) {
-                        if (j > 0) {
-                            updatedLine.append("#");
-                        }
-                        updatedLine.append(row[j]);
+            employeeUpdatedLines.add(employeeLines.get(0));
+            usersUpdatedLines.add(usersLines.get(0));
+
+            int nameIndex = 0;
+            int departmentIndex = 0;
+            int designationIndex = 0;
+            int genderIndex = 0;
+            int birthDateInex = 0;
+            int hireDateIndex = 0;
+            int emailIndex = 0;
+            int addressIndex = 0;
+            int phoneNumberIndex = 0;
+            for (int i = 1; i < employeeLines.size(); i++) {
+                String employee = employeeLines.get(i);
+                String[] employeeParts = employee.split("#");
+
+                for (int k = 0; k < employeeParts.length; k++) {
+                    employeeData.put(employeeHeader[k], employeeParts[k]);
+                    if (employeeHeader[k].equals("name"))
+                        nameIndex = 0;
+                    else if(employeeHeader[k].equals("name")){
+
                     }
-
-                    // Update the list
-                    employeeLines.set(i, updatedLine.toString());
-                    break; // Exit loop once updated
+                        
                 }
+
+                if (employeeData.get("ID").equals(userID)){
+
+                }
+                    
+
+                employeeUpdatedLines.add(String.join("#", employeeParts));
+            }            
+
+            for (int i = 1; i < usersLines.size(); i++) {
+                String user = usersLines.get(i);
+                String[] usersParts = user.split("#");
+
+                for (int k = 0; k < usersParts.length; k++) {
+                    usersData.put(usersHeader[k], usersParts[k]);
+                    if (usersHeader[k].equals("status")){
+                        
+                    }
+                        
+                }
+
+                if (usersData.get("ID").equals(userID)){
+
+                }
+                    
+
+                usersUpdatedLines.add(String.join("#", usersParts));
+            
             }
 
-            // Update users.txt
-            for (int i = 1; i < usersLines.size(); i++) { // Start from index 1 to skip header line
-                String line = usersLines.get(i);
-                String[] row = line.split("#");
-                if (row[2].equals(String.valueOf(user_ID))) {
-                    // Update username
-                    row[0] = username;
-
-                    // Reconstruct the line
-                    StringBuilder updatedLine = new StringBuilder();
-                    for (int j = 0; j < row.length; j++) {
-                        if (j > 0) {
-                            updatedLine.append("#");
-                        }
-                        updatedLine.append(row[j]);
-                    }
-
-                    // Update the list
-                    usersLines.set(i, updatedLine.toString());
-                    break; // Exit loop once updated
-                }
-            }
-
-            // Write updated lines back to files
-            Files.write(employeeDataPath, employeeLines);
-            Files.write(usersDataPath, usersLines);
+            Files.write(employeeDataPath, employeeUpdatedLines, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+            Files.write(usersDataPath, usersUpdatedLines, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
 
             System.out.println("Employee details updated successfully.");
 

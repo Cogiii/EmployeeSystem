@@ -63,7 +63,7 @@
     -fx-cursor: hand;
 }
 
-    .login-button:focused {
+.login-button:focused {
     -fx-background-color: #05142c;
     -fx-border-color: white; /* Border color on focus */
     -fx-text-fill: white;
