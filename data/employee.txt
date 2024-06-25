@@ -1,3 +1,4 @@
 ID#name#department#designation#gender#birthDate#hireDate#email#address#phoneNumber#payPerDay#hoursWorked#totalOvertime#lates#deductions#grossPay#timeIn#timeOut#status
-0#Admin#Admin#Admin#Male#2024-01-01#25-06-2024#admin@lumina.dev#--#Admin#1000#0#0#0#0.00#0.00#--#--#admin
-1#Laurence Lesmoras#IT#Software Engineer#Male#2004-10-23#25-06-2024#llesmoras@mcm.edu.ph#--#Laurence Lesmoras#1000#0#0#0#0.00#0.00#--#--#employee
+0#Admin#Admin#Admin#Male#2024-01-01#25-06-2024#admin@lumina.dev#--#Admin#1000#70#7#2#160.00#8400.00#12:50PM#05:02PM#admin
+1#Laurence Lesmoras#IT#Software Engineer#Male#October 23, 2004#June 25, 2024#llesmoras@mcm.edu.ph#--#Laurence Lesmoras#1000#69#9#3#240.00#8480.00#12:30PM#05:00PM#employee
+2#Laurence Kharl Devera#IT#Software Engineer#Male#June 29, 2004#June 26, 2024#laurencedevera8@gmail.com#--#Laurence Kharl Devera#1200#71#7#1#96.00#10176.00#12:40PM#05:00PM#employee
