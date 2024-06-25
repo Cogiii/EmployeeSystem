@@ -251,6 +251,7 @@ public class ViewEmployeeModal {
         }
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        // DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthday;
 
         try {

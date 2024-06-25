@@ -369,7 +369,6 @@ public class AddEmployeeModal {
 
         newHireDate = currentDate.format(formatter);
 
-
         String addEmployeeLine = newID + "#" + newName + "#" + newDepartment + "#" + newDesignation + "#" + newGender + "#" + newBirthDate + "#" + newHireDate + "#" + newEmail + "#" + newAddress + "#" + newPhoneNumber + "#" + newPayPerDay + "#" + newTotalHoursWorked + "#" + newTotalOvertime + "#" + newTotalLates + "#" + newGrossDeductions + "#" + newGrossPay + "#" + newCheckIn + "#" + newCheckOut + "#" + newStatus;
 
 

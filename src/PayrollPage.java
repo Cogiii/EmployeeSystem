@@ -114,6 +114,7 @@ public class PayrollPage {
         // Create a StackPane and add the Rectangle and ImageView
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(userPicture);
+
         // END IMAGE EDGE CURVE CODE
 
         topRight.getChildren().addAll(userLabel, stackPane);
