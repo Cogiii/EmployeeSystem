@@ -16,6 +16,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -45,9 +48,9 @@ public class AddEmployeeModal {
         VBox detailsLayout = new VBox(10);
         detailsLayout.setPadding(new Insets(10, 20, 10, 20));
 
-        Label titleLabel = new Label("View Employee");
+        Label titleLabel = new Label("Register Employee");
         titleLabel.getStyleClass().add("label-header");
-        HBox content = showContent();
+        VBox content = showContent();
 
         detailsLayout.setAlignment(Pos.TOP_LEFT);
         detailsLayout.getChildren().addAll(titleLabel, content);
@@ -61,16 +64,138 @@ public class AddEmployeeModal {
         window.showAndWait();
     }
 
-    private HBox showContent(){
-        HBox content = new HBox(10);
-        
-        VBox leftContent = leftContent();
-        VBox rightContent = rightContent();
+    private VBox showContent(){
+        VBox content = new VBox(5);
+        HBox firstLine = firstLine();
+        HBox secondLine = secondLine();
+        HBox thirdLine = thirdLine();
+        HBox fourthLine = fourthLine();
+        HBox fifthLine = fifthLine();
+        HBox sixthLine = sixthLine();
 
-        content.getChildren().addAll(leftContent, rightContent);
+        HBox buttonLayout = new HBox();
+        Button submitButton = new Button("Submit");
+        submitButton.getStyleClass().add("create-button");
+        buttonLayout.getChildren().add(submitButton);
+        
+
+
+        content.getChildren().addAll(firstLine, secondLine, thirdLine, fourthLine, fifthLine, sixthLine, buttonLayout);
 
         return content;
     }
+
+    private HBox firstLine(){
+        HBox firstLine = new HBox(5);
+
+        VBox usernameBox = new VBox(5);
+
+        Label username = new Label("Username: ");
+        TextField usernameField = new TextField();
+
+        usernameBox.getChildren().addAll(username, usernameField);
+        firstLine.getChildren().addAll(usernameBox);
+        return firstLine;
+    }
+    
+    private HBox secondLine(){
+        HBox secondLine = new HBox(5);
+
+        VBox passwordLayout = new VBox();
+        Label password = new Label("Password: ");
+        PasswordField passwordField = new PasswordField();
+        passwordLayout.getChildren().addAll(password, passwordField);
+
+        VBox confirmPasswordLayout = new VBox();
+        Label confirmPasswordLabel = new Label("Confirm Password: ");
+        PasswordField confirmPassword = new PasswordField();
+
+        confirmPasswordLayout.getChildren().addAll(confirmPasswordLabel, confirmPassword);
+
+        secondLine.getChildren().addAll(passwordLayout, confirmPasswordLayout);
+
+        return secondLine;
+    }
+    
+    private HBox thirdLine(){
+        HBox thirdLine = new HBox(5);
+
+        VBox fullNameLayout = new VBox();
+        Label fullNameLabel = new Label("Full Name: ");
+        TextField fullNameField = new TextField();
+        fullNameLayout.getChildren().addAll(fullNameLabel, fullNameField);
+
+        VBox genderLayout = new VBox();
+        Label genderLabel = new Label("Gender: ");
+        ComboBox gender = new ComboBox();
+        genderLayout.getChildren().addAll(genderLabel, gender);
+
+        VBox birthDateBox = new VBox();
+        Label birthDateLabel = new Label("Birth Date: ");
+        DatePicker birthDate = new DatePicker();
+        birthDateBox.getChildren().addAll(birthDateLabel, birthDate);
+
+        thirdLine.getChildren().addAll(fullNameLayout, genderLayout, birthDateBox);
+
+        return thirdLine;
+    }
+
+    private HBox fourthLine(){
+        HBox fourthLine = new HBox(5);
+
+        VBox emailLayout = new VBox();
+        Label emailLabel = new Label("Email: ");
+        TextField emailField = new TextField();
+        emailLayout.getChildren().addAll(emailLabel, emailField);
+
+        VBox phoneNumberLayout = new VBox();
+        Label phoneNumberLabel = new Label("Phone Number: ");
+        TextField phoneNumberField = new TextField();
+        phoneNumberLayout.getChildren().addAll(phoneNumberLabel, phoneNumberField);
+
+        fourthLine.getChildren().addAll(emailLayout, phoneNumberLayout);
+
+        return fourthLine;
+    }
+
+    private HBox fifthLine(){
+        HBox fifthLine = new HBox(5);
+
+        VBox departmentLayout = new VBox();
+        Label departmentLabel = new Label("Department: ");
+        ComboBox department = new ComboBox();
+        departmentLayout.getChildren().addAll(departmentLabel, department);
+
+        VBox designationLayout = new VBox();
+        Label designationLabel = new Label("Designation: ");
+        ComboBox designation = new ComboBox();
+        designationLayout.getChildren().addAll(designationLabel, designation);
+
+        fifthLine.getChildren().addAll(departmentLayout, designationLayout);
+
+        return fifthLine;
+    }
+
+    private HBox sixthLine(){
+        HBox sixthLine = new HBox(5);
+
+        VBox payPerHourLayout = new VBox();
+        Label payPerHourLabel = new Label("Pay per hour: ");
+        TextField payPerHourField = new TextField();
+        payPerHourLayout.getChildren().addAll(payPerHourLabel, payPerHourField);
+
+        VBox pictureLayout = new VBox();
+        Label pictureLabel = new Label("Picture: ");
+        Button uploadPhoto = new Button("Upload Photo");
+        pictureLayout.getChildren().addAll(pictureLabel, uploadPhoto);
+
+        sixthLine.getChildren().addAll(payPerHourLayout, pictureLayout);
+
+        return sixthLine;
+    }
+
+    
+
 
     private VBox leftContent(){
         VBox leftContent = new VBox(5);
@@ -107,12 +232,38 @@ public class AddEmployeeModal {
         imagePane.setAlignment(Pos.TOP_LEFT);
         //--------------------IMAGE END---------------------------------
 
-        Label labelID = new Label("ID:");
-        TextField textFieldID = new TextField(userData.get("ID"));
+        Label header2 = new Label("Personal Details: ");
+
+        
+        
+        
+        
+        
+        
+        
+
+        Button registerButton = new Button("Register");
+
+
+
         textFieldID.setEditable(false);
 
-        leftContent.getChildren().addAll(imagePane, labelID, textFieldID);
-
+        leftContent.getChildren().addAll(
+            header2,
+            username, textFieldID,
+            password, passwordField,
+            confirmPasswordLabel, confirmPassword,
+            fullNameLabel, fullNameField,
+            genderLabel, gender,
+            birthDateLabel, birthDate,
+            emailLabel, emailField,
+            phoneNumberLabel, phoneNumberField,
+            departmentLabel, department,
+            designationLabel, designation,
+            payPerHourLabel, payPerHourField,
+            pictureLabel, uploadPhoto,
+            registerButton
+        );
         return leftContent;
     }
 
