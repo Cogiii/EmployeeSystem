@@ -36,16 +36,11 @@ public class AddEmployeeModal {
     Stage window;
     String userID; 
     HashMap<String, String> userData = new HashMap<>();
-    TextField usernameField = new TextField();
-    PasswordField passwordField = new PasswordField();
-    PasswordField confirmPassword = new PasswordField();
-    TextField fullNameField = new TextField();
+    TextField usernameField, fullNameField, emailField, phoneNumberField, payPerHourField;
+    PasswordField passwordField, confirmPassword;
     DatePicker birthDate = new DatePicker();
-    TextField emailField = new TextField();
-    TextField phoneNumberField = new TextField();
-    TextField payPerHourField = new TextField();
-    ComboBox<String> department = new ComboBox<String>();
-    ComboBox<String> designation = new ComboBox<String>();
+    ComboBox<String> departmentField = new ComboBox<String>();
+    ComboBox<String> designationField = new ComboBox<String>();
     private String pictureDirectory;
 
     Button uploadPhoto = new Button("Upload Photo");
@@ -68,9 +63,9 @@ public class AddEmployeeModal {
         detailsLayout.setAlignment(Pos.TOP_LEFT);
         detailsLayout.getChildren().addAll(titleLabel, content);
  
-        Scene detailsScene = new Scene(detailsLayout, 650, 450);
+        Scene detailsScene = new Scene(detailsLayout, 580, 500);
         Image icon = new Image("images/logo-icon.png");
-        detailsScene.getStylesheets().add("css/modal.css");
+        detailsScene.getStylesheets().add("css/addModal.css");
         window.getIcons().add(icon);
         window.setScene(detailsScene);
         window.setResizable(false);
@@ -89,13 +84,11 @@ public class AddEmployeeModal {
         HBox buttonLayout = new HBox();
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
-            createEmployee(usernameField.getText(), passwordField.getText(), fullNameField.getText(), department.getValue().toString(), designation.getValue().toString(), payPerHourField.getText(), window);
+            createEmployee(usernameField.getText(), passwordField.getText(), fullNameField.getText(), departmentField.getValue().toString(), designationField.getValue().toString(), payPerHourField.getText(), window);
         });
         submitButton.getStyleClass().add("create-button");
         buttonLayout.getChildren().add(submitButton);
         
-
-
         content.getChildren().addAll(firstLine, secondLine, thirdLine, fourthLine, fifthLine, sixthLine, buttonLayout);
 
         return content;
@@ -105,6 +98,8 @@ public class AddEmployeeModal {
         HBox firstLine = new HBox(5);
         VBox usernameBox = new VBox(5);
         Label username = new Label("Username: ");
+        usernameField = new TextField();
+        usernameField.setPromptText("username");
 
         usernameBox.getChildren().addAll(username, usernameField);
         firstLine.getChildren().addAll(usernameBox);
@@ -116,13 +111,16 @@ public class AddEmployeeModal {
 
         VBox passwordLayout = new VBox();
         Label password = new Label("Password: ");
+        passwordField = new PasswordField();
+        passwordField.setPromptText("password");
         
         passwordLayout.getChildren().addAll(password, passwordField);
 
         VBox confirmPasswordLayout = new VBox();
         Label confirmPasswordLabel = new Label("Confirm Password: ");
+        confirmPassword = new PasswordField();
+        confirmPassword.setPromptText("confirm password");
         
-
         confirmPasswordLayout.getChildren().addAll(confirmPasswordLabel, confirmPassword);
 
         secondLine.getChildren().addAll(passwordLayout, confirmPasswordLayout);
@@ -135,10 +133,15 @@ public class AddEmployeeModal {
 
         VBox fullNameLayout = new VBox();
         Label fullNameLabel = new Label("Full Name: ");
+        fullNameField = new TextField();
+        fullNameField.setPromptText("fullname");
+
         fullNameLayout.getChildren().addAll(fullNameLabel, fullNameField);
 
         VBox genderLayout = new VBox();
         ComboBox<String> gender = new ComboBox<String>();
+        gender.setPromptText("gender");
+        gender.getStyleClass().add("gender-field");
 
         gender.getItems().add("Male");
         gender.getItems().add("Female");
@@ -148,6 +151,9 @@ public class AddEmployeeModal {
 
         VBox birthDateBox = new VBox();
         Label birthDateLabel = new Label("Birth Date: ");
+        birthDate.setPromptText("birth date");
+        birthDate.getStyleClass().add("birthDate-field");
+
         birthDateBox.getChildren().addAll(birthDateLabel, birthDate);
 
         thirdLine.getChildren().addAll(fullNameLayout, genderLayout, birthDateBox);
@@ -160,10 +166,14 @@ public class AddEmployeeModal {
 
         VBox emailLayout = new VBox();
         Label emailLabel = new Label("Email: ");
+        emailField = new TextField();
+        emailField.setPromptText("email");
         emailLayout.getChildren().addAll(emailLabel, emailField);
 
         VBox phoneNumberLayout = new VBox();
         Label phoneNumberLabel = new Label("Phone Number: ");
+        phoneNumberField = new TextField();
+        phoneNumberField.setPromptText("phone number");
         phoneNumberLayout.getChildren().addAll(phoneNumberLabel, phoneNumberField);
 
         fourthLine.getChildren().addAll(emailLayout, phoneNumberLayout);
@@ -176,28 +186,32 @@ public class AddEmployeeModal {
 
         // Populate department ComboBox with department names
         HashMap<String, ArrayList<String>> departmentData = getDepartment();
-        ObservableList<String> departmentNames = department.getItems();
+        ObservableList<String> departmentNames = departmentField.getItems();
         departmentData.keySet().forEach(departmentNames::add);
 
         // Event handler for department selection
-        department.setOnAction(new EventHandler<ActionEvent>() {
+        departmentField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String selectedDepartment = department.getValue();
+                String selectedDepartment = departmentField.getValue();
                 if (selectedDepartment != null) {
                     ArrayList<String> roles = departmentData.get(selectedDepartment);
-                    designation.getItems().setAll(roles);
+                    designationField.getItems().setAll(roles);
                 }
             }
         });
 
         VBox departmentLayout = new VBox();
         Label departmentLabel = new Label("Department: ");
-        departmentLayout.getChildren().addAll(departmentLabel, department);
+        departmentField.setPromptText("department");
+        departmentField.getStyleClass().add("drop-down");
+        departmentLayout.getChildren().addAll(departmentLabel, departmentField);
 
         VBox designationLayout = new VBox();
         Label designationLabel = new Label("Designation: ");
-        designationLayout.getChildren().addAll(designationLabel, designation);
+        designationField.setPromptText("designation");
+        designationField.getStyleClass().add("drop-down");
+        designationLayout.getChildren().addAll(designationLabel, designationField);
         fifthLine.getChildren().addAll(departmentLayout, designationLayout);
 
         return fifthLine;
@@ -218,6 +232,8 @@ public class AddEmployeeModal {
 
         VBox payPerHourLayout = new VBox();
         Label payPerHourLabel = new Label("Pay per hour: ");
+        payPerHourField = new TextField();
+        payPerHourField.setPromptText("pay per hour");
         
         payPerHourLayout.getChildren().addAll(payPerHourLabel, payPerHourField);
 

@@ -1,30 +1,82 @@
 .label {
     -fx-text-fill:#282828;
     -fx-font-family: Inter;
-    -fx-font-size:13px;
+    -fx-font-size:14px;
     -fx-font-style: normal;
+    -fx-padding: 0 0 0 10px;
 }
 .label-header {
-    -fx-font-size:20px;
+    -fx-font-size:25px;
     -fx-font-weight: 900;
+    -fx-padding: 0 0 0 0;
 }
 .text-field {
     -fx-background-color: #B6B6B6;
-    -fx-font-size: 18;
+    -fx-font-size: 14px;
     -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
+    -fx-border-radius: 10px;
     -fx-border-color: transparent;
     -fx-min-width: 268px;
     -fx-max-width: 268px;
-    -fx-alignment: CENTER;
     -fx-font-weight: bold;
     -fx-user-select: none;
-    -fx-prompt-text-fill: #132033;
+    -fx-prompt-text-fill: gray;
 }
-.long-Field{
-    -fx-min-width: 540px;
-    -fx-max-width: 540px;
-    -fx-prompt-text-fill: #7A7A7A;
+.gender-field {
+    -fx-min-width: 130px;
+    -fx-max-width: 130px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+.gender-field:focus {
+    -fx-border-color: #071f43;
+}
+/* outer combo-box text */
+.combo-box .list-cell {
+    -fx-text-fill: rgb(0, 0, 0);
+  }
+  
+  /* combo-box list view text, not hovered or focused */
+  .combo-box .list-view .list-cell {
+    -fx-text-fill: black;
+  }
+  
+  /* combo-box selected text */
+  .combo-box .list-view .list-cell:focused {
+    -fx-background-color : #071f43;  /* Cadet Blue */
+    -fx-text-fill: white;
+  }
+  
+  /* combo-box hover text */
+  .combo-box .list-view .list-cell:hover {
+    -fx-background-color : #071f43;  /* Cadet Blue */
+    -fx-text-fill: white;
+  }
+  .combo-box:focused {
+    -fx-border-width: 2px; 
+    -fx-border-color: #071f43;
+  }
+  
+.birthDate-field {
+    -fx-min-width: 130px;
+    -fx-max-width: 130px;
+    -fx-background-radius: 20px 0 0 20px;
+}
+.date-picker .text-field {
+    -fx-background-radius: 20px 0 0 20px;
+    -fx-border-radius: 20px 0 0 20px;
+}
+
+.drop-down {
+    -fx-min-width: 268px;
+    -fx-max-width: 268px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+
 }
 .create-button {
     -fx-min-width: 540px;
