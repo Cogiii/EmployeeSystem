@@ -201,7 +201,7 @@ public class ViewEmployeeModal {
         HBox birthDate = new HBox(10);
 
         VBox birthDateBox = new VBox();
-        Label birthDateLabel = new Label("Full Name:");
+        Label birthDateLabel = new Label("Birth date:");
         textFieldbirthDate = new TextField(rowData.get("birthDate"));
         textFieldbirthDate.getStyleClass().add("long-field");
         birthDateBox.getChildren().addAll(birthDateLabel, textFieldbirthDate);
@@ -221,7 +221,7 @@ public class ViewEmployeeModal {
         email.getChildren().addAll(emailLabel, textFieldEmail);
 
         VBox phoneNumber = new VBox();
-        Label phoneNumberLabel = new Label("Full Name:");
+        Label phoneNumberLabel = new Label("Phone Number:");
         textFieldPhoneNumber = new TextField(rowData.get("name"));
         textFieldPhoneNumber.getStyleClass().add("long-field");
         phoneNumber.getChildren().addAll(phoneNumberLabel, textFieldPhoneNumber);
@@ -235,10 +235,10 @@ public class ViewEmployeeModal {
         HBox address = new HBox(10);
 
         VBox addressBox = new VBox();
-        Label birthDateLabel = new Label("Full Name:");
-        textFieldAddress = new TextField(rowData.get("birthDate"));
+        Label addressLabel = new Label("Address:");
+        textFieldAddress = new TextField(rowData.get("address"));
         textFieldAddress.getStyleClass().add("long-field");
-        addressBox.getChildren().addAll(birthDateLabel, textFieldAddress);
+        addressBox.getChildren().addAll(addressLabel, textFieldAddress);
 
         address.getChildren().add(addressBox);
 
@@ -250,7 +250,8 @@ public class ViewEmployeeModal {
             return "--";
         }
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        // DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthday;
 
         try {

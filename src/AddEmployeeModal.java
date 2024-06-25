@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.collections.ObservableList;
@@ -38,6 +40,7 @@ public class AddEmployeeModal {
     String userID; 
     HashMap<String, String> userData = new HashMap<>();
     TextField usernameField, fullNameField, emailField, phoneNumberField, payPerHourField;
+    ComboBox<String> gender = new ComboBox<String>();
     PasswordField passwordField, confirmPassword;
     DatePicker birthDate = new DatePicker();
     ComboBox<String> departmentField = new ComboBox<String>();
@@ -86,7 +89,7 @@ public class AddEmployeeModal {
         HBox buttonLayout = new HBox();
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
-            createEmployee(usernameField.getText(), passwordField.getText(), fullNameField.getText(), departmentField.getValue().toString(), designationField.getValue().toString(), payPerHourField.getText());
+            createEmployee(usernameField.getText(), passwordField.getText(), fullNameField.getText(), departmentField.getValue().toString(), designationField.getValue().toString(), payPerHourField.getText(), gender.getValue().toString(), birthDate.getValue().toString(), emailField.getText(), phoneNumberField.getText());
         });
         submitButton.getStyleClass().add("create-button");
         buttonLayout.getChildren().add(submitButton);
@@ -141,7 +144,6 @@ public class AddEmployeeModal {
         fullNameLayout.getChildren().addAll(fullNameLabel, fullNameField);
 
         VBox genderLayout = new VBox();
-        ComboBox<String> gender = new ComboBox<String>();
         gender.setPromptText("gender");
         gender.getStyleClass().add("gender-field");
 
@@ -315,9 +317,9 @@ public class AddEmployeeModal {
         return department;
     }
 
-    private void createEmployee(String usernameField, String passwordField, String nameField, String departmentField, String designationField, String payPerDayField){
+    private void createEmployee(String usernameField, String passwordField, String nameField, String departmentField, String designationField, String payPerDayField, String genderField, String birthdateField, String emailField, String phoneNumberField){
         // Check if any field is empty
-        if(usernameField.isEmpty() || passwordField.isEmpty() || nameField.isEmpty() || departmentField.isEmpty() || designationField.isEmpty() || payPerDayField.isEmpty()){
+        if(usernameField.isEmpty() || passwordField.isEmpty() || nameField.isEmpty() || departmentField.isEmpty() || designationField.isEmpty() || payPerDayField.isEmpty() || genderField.isEmpty() || birthdateField.isEmpty() || emailField.isEmpty() || phoneNumberField.isEmpty()){
             // Show alert using JavaFX
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning Dialog");
@@ -355,9 +357,17 @@ public class AddEmployeeModal {
         newName = nameField;
         newDepartment = departmentField;
         newDesignation = designationField;
-        newEmail = emailField.getText();
+        newEmail = emailField;
         newPayPerDay = payPerDayField;
+        newGender = genderField;
+        newBirthDate = birthdateField;
+        newPhoneNumber = phoneNumberField;
         newStatus = "employee";
+
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        newHireDate = currentDate.format(formatter);
+
         // add more katung mga kullaaaaaannnngggggggggg
 
         String addEmployeeLine = newID + "#" + newName + "#" + newDepartment + "#" + newDesignation + "#" + newGender + "#" + newBirthDate + "#" + newHireDate + "#" + newEmail + "#" + newAddress + "#" + newPhoneNumber + "#" + newPayPerDay + "#" + newTotalHoursWorked + "#" + newTotalOvertime + "#" + newTotalLates + "#" + newGrossDeductions + "#" + newGrossPay + "#" + newCheckIn + "#" + newCheckOut + "#" + newStatus;
