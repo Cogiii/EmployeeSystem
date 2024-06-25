@@ -354,18 +354,19 @@ public class AddEmployeeModal {
         //[0]Id, [1]name, [2]department, [3]designation, [4]gender, [5]birthDate, [6]hireDate, [7]email, [8]address, [9]phoneNumber, [10]payPerDay, [11]hoursWorked, [12]totalOvertime, [13]lates, [14]deductions, [15]grossPay, [16]timeIn, [17]timeOut, [18]status
         String newName = "--", newDepartment= "--", newDesignation = "--", newGender = "--", newBirthDate = "--", newHireDate = "--", newEmail = "--", newAddress = "--", newPhoneNumber = "--", newPayPerDay = "0", newTotalHoursWorked = "0", newTotalOvertime = "0", newTotalLates = "0", newGrossDeductions = "0", newGrossPay = "0", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
 
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        
         newName = nameField;
         newDepartment = departmentField;
         newDesignation = designationField;
         newEmail = emailField;
         newPayPerDay = payPerDayField;
         newGender = genderField;
-        newBirthDate = birthdateField;
+        newBirthDate = birthDate.getValue().format(formatter);
         newPhoneNumber = phoneNumberField;
         newStatus = "employee";
 
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         newHireDate = currentDate.format(formatter);
 
         // add more katung mga kullaaaaaannnngggggggggg

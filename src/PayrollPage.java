@@ -87,7 +87,7 @@ public class PayrollPage {
 
         // IMAGE CODE -- CURVED EDGES
 
-        Image originalImage = new Image("images/userImage/hannipham.jpg");
+        Image originalImage = new Image("images/userImage/" + username.toLowerCase().trim() + ".png");
 
         // Calculate dimensions for the square
         double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());
@@ -138,7 +138,7 @@ public class PayrollPage {
 
         HBox panel_data = new HBox(5);
 
-        Image originalImage = new Image("images/userImage/hannipham.jpg");
+        Image originalImage = new Image("images/userImage/" + username.toLowerCase().trim() + ".png");
 
         // Calculate dimensions for the square
         double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());
