@@ -1,12 +1,17 @@
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -25,6 +30,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -35,6 +41,21 @@ public class AddEmployeeModal {
     Stage window;
     String userID; 
     HashMap<String, String> userData = new HashMap<>();
+    TextField usernameField = new TextField();
+    PasswordField passwordField = new PasswordField();
+    PasswordField confirmPassword = new PasswordField();
+    TextField fullNameField = new TextField();
+    DatePicker birthDate = new DatePicker();
+    TextField emailField = new TextField();
+    TextField phoneNumberField = new TextField();
+    TextField payPerHourField = new TextField();
+    ComboBox<String> department = new ComboBox<String>();
+    ComboBox<String> designation = new ComboBox<String>();
+    private String pictureDirectory;
+
+    Button uploadPhoto = new Button("Upload Photo");
+
+
 
 
     void showAddModal(Stage stage, String ID) {
@@ -75,6 +96,9 @@ public class AddEmployeeModal {
 
         HBox buttonLayout = new HBox();
         Button submitButton = new Button("Submit");
+        submitButton.setOnAction(e -> {
+            createEmployee(usernameField.getText(), passwordField.getText(), fullNameField.getText(), department.getValue().toString(), designation.getValue().toString(), payPerHourField.getText(), window);
+        });
         submitButton.getStyleClass().add("create-button");
         buttonLayout.getChildren().add(submitButton);
         
@@ -87,11 +111,8 @@ public class AddEmployeeModal {
 
     private HBox firstLine(){
         HBox firstLine = new HBox(5);
-
         VBox usernameBox = new VBox(5);
-
         Label username = new Label("Username: ");
-        TextField usernameField = new TextField();
 
         usernameBox.getChildren().addAll(username, usernameField);
         firstLine.getChildren().addAll(usernameBox);
@@ -103,12 +124,12 @@ public class AddEmployeeModal {
 
         VBox passwordLayout = new VBox();
         Label password = new Label("Password: ");
-        PasswordField passwordField = new PasswordField();
+        
         passwordLayout.getChildren().addAll(password, passwordField);
 
         VBox confirmPasswordLayout = new VBox();
         Label confirmPasswordLabel = new Label("Confirm Password: ");
-        PasswordField confirmPassword = new PasswordField();
+        
 
         confirmPasswordLayout.getChildren().addAll(confirmPasswordLabel, confirmPassword);
 
@@ -122,17 +143,19 @@ public class AddEmployeeModal {
 
         VBox fullNameLayout = new VBox();
         Label fullNameLabel = new Label("Full Name: ");
-        TextField fullNameField = new TextField();
         fullNameLayout.getChildren().addAll(fullNameLabel, fullNameField);
 
         VBox genderLayout = new VBox();
+        ComboBox<String> gender = new ComboBox<String>();
+
+        gender.getItems().add("Male");
+        gender.getItems().add("Female");
+        gender.getItems().add("Prefer not to say");
         Label genderLabel = new Label("Gender: ");
-        ComboBox gender = new ComboBox();
         genderLayout.getChildren().addAll(genderLabel, gender);
 
         VBox birthDateBox = new VBox();
         Label birthDateLabel = new Label("Birth Date: ");
-        DatePicker birthDate = new DatePicker();
         birthDateBox.getChildren().addAll(birthDateLabel, birthDate);
 
         thirdLine.getChildren().addAll(fullNameLayout, genderLayout, birthDateBox);
@@ -145,12 +168,10 @@ public class AddEmployeeModal {
 
         VBox emailLayout = new VBox();
         Label emailLabel = new Label("Email: ");
-        TextField emailField = new TextField();
         emailLayout.getChildren().addAll(emailLabel, emailField);
 
         VBox phoneNumberLayout = new VBox();
         Label phoneNumberLabel = new Label("Phone Number: ");
-        TextField phoneNumberField = new TextField();
         phoneNumberLayout.getChildren().addAll(phoneNumberLabel, phoneNumberField);
 
         fourthLine.getChildren().addAll(emailLayout, phoneNumberLayout);
@@ -161,19 +182,43 @@ public class AddEmployeeModal {
     private HBox fifthLine(){
         HBox fifthLine = new HBox(5);
 
+        // Populate department ComboBox with department names
+        HashMap<String, ArrayList<String>> departmentData = getDepartment();
+        ObservableList<String> departmentNames = department.getItems();
+        departmentData.keySet().forEach(departmentNames::add);
+
+        // Event handler for department selection
+        department.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String selectedDepartment = department.getValue();
+                if (selectedDepartment != null) {
+                    ArrayList<String> roles = departmentData.get(selectedDepartment);
+                    designation.getItems().setAll(roles);
+                }
+            }
+        });
+
         VBox departmentLayout = new VBox();
         Label departmentLabel = new Label("Department: ");
-        ComboBox department = new ComboBox();
         departmentLayout.getChildren().addAll(departmentLabel, department);
 
         VBox designationLayout = new VBox();
         Label designationLabel = new Label("Designation: ");
-        ComboBox designation = new ComboBox();
         designationLayout.getChildren().addAll(designationLabel, designation);
-
         fifthLine.getChildren().addAll(departmentLayout, designationLayout);
 
         return fifthLine;
+    }
+
+    
+    public void setPictureDirectory(String directory) {
+        this.pictureDirectory = directory;
+    }
+
+    // Use this to get picture directory @Kharl
+    public String getPictureDirectory() {
+        return this.pictureDirectory;
     }
 
     private HBox sixthLine(){
@@ -181,96 +226,55 @@ public class AddEmployeeModal {
 
         VBox payPerHourLayout = new VBox();
         Label payPerHourLabel = new Label("Pay per hour: ");
-        TextField payPerHourField = new TextField();
+        
         payPerHourLayout.getChildren().addAll(payPerHourLabel, payPerHourField);
 
         VBox pictureLayout = new VBox();
         Label pictureLabel = new Label("Picture: ");
-        Button uploadPhoto = new Button("Upload Photo");
         pictureLayout.getChildren().addAll(pictureLabel, uploadPhoto);
+        uploadPhoto.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open User Photo");
+
+            // Set extension filter to only allow image files
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            File file = fileChooser.showOpenDialog(window);
+            if (file != null) {
+                setPictureDirectory(file.getAbsolutePath()); // Set directory containing the selected image
+                System.out.println("Selected file: " + getPictureDirectory());
+            }
+        });
+
+
+
+        
 
         sixthLine.getChildren().addAll(payPerHourLayout, pictureLayout);
 
         return sixthLine;
     }
 
-    
-
-
-    private VBox leftContent(){
-        VBox leftContent = new VBox(5);
-        leftContent.setAlignment(Pos.TOP_LEFT);
-
-        //---------------------IMAGE-----------------------------
-        Image originalImage = new Image("images/userImage/hannipham.jpg");
-
-        // Calculate dimensions for the square
-        double squareSize = Math.min(originalImage.getWidth(), originalImage.getHeight());
-        double startX = (originalImage.getWidth() - squareSize) / 2;
-        double startY = (originalImage.getHeight() - squareSize) / 2;
-
-        // Create a viewport to crop the original image to square
-        Rectangle2D viewportRect = new Rectangle2D(startX, startY, squareSize, squareSize);
-
-        ImageView userPicture = new ImageView(originalImage);
-        userPicture.setViewport(viewportRect);
-        userPicture.setFitWidth(150);
-        userPicture.setFitHeight(150);
-        userPicture.setPreserveRatio(false);
-
-        // Create a Rectangle with rounded corners (as a clipping mask)
-        Rectangle clip = new Rectangle(150, 150);
-        clip.setArcWidth(30); // Adjust the arc width as needed
-        clip.setArcHeight(30); // Adjust the arc height as needed
-
-        // Apply clipping to the ImageView
-        userPicture.setClip(clip);
-
-        // Create a StackPane and add the Rectangle and ImageView
-        StackPane imagePane = new StackPane();
-        imagePane.getChildren().addAll(userPicture);
-        imagePane.setAlignment(Pos.TOP_LEFT);
-        //--------------------IMAGE END---------------------------------
-
-        Label header2 = new Label("Personal Details: ");
-
-        
-        
-        
-        
-        
-        
-        
-
-        Button registerButton = new Button("Register");
-
-
-
-        textFieldID.setEditable(false);
-
-        leftContent.getChildren().addAll(
-            header2,
-            username, textFieldID,
-            password, passwordField,
-            confirmPasswordLabel, confirmPassword,
-            fullNameLabel, fullNameField,
-            genderLabel, gender,
-            birthDateLabel, birthDate,
-            emailLabel, emailField,
-            phoneNumberLabel, phoneNumberField,
-            departmentLabel, department,
-            designationLabel, designation,
-            payPerHourLabel, payPerHourField,
-            pictureLabel, uploadPhoto,
-            registerButton
-        );
-        return leftContent;
-    }
-
-    private VBox rightContent(){
-        VBox rightContent = new VBox(5);
-
-        return rightContent;
+    private HashMap<String, ArrayList<String>> getDepartment() {
+        HashMap<String, ArrayList<String>> department = new HashMap<>();
+        Path departmentPath = Paths.get("data/departmentDesignation.txt");
+        try (BufferedReader br = new BufferedReader(new FileReader(departmentPath.toFile()))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] departmentDetails = line.split("#");
+                String departmentName = departmentDetails[0];
+                String[] roles = departmentDetails[1].split(",");
+                ArrayList<String> roleList = new ArrayList<>();
+                for (String role : roles) {
+                    roleList.add(role.trim());  // trim to remove any leading/trailing whitespace
+                }
+                department.put(departmentName, roleList);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading from file: " + e.getMessage());
+        }
+        return department;
     }
 
     private void createEmployee(String usernameField, String passwordField, String nameField, String departmentField, String designationField, String payPerDayField, Stage stage){
@@ -307,8 +311,8 @@ public class AddEmployeeModal {
             System.err.println("Error reading from file: " + e.getMessage());
         }
         newID++;
-        //[0]Id, [1]name, [2]department, [3]designation, [4]Birth Date, [5]Hire Date, [6]Address, [7],Phone Number, [8]Pay/Day, [9]Total Hours Worked, [10]Total Overtime, [11]Gross Deductions, [12]GrossPay, [13]Check-In, [14]Check-Out
-        String newName = "--", newDeparment= "--", newDesignation = "--", newBirthDate = "--", newHireDate = "--", newAddress = "--", newPhoneNumber = "--", newPayPerDay = "--", newTotalHoursWorked = "--", newTotalOvertime = "--", newGrossDeductions = "--", newGrossPay = "--", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
+        //[0]Id, [1]name, [2]department, [3]designation, [4]Birth Date, [5]Hire Date, [6]Address, [7],Phone Number, [8]Pay/Day, [9]Total Hours Worked, [10]Total Overtime, [11]Gross Deductions, [12]GrossPay, [13]Check-In, [14]Check-Out, [15] Status
+        String newName = "--", newDeparment= "--", newDesignation = "--", newBirthDate = "--", newHireDate = "--", newAddress = "--", newPhoneNumber = "--", newPayPerDay = "--", newTotalHoursWorked = "--", newTotalOvertime = "--", newTotalLates = "0", newGrossDeductions = "--", newGrossPay = "--", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
 
         newName = nameField;
         newDeparment = departmentField;
@@ -316,7 +320,7 @@ public class AddEmployeeModal {
         newPayPerDay = payPerDayField;
         newStatus = "employee";
 
-        String addEmployeeLine = newID+"#"+newName+"#"+newDeparment+"#"+newDesignation+"#"+newBirthDate+"#"+newHireDate+"#"+newAddress+"#"+newPhoneNumber+"#"+newPayPerDay+"#"+newTotalHoursWorked+"#"+newTotalOvertime+"#"+newGrossDeductions+"#"+newGrossPay+"#"+newCheckIn+"#"+newCheckOut+"#"+newStatus;
+        String addEmployeeLine = newID+"#"+newName+"#"+newDeparment+"#"+newDesignation+"#"+newBirthDate+"#"+newHireDate+"#"+newAddress+"#"+newPhoneNumber+"#"+newPayPerDay+"#"+newTotalHoursWorked+"#"+newTotalOvertime+"#"+newTotalLates+"#"+newGrossDeductions+"#"+newGrossPay+"#"+newCheckIn+"#"+newCheckOut+"#"+newStatus;
 
         SHA256HashGenerator hash = new SHA256HashGenerator();
 
