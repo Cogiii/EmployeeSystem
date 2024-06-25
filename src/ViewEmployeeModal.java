@@ -23,7 +23,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ViewEmployeeModal {
-    private String user_ID, grossPay, name, department, designation, username;
     Data data = new Data();
     DashboardPage dashboardPage = new DashboardPage();
     Stage detailsStage;
@@ -307,7 +306,7 @@ public class ViewEmployeeModal {
         
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                data.updateEmployeeData(rowData.get("ID"), textFieldFullname.getText(), textFieldDepartment.getText(), textFieldDesignation.getText(), textFieldGender.getText(), textFieldbirthDate.getText(), textFieldHireDate.getText(), textFieldEmail.getText(),textFieldAddress.getText(),textFieldPhoneNumber.getText());
+                data.updateEmployeeData(rowData.get("ID"), textFieldFullname.getText(), textFieldDepartment.getText(), textFieldDesignation.getText(), textFieldGender.getText(), textFieldbirthDate.getText(), textFieldHireDate.getText(), textFieldEmail.getText(),textFieldAddress.getText(),textFieldPhoneNumber.getText(), textFieldUsername.getText());
                 detailsStage.close();
                 dashboardPage.showDashboard(window, userData.get("ID"));
             }

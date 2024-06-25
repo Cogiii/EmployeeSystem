@@ -114,7 +114,7 @@ public class Data {
         }
     }
 
-    public void updateEmployeeData(String userID, String name, String department, String designation, String gender, String birthDate, String hireDate, String email, String address, String phoneNumber) {
+    public void updateEmployeeData(String userID, String name, String department, String designation, String gender, String birthDate, String hireDate, String email, String address, String phoneNumber, String username) {
         List<String> employeeUpdatedLines = new ArrayList<>();
         List<String> usersUpdatedLines = new ArrayList<>();
 
@@ -131,51 +131,41 @@ public class Data {
             employeeUpdatedLines.add(employeeLines.get(0));
             usersUpdatedLines.add(usersLines.get(0));
 
-            int nameIndex = 0;
-            int departmentIndex = 0;
-            int designationIndex = 0;
-            int genderIndex = 0;
-            int birthDateInex = 0;
-            int hireDateIndex = 0;
-            int emailIndex = 0;
-            int addressIndex = 0;
-            int phoneNumberIndex = 0;
             for (int i = 1; i < employeeLines.size(); i++) {
                 String employee = employeeLines.get(i);
                 String[] employeeParts = employee.split("#");
 
                 for (int k = 0; k < employeeParts.length; k++) {
                     employeeData.put(employeeHeader[k], employeeParts[k]);
-                    if (employeeHeader[k].equals("name"))
-                        nameIndex = 0;
-                    else if(employeeHeader[k].equals("name")){
-
-                    }
-                        
                 }
 
                 if (employeeData.get("ID").equals(userID)){
-
+                    employeeParts[indexOf(employeeHeader, "name")] = name;
+                    employeeParts[indexOf(employeeHeader, "department")] = department;
+                    employeeParts[indexOf(employeeHeader, "designation")] = designation;
+                    employeeParts[indexOf(employeeHeader, "gender")] = gender;
+                    employeeParts[indexOf(employeeHeader, "birthDate")] = birthDate;
+                    employeeParts[indexOf(employeeHeader, "hireDate")] = hireDate;
+                    employeeParts[indexOf(employeeHeader, "email")] = email;
+                    employeeParts[indexOf(employeeHeader, "address")] = address;
+                    employeeParts[indexOf(employeeHeader, "phoneNumber")] = phoneNumber;
                 }
                     
 
                 employeeUpdatedLines.add(String.join("#", employeeParts));
             }            
-
+            
             for (int i = 1; i < usersLines.size(); i++) {
                 String user = usersLines.get(i);
                 String[] usersParts = user.split("#");
 
                 for (int k = 0; k < usersParts.length; k++) {
                     usersData.put(usersHeader[k], usersParts[k]);
-                    if (usersHeader[k].equals("status")){
-                        
-                    }
                         
                 }
 
                 if (usersData.get("ID").equals(userID)){
-
+                    usersParts[indexOf(usersHeader, "username")] = username;
                 }
                     
 
@@ -191,8 +181,16 @@ public class Data {
         } catch (IOException e) {
             System.err.println("Error updating employee data: " + e.getMessage());
         }
+        
     }
 
-    
+    public int indexOf(String[] array, String target) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals(target)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }
