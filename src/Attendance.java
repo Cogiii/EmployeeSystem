@@ -44,7 +44,7 @@ public class Attendance {
 
                     switch (timeLog) {
                         case "time in":
-                            // Check time in for morning (Valid for 6AM to 12PM) or afternoon (Valid for 12:30 to 4PM)
+                            // Check time in for morning (Valid for 6AM to 12PM) or afternoon (Valid for 12:30 to 5PM)
                             if(time.isAfter(LocalTime.of(5, 59)) && time.isBefore(LocalTime.of(12, 0))){
                                 if (!parts[2].equals("--") ) {
                                     // User has already clocked in, return early
@@ -52,7 +52,7 @@ public class Attendance {
                                 }
         
                                 parts[2] = currentTime; // Set time in for morning
-                            } else if (time.isAfter(LocalTime.of(12, 29)) && time.isBefore(LocalTime.of(16, 0))) {
+                            } else if (time.isAfter(LocalTime.of(12, 29)) && time.isBefore(LocalTime.of(17, 0))) {
                                 if (!parts[4].equals("--")){
                                     // User has already clocked in, return early
                                     return; 
@@ -63,7 +63,7 @@ public class Attendance {
                             break;
                         case "time out": 
                             // Check the time if they can log out and check if they time in (cannot time out if did not time in)
-                            // Check time out for morning (Valid for 12PM to 12:30PM) or afternoon (Valid for 4PM onwards)
+                            // Check time out for morning (Valid for 12PM to 12:30PM) or afternoon (Valid for 5PM onwards)
                             if(time.isAfter(LocalTime.of(11, 59)) && time.isBefore(LocalTime.of(12, 30)) && !parts[2].equals("--")){
                                 if (!parts[3].equals("--")) {
                                     // User has already clocked out, return early
@@ -71,7 +71,7 @@ public class Attendance {
                                 }
         
                                 parts[3] = currentTime; // Set time in for morning
-                            } else if (time.isAfter(LocalTime.of(16, 0)) && !parts[4].equals("--")) {
+                            } else if (time.isAfter(LocalTime.of(17, 0)) && !parts[4].equals("--")) {
                                 if (!parts[5].equals("--")){
                                     // User has already clocked out, return early
                                     return; 
