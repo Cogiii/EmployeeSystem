@@ -93,6 +93,17 @@
     -fx-background-color: #05142c; /* Background color on hover */
     -fx-cursor: hand;
 }
+.upload-btn {
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+    -fx-min-width: 100px;
+    -fx-max-width: 100px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+.textPictureLabel{
+    -fx-font-size: 10px;
+}
 
 .delete-button {
     -fx-min-width: 268px;

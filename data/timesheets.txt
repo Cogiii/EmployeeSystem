@@ -26,3 +26,12 @@ ID#date#timeInAM#timeOutAM#timeInPM#timeOutPM
 2#Sunday, June 23, 2024#6:55AM#12:00PM#12:35PM#05:30PM
 2#Monday, June 24, 2024#7:15AM#12:00PM#12:40PM#06:00PM
 2#Tuesday, June 25, 2024#7:25AM#12:00PM#12:50PM#7:00PM
+3#Wednesday, June 26, 2024#--#--#--#--
+3#Tuesday, June 18, 2024#--#--#--#--
+3#Wednesday, June 19, 2024#--#--#--#--
+3#Thursday, June 20, 2024#--#--#--#--
+3#Friday, June 21, 2024#--#--#--#--
+3#Saturday, June 22, 2024#--#--#--#--
+3#Sunday, June 23, 2024#--#--#--#--
+3#Monday, June 24, 2024#--#--#--#--
+3#Tuesday, June 25, 2024#--#--#--#--

@@ -13,10 +13,10 @@ public class Main extends Application{
         window.getIcons().add(icon);
 
         LoginPage login = new LoginPage();
-        login.showLogin(window); // show login page first
+        // login.showLogin(window); // show login page first
 
-        // DashboardPage dashboardPage = new DashboardPage();
-        // dashboardPage.showDashboard(window, "0");
+        DashboardPage dashboardPage = new DashboardPage();
+        dashboardPage.showDashboard(window, "0");
 
         window.setResizable(false);
         window.show();
