@@ -63,6 +63,7 @@
     -fx-min-width: 130px;
     -fx-max-width: 130px;
     -fx-background-radius: 20px 0 0 20px;
+    -fx-border-radius: 20px 0 0 20px;
 }
 .date-picker .text-field {
     -fx-background-radius: 20px 0 0 20px;

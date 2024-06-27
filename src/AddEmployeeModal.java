@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,21 +11,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.regex.Pattern;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,16 +33,17 @@ import javafx.stage.Stage;
 public class AddEmployeeModal {
     DashboardPage dashboardPage = new DashboardPage();
     Data data = new Data();
+    SHA256HashGenerator hash = new SHA256HashGenerator();
 
     Stage window, mainStage;
     String userID, destinationFile; 
     HashMap<String, String> userData = new HashMap<>();
     TextField usernameField, fullNameField, emailField, phoneNumberField, payPerDayField;
-    ComboBox<String> gender = new ComboBox<String>();
-    PasswordField passwordField, confirmPassword;
-    DatePicker birthDate = new DatePicker();
-    ComboBox<String> departmentField = new ComboBox<String>();
-    ComboBox<String> designationField = new ComboBox<String>();
+    ComboBox<String> genderField = new ComboBox<>();
+    PasswordField passwordField, confirmPasswordField;
+    DatePicker birthDateField = new DatePicker();
+    ComboBox<String> departmentField = new ComboBox<>();
+    ComboBox<String> designationField = new ComboBox<>();
     private String pictureDirectory;
     Label imageLabel, textPictureLabel;
     File file;
@@ -84,22 +81,15 @@ public class AddEmployeeModal {
 
     private VBox showContent(){
         VBox content = new VBox(10);
-        HBox firstLine = firstLine();
-        HBox secondLine = secondLine();
-        HBox thirdLine = thirdLine();
-        HBox fourthLine = fourthLine();
-        HBox fifthLine = fifthLine();
-        HBox sixthLine = sixthLine();
-
-        Button submitButton = new Button("Submit");
-        submitButton.getStyleClass().add("create-button");
-        HBox buttonLayout = new HBox(submitButton);
-        submitButton.setOnAction(e -> {
-            createEmployee(usernameField.getText(), passwordField.getText(), confirmPassword.getText(),fullNameField.getText(), departmentField.getValue(), designationField.getValue(), payPerDayField.getText(), gender.getValue(), birthDate.getValue(), emailField.getText(), phoneNumberField.getText());
-        });
-        
-        content.getChildren().addAll(firstLine, secondLine, thirdLine, fourthLine, fifthLine, sixthLine, buttonLayout);
-
+        content.getChildren().addAll(
+            firstLine(),
+            secondLine(),
+            thirdLine(),
+            fourthLine(),
+            fifthLine(),
+            sixthLine(),
+            createButtonLayout()
+        );
         return content;
     }
 
@@ -109,7 +99,6 @@ public class AddEmployeeModal {
         Label username = new Label("Username: ");
         usernameField = new TextField();
         usernameField.setPromptText("Username");
-
         usernameBox.getChildren().addAll(username, usernameField);
         firstLine.getChildren().addAll(usernameBox);
         return firstLine;
@@ -117,134 +106,54 @@ public class AddEmployeeModal {
     
     private HBox secondLine(){
         HBox secondLine = new HBox(5);
-
-        VBox passwordLayout = new VBox();
-        Label password = new Label("Password: ");
-        passwordField = new PasswordField();
-        passwordField.setPromptText("Password");
-        
-        passwordLayout.getChildren().addAll(password, passwordField);
-
-        VBox confirmPasswordLayout = new VBox();
-        Label confirmPasswordLabel = new Label("Confirm Password: ");
-        confirmPassword = new PasswordField();
-        confirmPassword.setPromptText("Confirm Password");
-        
-        confirmPasswordLayout.getChildren().addAll(confirmPasswordLabel, confirmPassword);
-
-        secondLine.getChildren().addAll(passwordLayout, confirmPasswordLayout);
-
+        secondLine.getChildren().addAll(createPasswordLayout("Password: ", passwordField = new PasswordField()), createPasswordLayout("Confirm Password: ", confirmPasswordField = new PasswordField()));
         return secondLine;
     }
     
     private HBox thirdLine(){
         HBox thirdLine = new HBox(5);
 
-        VBox fullNameLayout = new VBox();
-        Label fullNameLabel = new Label("Full Name: ");
-        fullNameField = new TextField();
-        fullNameField.setPromptText("Full Name");
+        genderField.getItems().addAll("Male", "Female", "Prefer not to say");
 
-        fullNameLayout.getChildren().addAll(fullNameLabel, fullNameField);
-
-        VBox genderLayout = new VBox();
-        gender.setPromptText("gender");
-        gender.getStyleClass().add("gender-field");
-
-        gender.getItems().add("Male");
-        gender.getItems().add("Female");
-        gender.getItems().add("Prefer not to say");
-        Label genderLabel = new Label("Gender: ");
-        genderLayout.getChildren().addAll(genderLabel, gender);
-
-        VBox birthDateBox = new VBox();
-        Label birthDateLabel = new Label("Birth Date: ");
-        birthDate.setPromptText("Birth Date");
-        birthDate.getStyleClass().add("birthDate-field");
-
-        birthDateBox.getChildren().addAll(birthDateLabel, birthDate);
-
-        thirdLine.getChildren().addAll(fullNameLayout, genderLayout, birthDateBox);
-
+        thirdLine.getChildren().addAll(createFieldLayout("Full Name: ", fullNameField = new TextField()), createComboBoxLayout("Gender: ", genderField, "gender"), createDatePickerLayout("Birth Date: ", birthDateField, "birthDate-field"));
         return thirdLine;
     }
 
     private HBox fourthLine(){
         HBox fourthLine = new HBox(5);
-
-        VBox emailLayout = new VBox();
-        Label emailLabel = new Label("Email: ");
-        emailField = new TextField();
-        emailField.setPromptText("Email");
-        emailLayout.getChildren().addAll(emailLabel, emailField);
-
-        VBox phoneNumberLayout = new VBox();
-        Label phoneNumberLabel = new Label("Phone Number: ");
-        phoneNumberField = new TextField();
-        phoneNumberField.setPromptText("Phone Number");
-        phoneNumberLayout.getChildren().addAll(phoneNumberLabel, phoneNumberField);
-
-        fourthLine.getChildren().addAll(emailLayout, phoneNumberLayout);
-
+        fourthLine.getChildren().addAll(createFieldLayout("Email: ", emailField = new TextField()), createFieldLayout("Phone Number: ", phoneNumberField = new TextField()));
         return fourthLine;
     }
 
     private HBox fifthLine(){
         HBox fifthLine = new HBox(5);
-
-        // Populate department ComboBox with department names
         HashMap<String, ArrayList<String>> departmentData = getDepartment();
         ObservableList<String> departmentNames = departmentField.getItems();
         departmentData.keySet().forEach(departmentNames::add);
 
-        // Event handler for department selection
-        departmentField.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String selectedDepartment = departmentField.getValue();
-                if (selectedDepartment != null) {
-                    ArrayList<String> roles = departmentData.get(selectedDepartment);
-                    designationField.getItems().setAll(roles);
-                }
+        departmentField.setOnAction(event -> {
+            String selectedDepartment = departmentField.getValue();
+            if (selectedDepartment != null) {
+                ArrayList<String> roles = departmentData.get(selectedDepartment);
+                designationField.getItems().setAll(roles);
             }
         });
 
-        VBox departmentLayout = new VBox();
-        Label departmentLabel = new Label("Department: ");
-        departmentField.setPromptText("Department");
-        departmentField.getStyleClass().add("drop-down");
-        departmentLayout.getChildren().addAll(departmentLabel, departmentField);
-
-        VBox designationLayout = new VBox();
-        Label designationLabel = new Label("Designation: ");
-        designationField.setPromptText("Designation");
-        designationField.getStyleClass().add("drop-down");
-        designationLayout.getChildren().addAll(designationLabel, designationField);
-        fifthLine.getChildren().addAll(departmentLayout, designationLayout);
-
+        fifthLine.getChildren().addAll(createComboBoxLayout("Department: ", departmentField, "drop-down"), createComboBoxLayout("Designation: ", designationField, "drop-down"));
         return fifthLine;
     }
 
-    
     public void setPictureDirectory(String directory) {
         this.pictureDirectory = directory;
     }
 
-    // Use this to get picture directory @Kharl
     public String getPictureDirectory() {
         return this.pictureDirectory;
     }
 
     private HBox sixthLine(){
         HBox sixthLine = new HBox(5);
-
-        VBox payPerDayLayout = new VBox();
-        Label payPerDayLabel = new Label("Pay per day: ");
-        payPerDayField = new TextField();
-        payPerDayField.setPromptText("Pay Per Day");
-        
-        payPerDayLayout.getChildren().addAll(payPerDayLabel, payPerDayField);
-
+        VBox payPerDayLayout = createFieldLayout("Pay per day: ", payPerDayField = new TextField());
         VBox pictureLayout = new VBox();
         Label pictureLabel = new Label("Picture: ");
         HBox uploadAndPictureLabel = new HBox();
@@ -253,35 +162,86 @@ public class AddEmployeeModal {
         textPictureLabel = new Label();
         textPictureLabel.getStyleClass().add("textPictureLabel");
         uploadAndPictureLabel.setAlignment(Pos.CENTER_LEFT);
-
         uploadAndPictureLabel.getChildren().addAll(uploadPhoto, textPictureLabel);
         pictureLayout.getChildren().addAll(pictureLabel, uploadAndPictureLabel);
-        uploadPhoto.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Open User Photo");
-
-            // Set extension filter to only allow image files
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif");
-            fileChooser.getExtensionFilters().add(extFilter);
-
-            file = fileChooser.showOpenDialog(window);
-            if (file != null) {
-                String[] fileDirectory = file.toString().replace('\\', '/').split("/");
-                String fileName = fileDirectory[fileDirectory.length-1];
-                textPictureLabel.setText(fileName);
-                setPictureDirectory(file.getAbsolutePath()); // Set directory containing the selected image
-                destinationFile = "src/images/userImage/" + usernameField.getText() + ".png";
-
-            }
-        });
-
-
-
-        
-
+        uploadPhoto.setOnAction(e -> uploadPhotoAction());
         sixthLine.getChildren().addAll(payPerDayLayout, pictureLayout);
-
         return sixthLine;
+    }
+
+    private void uploadPhotoAction() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open User Photo");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif");
+        fileChooser.getExtensionFilters().add(extFilter);
+        file = fileChooser.showOpenDialog(window);
+        if (file != null) {
+            String[] fileDirectory = file.toString().replace('\\', '/').split("/");
+            String fileName = fileDirectory[fileDirectory.length - 1];
+            textPictureLabel.setText(fileName);
+            setPictureDirectory(file.getAbsolutePath());
+            destinationFile = "src/images/userImage/" + usernameField.getText() + ".png";
+        }
+    }
+
+    private VBox createFieldLayout(String labelText, TextField textField) {
+        VBox layout = new VBox();
+        Label label = new Label(labelText);
+        textField.setPromptText(labelText);
+        layout.getChildren().addAll(label, textField);
+        return layout;
+    }
+
+    private VBox createPasswordLayout(String labelText, PasswordField passwordField) {
+        VBox layout = new VBox();
+        Label label = new Label(labelText);
+        passwordField.setPromptText(labelText);
+        layout.getChildren().addAll(label, passwordField);
+        return layout;
+    }
+
+    private VBox createComboBoxLayout(String labelText, ComboBox<String> comboBox, String styleClass) {
+        VBox layout = new VBox();
+        Label label = new Label(labelText);
+        comboBox.setPromptText(labelText);
+        comboBox.getStyleClass().add(styleClass);
+        layout.getChildren().addAll(label, comboBox);
+        return layout;
+    }
+
+    private VBox createDatePickerLayout(String labelText, DatePicker datePicker, String styleClass) {
+        VBox layout = new VBox();
+        Label label = new Label(labelText);
+        datePicker.setPromptText(labelText);
+        datePicker.getStyleClass().add(styleClass);
+        datePicker.setEditable(false);
+        layout.getChildren().addAll(label, datePicker);
+        return layout;
+    }
+
+    private HBox createButtonLayout() {
+        Button submitButton = new Button("Submit");
+        submitButton.getStyleClass().add("create-button");
+        submitButton.setOnAction(e -> handleSubmitAction());
+        HBox buttonLayout = new HBox(submitButton);
+        buttonLayout.setAlignment(Pos.CENTER_RIGHT);
+        return buttonLayout;
+    }
+
+    private void handleSubmitAction() {
+        createEmployee(
+            usernameField.getText().trim(), 
+            passwordField.getText(), 
+            confirmPasswordField.getText(),
+            fullNameField.getText(), 
+            departmentField.getValue(), 
+            designationField.getValue(), 
+            payPerDayField.getText(), 
+            genderField.getValue(), 
+            birthDateField.getValue(), 
+            emailField.getText(), 
+            phoneNumberField.getText()
+        );
     }
 
     private HashMap<String, ArrayList<String>> getDepartment() {
@@ -290,147 +250,235 @@ public class AddEmployeeModal {
         try (BufferedReader br = new BufferedReader(new FileReader(departmentPath.toFile()))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] departmentDetails = line.split("#");
-                String departmentName = departmentDetails[0];
-                String[] roles = departmentDetails[1].split(",");
-                ArrayList<String> roleList = new ArrayList<>();
-                for (String role : roles) {
-                    roleList.add(role.trim());  // trim to remove any leading/trailing whitespace
+                String[] departmentDesignation = line.split("#");
+                String departmentName = departmentDesignation[0];
+                String[] designations = departmentDesignation[1].split(",");
+                ArrayList<String> roles = new ArrayList<>();
+                for (String designation : designations) {
+                    roles.add(designation.trim());
                 }
-                department.put(departmentName, roleList);
+                department.put(departmentName, roles);
             }
         } catch (IOException e) {
-            System.err.println("Error reading from file: " + e.getMessage());
+            e.printStackTrace();
         }
         return department;
     }
 
-    private void createEmployee(String usernameField, String passwordField, String confirmPassword, String nameField, Object departmentField, Object designationField, String payPerDayField, Object genderField, Object birthdateField, String emailField, String phoneNumberField){
-        // Check if any field is empty
-        if(usernameField.isEmpty() || passwordField.isEmpty() || confirmPassword.isEmpty() || nameField.isEmpty() || departmentField == null || designationField == null || payPerDayField.isEmpty() || genderField == null || birthdateField == null || emailField.isEmpty() || phoneNumberField.isEmpty() || file == null){
-            showAlert("Warning Dialog", "Missing Information", "Please fill all the fields.", "warning");
+    private void createEmployee(String username, String password, String confirmPassword, String fullName, String department, String designation, String payPerDay, String gender, LocalDate birthDate, String email, String phoneNumber) {
+        resetFieldBorders();
+        List<String> errorMessages = new ArrayList<>();
+
+        if (username.isEmpty()) {
+            errorMessages.add("Username cannot be empty");
+            highlightField(usernameField);
+        } else if (username.length() < 5){
+            errorMessages.add("Username must be atleast 5 characters long");
+            highlightField(usernameField);
+        } else if (Character.isDigit(username.charAt(0)) || username.charAt(username.length()-1) == '-' || username.charAt(username.length()-1) == '_') {
+            errorMessages.add("Invalid username input");
+            highlightField(usernameField);
+        }
+        
+        if (containsSpecialCharacter(username)){
+            errorMessages.add("Username cannot contain a special character");
+            highlightField(usernameField);
+        }
+
+        if (password.isEmpty() || !password.equals(confirmPassword)) {
+            errorMessages.add("Passwords do not match");
+            highlightField(passwordField);
+            highlightField(confirmPasswordField);
+        } else if (password.length() < 8){
+            errorMessages.add("Passwords must be at least 8 characters long");
+            highlightField(passwordField);
+            highlightField(confirmPasswordField);
+        }
+
+        if (fullName.isEmpty()) {
+            errorMessages.add("Full Name cannot be empty");
+            highlightField(fullNameField);
+        }
+
+        if (department == null) {
+            errorMessages.add("Department cannot be empty");
+            highlightField(departmentField);
+        }
+
+        if (designation == null) {
+            errorMessages.add("Designation cannot be empty");
+            highlightField(designationField);
+        }
+
+        if (payPerDay.isEmpty() || !payPerDay.matches("\\d+(\\.\\d{1,2})?")) {
+            errorMessages.add("Pay per day must be a number");
+            highlightField(payPerDayField);
+        }
+
+        if (gender == null) {
+            errorMessages.add("Gender cannot be empty");
+            highlightField(genderField);
+        }
+
+        if (birthDate == null) {
+            errorMessages.add("Birth Date cannot be empty");
+            highlightField(birthDateField);
+        } else if (birthDate.isAfter(LocalDate.now())){
+            errorMessages.add("Birth Date cannot be the future");
+            highlightField(birthDateField);
+        }
+
+        if (email.isEmpty() || !isValidEmail(email)) {
+            errorMessages.add("Invalid Email");
+            highlightField(emailField);
+        }
+
+        if (phoneNumber.isEmpty() || !phoneNumber.matches("\\d+") || phoneNumber.length() != 11) {
+            errorMessages.add("Invalid Phone Number");
+            highlightField(phoneNumberField);
+        }
+
+        if (file == null){
+            errorMessages.add("File cannot be empty");
+            highlightField(uploadPhoto);
+        }
+
+        if (!errorMessages.isEmpty()) {
+            displayErrors(errorMessages);
             return;
         }
-        
-        // Find the Highest ID then add 1 and set as new ID to the new employee
-        int newID = 0;
-        Path employeeDataPath = Paths.get("data/employee.txt");
-        try (BufferedReader br = new BufferedReader(new FileReader(employeeDataPath.toFile()))) {
-            String line;
-            int employeeID;
 
-            // Skip the first line/header line
+        System.out.println(getNewID());
+        //Proceed with saving the employee data
+        saveEmployeeData(getNewID(), username, hash.generateSHA256Hash(password), fullName, department, designation, payPerDay, gender, birthDate, email, phoneNumber);
+        copyPhoto();
+        displaySuccessAlert("Employee Created Successfully");
+
+        window.close();
+    }
+
+    private String getNewID() {
+        Path departmentPath = Paths.get("data/employee.txt");
+        int highest = 0;
+        String newID = "";
+        try (BufferedReader br = new BufferedReader(new FileReader(departmentPath.toFile()))) {
+            String line;
             br.readLine();
             while ((line = br.readLine()) != null) {
-                String[] employeeDetails = line.split("#");
-                employeeID = Integer.parseInt(employeeDetails[0]);
+                String[] employees = line.split("#");
 
-                if(employeeID > newID){
-                    newID = employeeID;
+                if (Integer.parseInt(employees[0]) > highest){
+                    newID = String.valueOf(Integer.parseInt(employees[0])+1);
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading from file: " + e.getMessage());
+            e.printStackTrace();
         }
-        newID++;
-        //[0]Id, [1]name, [2]department, [3]designation, [4]gender, [5]birthDate, [6]hireDate, [7]email, [8]address, [9]phoneNumber, [10]payPerDay, [11]hoursWorked, [12]totalOvertime, [13]lates, [14]deductions, [15]grossPay, [16]timeIn, [17]timeOut, [18]status
-        String newName = "--", newDepartment= "--", newDesignation = "--", newGender = "--", newBirthDate = "--", newHireDate = "--", newEmail = "--", newAddress = "--", newPhoneNumber = "--", newPayPerDay = "0", newTotalHoursWorked = "0", newTotalOvertime = "0", newTotalLates = "0", newGrossDeductions = "0", newGrossPay = "0", newCheckIn = "--", newCheckOut = "--", newStatus = "--";
-
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-        
-        newName = nameField;
-        newDepartment = departmentField.toString();
-        newDesignation = designationField.toString();
-        newEmail = emailField;
-        newPayPerDay = payPerDayField;
-        newGender = genderField.toString();
-        newBirthDate = birthDate.getValue().format(formatter);
-        newPhoneNumber = phoneNumberField;
-        newStatus = "employee";
-
-        newHireDate = currentDate.format(formatter);
-
-        String addEmployeeLine = newID + "#" + newName + "#" + newDepartment + "#" + newDesignation + "#" + newGender + "#" + newBirthDate + "#" + newHireDate + "#" + newEmail + "#" + newAddress + "#" + newPhoneNumber + "#" + newPayPerDay + "#" + newTotalHoursWorked + "#" + newTotalOvertime + "#" + newTotalLates + "#" + newGrossDeductions + "#" + newGrossPay + "#" + newCheckIn + "#" + newCheckOut + "#" + newStatus;
-
-
-        
-        try {
-            List<String> usersTxtLines = Files.readAllLines(usersPath);
-
-            // check if that username is already exist
-            boolean usernameAlreadExist = false;
-            for (int i = 1; i < usersTxtLines.size(); i++) {
-                String[] usersParts = usersTxtLines.get(i).split("#");
-                if(usersParts[1].equals(usernameField))
-                    usernameAlreadExist = true;
-            }
-            if (!usernameAlreadExist) {
-                if (passwordField.equals(confirmPassword)){
-                    SHA256HashGenerator hash = new SHA256HashGenerator();
-    
-                    String hashString = hash.generateSHA256Hash(passwordField);
-                    String addUserLine = newID+"#"+usernameField+"#"+hashString+"#"+newStatus;
-        
-                    FileWriter addEmployee = new FileWriter(employeePath.toString(), true); // Set true for append mode
-                    addEmployee.write(addEmployeeLine + System.lineSeparator()); // Append new line separator to create a new line
-                    addEmployee.close();
-        
-                    FileWriter addUser = new FileWriter(usersPath.toString(), true); // Set true for append mode
-                    addUser.write(addUserLine + System.lineSeparator()); // Append new line separator to create a new line
-                    addUser.close();
-
-                    try {
-                        // Create Path objects from the file paths
-                        Path sourcePath = Paths.get(getPictureDirectory());
-                        Path destinationPath = Paths.get(destinationFile);
-            
-                        // Perform the copy using Files.copy() method
-                        Files.copy(sourcePath, destinationPath);
-    
-                        Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setTitle("Picture Uploaded!");
-                        alert.setHeaderText("User Picture Uploaded");
-                        alert.setContentText("The user's picture has been uploaded successfully.");
-    
-                        alert.showAndWait();
-                        return; // Exit the method if any field is empty
-            
-                    } catch (IOException s) {
-                        showAlert("Error", "Failes to upload", "Failed to upload user's photo. Please try again.", "information");
-                    }
-        
-                    window.close();
-                    dashboardPage.showDashboard(mainStage, userID);
-                } else {
-                    showAlert("Invalid Password", "Password does not match", "Both password textfield should match", "error");
-                    return;
-                }
-            } else {
-                showAlert("Invalid Username", "This username is alreadyy exist", "Please enter another username", "information");
-                return;
-            }
-        } catch (IOException e) {
-            System.err.println("An error occurred while writing to the file: " + e.getMessage());
-        }
+        return newID;
     }
 
-    private void showAlert(String title, String header, String message, String type){
-        // Show alert using JavaFX
-        Alert alert;
+    private void resetFieldBorders() {
+        String defaultStyle = "";
+        usernameField.setStyle(defaultStyle);
+        passwordField.setStyle(defaultStyle);
+        confirmPasswordField.setStyle(defaultStyle);
+        fullNameField.setStyle(defaultStyle);
+        emailField.setStyle(defaultStyle);
+        phoneNumberField.setStyle(defaultStyle);
+        payPerDayField.setStyle(defaultStyle);
+        genderField.setStyle(defaultStyle);
+        birthDateField.setStyle(defaultStyle);
+        departmentField.setStyle(defaultStyle);
+        designationField.setStyle(defaultStyle);
+        uploadPhoto.setStyle(defaultStyle);
+    }
 
-        if (type.equals("warning")){
-            alert = new Alert(AlertType.WARNING);
-        } else if (type.equals("information")){
-            alert = new Alert(AlertType.INFORMATION);
-        } else {
-            alert = new Alert(AlertType.ERROR);
+    private void highlightField(Button field) {
+        field.setStyle("-fx-border-color: red;");
+    }
+    
+    private void highlightField(TextField field) {
+        field.setStyle("-fx-border-color: red;");
+    }
+
+    private void highlightField(ComboBox<String> field) {
+        field.setStyle("-fx-border-color: red;");
+    }
+
+    private void highlightField(DatePicker field) {
+        field.setStyle("-fx-border-color: red;");
+    }
+
+    private boolean containsSpecialCharacter(String s) {
+        char[] special_characters = {'#', '%', '&', '{', '}', '\\', '<', '>', '*', '?', '/', ' ', '$', '!', '\'', '"', ':', '@', '+', '`', '|', '=', '.'};
+        for (char c : special_characters) {
+            if (s.indexOf(c) >= 0) {
+                return true;
+            }
         }
-        
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(message);
+        return false;
+    }
+
+    private boolean isValidEmail(String email) {
+        Pattern EMAIL_PATTERN = Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    private void displayErrors(List<String> errorMessages) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Form Error");
+        alert.setHeaderText("Please correct the errors below:");
+        alert.setContentText(String.join("\n", errorMessages));
         alert.showAndWait();
     }
-    
+
+    private void displaySuccessAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+
+        dashboardPage.showDashboard(mainStage, userID);
+    }
+
+    private void saveEmployeeData(String newID, String username, String password, String fullName, String department, String designation, String payPerDay, String gender, LocalDate birthDate, String email, String phoneNumber) {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        LocalDate currentDate = LocalDate.now();
+
+        String birthDateStr = birthDate.format(dateFormat);
+        String hireDateStr = currentDate.format(dateFormat);
+
+        try {
+            if (Files.notExists(usersPath)) {
+                Files.createFile(usersPath);
+            }
+            //[0]Id, [1]username, [2]hashPassword, [3]status
+            FileWriter userFileWriter = new FileWriter(usersPath.toFile(), true);
+            userFileWriter.write(String.join("#", newID, username, password, "employee") + "\n");
+            userFileWriter.close();
+
+            if (Files.notExists(employeePath)) {
+                Files.createFile(employeePath);
+            }
+
+            //[0]Id, [1]name, [2]department, [3]designation, [4]gender, [5]birthDate, [6]hireDate, [7]email, [8]address, [9]phoneNumber, [10]payPerDay, [11]hoursWorked, [12]totalOvertime, [13]lates, [14]deductions, [15]grossPay, [16]timeIn, [17]timeOut, [18]status
+            FileWriter employeeFileWriter = new FileWriter(employeePath.toFile(), true);
+            employeeFileWriter.write(String.join("#", newID, fullName, department, designation, gender, birthDateStr, hireDateStr, email, "--", phoneNumber, payPerDay, "0", "0", "0", "0", "0", "--", "--", "employee") + "\n");
+            employeeFileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void copyPhoto() {
+        if (file != null) {
+            try {
+                File destFile = new File(destinationFile);
+                Files.copy(file.toPath(), destFile.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -86,7 +86,6 @@ public class DashboardPage {
         userLabel.getChildren().addAll(usernameLabel, userPositionLabel);
 
         // IMAGE CODE -- CURVED EDGES
-        System.out.println("images/userImage/" + username.toLowerCase().trim() + ".png");
         Image originalImage = new Image("images/userImage/" + username.toLowerCase().trim() + ".png");
 
         // Calculate dimensions for the square
@@ -136,7 +135,6 @@ public class DashboardPage {
         panel.getStyleClass().add("panel");
 
         HBox panel_data = new HBox(5);
-
         
         Image originalImage = new Image("images/userImage/" + username.toLowerCase().trim() + ".png");
 

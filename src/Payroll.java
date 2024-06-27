@@ -72,7 +72,7 @@ public class Payroll {
                 int lates = Integer.parseInt(userData.get("lates"));
 
                 double initialPay = ((hoursWorked / 8) * payPerDay);
-                double overtimePay = (totalOvertime) * (initialPay * 0.01);
+                double overtimePay = (totalOvertime) * (initialPay * 0.05);
                 double deductions = (lates) * (initialPay * 0.01);
                 double grossPay = initialPay - deductions + overtimePay;
 
