@@ -184,6 +184,7 @@ public class ViewEmployeeModal {
         Label ageLabel = new Label("Age:");
         textFieldAge = new TextField(getAge(rowData.get("birthDate")));
         textFieldAge.getStyleClass().add("short-field");
+        textFieldAge.setEditable(false);
         age.getChildren().addAll(ageLabel, textFieldAge);
 
         VBox gender = new VBox();
@@ -312,7 +313,6 @@ public class ViewEmployeeModal {
                 dashboardPage.showDashboard(window, userData.get("ID"));
             }
         });
-        
     }
 
     

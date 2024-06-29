@@ -18,6 +18,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -50,6 +52,7 @@ public class AddEmployeeModal {
     Button uploadPhoto;
     Path usersPath = Paths.get("data/users.txt");
     Path employeePath = Paths.get("data/employee.txt");
+    Path departmentPath = Paths.get("data/employee.txt");
 
     void showAddModal(Stage stage, String ID) {
         userID = ID;
@@ -180,7 +183,6 @@ public class AddEmployeeModal {
             String fileName = fileDirectory[fileDirectory.length - 1];
             textPictureLabel.setText(fileName);
             setPictureDirectory(file.getAbsolutePath());
-            destinationFile = "src/images/userImage/" + usernameField.getText() + ".png";
         }
     }
 
@@ -222,26 +224,10 @@ public class AddEmployeeModal {
     private HBox createButtonLayout() {
         Button submitButton = new Button("Submit");
         submitButton.getStyleClass().add("create-button");
-        submitButton.setOnAction(e -> handleSubmitAction());
+        submitButton.setOnAction(e -> createEmployeeAlert());
         HBox buttonLayout = new HBox(submitButton);
         buttonLayout.setAlignment(Pos.CENTER_RIGHT);
         return buttonLayout;
-    }
-
-    private void handleSubmitAction() {
-        createEmployee(
-            usernameField.getText().trim(), 
-            passwordField.getText(), 
-            confirmPasswordField.getText(),
-            fullNameField.getText(), 
-            departmentField.getValue(), 
-            designationField.getValue(), 
-            payPerDayField.getText(), 
-            genderField.getValue(), 
-            birthDateField.getValue(), 
-            emailField.getText(), 
-            phoneNumberField.getText()
-        );
     }
 
     private HashMap<String, ArrayList<String>> getDepartment() {
@@ -265,6 +251,37 @@ public class AddEmployeeModal {
         return department;
     }
 
+    private void createEmployeeAlert() {
+        // Show confirmation dialog for create operation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Create");
+        alert.setHeaderText("Confirm Create");
+        alert.setContentText("Are you sure you want to register this employee?");
+
+        // Change button types to Yes and No
+        ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == buttonTypeYes) {
+                createEmployee(
+                    usernameField.getText().trim(), 
+                    passwordField.getText(), 
+                    confirmPasswordField.getText(),
+                    fullNameField.getText(), 
+                    departmentField.getValue(), 
+                    designationField.getValue(), 
+                    payPerDayField.getText(), 
+                    genderField.getValue(), 
+                    birthDateField.getValue(), 
+                    emailField.getText(), 
+                    phoneNumberField.getText()
+                );
+            }
+        });
+    }
+
     private void createEmployee(String username, String password, String confirmPassword, String fullName, String department, String designation, String payPerDay, String gender, LocalDate birthDate, String email, String phoneNumber) {
         resetFieldBorders();
         List<String> errorMessages = new ArrayList<>();
@@ -277,6 +294,9 @@ public class AddEmployeeModal {
             highlightField(usernameField);
         } else if (Character.isDigit(username.charAt(0)) || username.charAt(username.length()-1) == '-' || username.charAt(username.length()-1) == '_') {
             errorMessages.add("Invalid username input");
+            highlightField(usernameField);
+        } else if (AlreadyExist(username)){
+            errorMessages.add("Username is already exist.");
             highlightField(usernameField);
         }
         
@@ -348,7 +368,6 @@ public class AddEmployeeModal {
             return;
         }
 
-        System.out.println(getNewID());
         //Proceed with saving the employee data
         saveEmployeeData(getNewID(), username, hash.generateSHA256Hash(password), fullName, department, designation, payPerDay, gender, birthDate, email, phoneNumber);
         copyPhoto();
@@ -358,7 +377,6 @@ public class AddEmployeeModal {
     }
 
     private String getNewID() {
-        Path departmentPath = Paths.get("data/employee.txt");
         int highest = 0;
         String newID = "";
         try (BufferedReader br = new BufferedReader(new FileReader(departmentPath.toFile()))) {
@@ -375,6 +393,23 @@ public class AddEmployeeModal {
             e.printStackTrace();
         }
         return newID;
+    }
+
+    private boolean AlreadyExist(String s){
+        try {
+            List<String> usersLines = Files.readAllLines(usersPath);
+
+            for (int i = 1; i < usersLines.size(); i++) {
+                String[] user = usersLines.get(i).split("#");
+
+                if (s.equalsIgnoreCase(user[1])){
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void resetFieldBorders() {
@@ -474,6 +509,7 @@ public class AddEmployeeModal {
     private void copyPhoto() {
         if (file != null) {
             try {
+                destinationFile = "src/images/userImage/" + usernameField.getText() + ".png";
                 File destFile = new File(destinationFile);
                 Files.copy(file.toPath(), destFile.toPath());
             } catch (IOException e) {
