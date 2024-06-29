@@ -117,6 +117,7 @@ public class AddEmployeeModal {
         HBox thirdLine = new HBox(5);
 
         genderField.getItems().addAll("Male", "Female", "Prefer not to say");
+        genderField.getStyleClass().add("gender-field");
 
         thirdLine.getChildren().addAll(createFieldLayout("Full Name: ", fullNameField = new TextField()), createComboBoxLayout("Gender: ", genderField, "gender"), createDatePickerLayout("Birth Date: ", birthDateField, "birthDate-field"));
         return thirdLine;

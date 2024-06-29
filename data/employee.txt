@@ -1,5 +1,5 @@
 ID#name#department#designation#gender#birthDate#hireDate#email#address#phoneNumber#payPerDay#hoursWorked#totalOvertime#lates#deductions#grossPay#timeIn#timeOut#status
-0#Admin#Admin#Admin#Male#2024-01-01#25-06-2024#admin@lumina.dev#--#Admin#1000#70#7#3#240.00#10560.00#4:19PM#--#admin
+0#Admin#Admin#Admin#Male#2024-01-01#25-06-2024#admin@lumina.dev#--#Admin#1000#70#7#3#240.00#10560.00#4:19PM#5:00PM#admin
 1#Laurence Lesmoras#IT#Software Engineer#Male#October 23, 2004#June 25, 2024#llesmoras@mcm.edu.ph#--#Laurence Lesmoras#1000#69#9#3#240.00#11360.00#--#--#employee
 2#Laurence Kharl Devera#IT#Software Engineer#Male#June 29, 2004#June 26, 2024#laurencedevera8@gmail.com#Deca Homes, Tigatto, Davao City#Laurence Kharl Devera#1200#71#7#2#192.00#12768.00#4:24PM#--#employee
 3#Ryz Clyd Sabucido#RESEARCH AND DEVELOPMENT#Research Scientist#Prefer not to say#July 27, 2005#June 26, 2024#rcsabucido@gmail.com#--#09163137051#1000000#0#0#0#0.00#0.00#--#--#employee
