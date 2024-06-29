@@ -39,7 +39,7 @@ public class Table {
         employees = getEmployees(tableLists, from);
 
         // sort data dynamically with search
-        SortedList<Employee> sortedData = new SortedList<>(searchData(employees, search));
+        SortedList<Employee> sortedData = new SortedList<>(searchData(employees, search, from));
         sortedData.comparatorProperty().bind(table.comparatorProperty());
         table.setItems(sortedData);
 
@@ -67,7 +67,7 @@ public class Table {
         return vBox;
     }
 
-    public FilteredList<Employee> searchData(ObservableList<Employee> employeeData, TextField search){
+    public FilteredList<Employee> searchData(ObservableList<Employee> employeeData, TextField search, String from){
         // Create a filtered list
         FilteredList<Employee> filteredData = new FilteredList<>(employeeData, p -> true);
 
@@ -77,21 +77,50 @@ public class Table {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
-
-                // Compare first name and last name of every person with filter text.
+                
                 String lowerCaseFilter = newValue.toLowerCase();
+                if (from.equals("dashboard")){
+                    // Compare first name and last name of every person with filter text.
 
-                if (employee.getName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches first name.
-                } else if (employee.getDepartment().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches last name.
-                } else if (employee.getDesignation().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches last name.
-                } else if (String.valueOf(employee.getID()).contains(lowerCaseFilter)) {
-                    return true;
+                    if (employee.getName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches first name.
+                    } else if (employee.getDepartment().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches last name.
+                    } else if (employee.getDesignation().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches last name.
+                    } else if (employee.getID().contains(lowerCaseFilter)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    
+                } else if (from.equals("payroll")){
+
+                    if (employee.getName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches first name.
+                    } else if (employee.getID().contains(lowerCaseFilter)) {
+                        return true; // Filter matches last name.
+                    } else if (employee.getPayPerDay().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches last name.
+                    } else if (employee.getHoursWorked().contains(lowerCaseFilter)) {
+                        return true;
+                    } else if (employee.getTotalOvertime().contains(lowerCaseFilter)) {
+                        return true;
+                    } else if (employee.getLates().contains(lowerCaseFilter)) {
+                        return true;
+                    } else if (employee.getDeductions().contains(lowerCaseFilter)) {
+                        return true;
+                    } else if (employee.getGrossPay().contains(lowerCaseFilter)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
                 } else {
-                    return false; // Does not match.
+                    return false;
                 }
+
+                
             });
         });
 
