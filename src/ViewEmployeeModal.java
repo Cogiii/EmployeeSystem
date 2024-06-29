@@ -164,6 +164,7 @@ public class ViewEmployeeModal {
         PasswordField passwordFieldPassword = new PasswordField();
         passwordFieldPassword.setText("********");
         passwordFieldPassword.getStyleClass().add("long-field");
+        passwordFieldPassword.setEditable(false);
         password.getChildren().addAll(passwordLabel, passwordFieldPassword);
 
         usernameAndPass.getChildren().addAll(username, password);
@@ -223,7 +224,7 @@ public class ViewEmployeeModal {
 
         VBox phoneNumber = new VBox();
         Label phoneNumberLabel = new Label("Phone Number:");
-        textFieldPhoneNumber = new TextField(rowData.get("name"));
+        textFieldPhoneNumber = new TextField(rowData.get("phoneNumber"));
         textFieldPhoneNumber.getStyleClass().add("long-field");
         phoneNumber.getChildren().addAll(phoneNumberLabel, textFieldPhoneNumber);
 
