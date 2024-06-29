@@ -49,7 +49,7 @@ ID#date#timeInAM#timeOutAM#timeInPM#timeOutPM
 2#Friday, June 28, 2024#--#--#--#--
 2#Thursday, June 27, 2024#--#--#--#--
 0#Saturday, June 29, 2024#--#--#4:19PM#5:00PM
-2#Saturday, June 29, 2024#--#--#4:24PM#5:26PM
+2#Saturday, June 29, 2024#--#--#4:24PM#--
 4#Saturday, June 29, 2024#--#--#--#--
 5#Saturday, June 29, 2024#--#--#--#--
 5#Friday, June 21, 2024#--#--#--#--
