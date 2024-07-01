@@ -54,8 +54,8 @@ public class PayrollPage {
         
         VBox main = new VBox(10);
 
-        HBox top = createMainTop("Payroll Page", userData.get("name"), userData.get("designation"));
-        StackPane userPanel = createUserPanel(userData.get("name"), userData.get("designation"), userData.get("address"));
+        HBox top = createMainTop("Payroll Page", userData.get("name"), userData.get("designation"), userData.get("username"));
+        StackPane userPanel = createUserPanel(userData.get("name"), userData.get("designation"), userData.get("address"), userData.get("username"));
         HBox mainHeader = createMainHeader();
         VBox tablelayout = table.createTable(mainStage, tableHeader, searchEmployee, tableData, employees, "payroll", userData.get("ID"));
 
@@ -63,7 +63,7 @@ public class PayrollPage {
         return main;
     }
 
-    HBox createMainTop(String title, String username, String position) {
+    HBox createMainTop(String title, String fullName, String position, String username) {
         HBox top = new HBox();
 
         Label titleLabel = new Label(title);
@@ -75,7 +75,7 @@ public class PayrollPage {
         VBox userLabel = new VBox();
         userLabel.setAlignment(Pos.CENTER_RIGHT); // Align labels to the center right
 
-        Label usernameLabel = new Label(username);
+        Label usernameLabel = new Label(fullName);
         usernameLabel.getStyleClass().add("top-user_name");
 
         Label userPositionLabel = new Label(position);
@@ -131,7 +131,7 @@ public class PayrollPage {
         return top;
     }
 
-    StackPane createUserPanel(String username, String position, String location) {
+    StackPane createUserPanel(String fullName, String position, String location, String username) {
         StackPane panel = new StackPane();
         panel.getStyleClass().add("panel");
 
@@ -167,7 +167,7 @@ public class PayrollPage {
         userPicture.getStyleClass().add("image");
 
         VBox userInfo = new VBox();
-        Label user_name = new Label(username);
+        Label user_name = new Label(fullName);
         user_name.getStyleClass().add("panel-user_name");
         Label user_position = new Label(position);
         user_position.getStyleClass().add("panel-user_position");

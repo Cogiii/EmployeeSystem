@@ -60,3 +60,10 @@ ID#date#timeInAM#timeOutAM#timeInPM#timeOutPM
 5#Wednesday, June 26, 2024#--#--#--#--
 5#Thursday, June 27, 2024#--#--#--#--
 5#Friday, June 28, 2024#--#--#--#--
+0#Monday, July 01, 2024#9:01am#--#12:45pm#--
+0#Sunday, June 30, 2024#--#--#--#--
+1#Monday, July 01, 2024#--#--#12:49pm#--
+1#Thursday, June 27, 2024#--#--#--#--
+1#Friday, June 28, 2024#--#--#--#--
+1#Saturday, June 29, 2024#--#--#--#--
+1#Sunday, June 30, 2024#--#--#--#--
